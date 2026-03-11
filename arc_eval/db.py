@@ -51,8 +51,16 @@ class ResultDB:
     """SQLite-backed result logger. Writes are committed immediately."""
 
     def __init__(self, db_path: str | Path):
-        self.db_path = str(db_path)
-        self.conn = sqlite3.connect(self.db_path)
+        path = Path(db_path)
+
+        # Ensure the directory for the database exists
+        path.parent.mkdir(parents=True, exist_ok=True)
+
+        self.db_path = str(path)
+
+        # Create SQLite connection
+        self.conn = sqlite3.connect(self.db_path, timeout=30)
+
         self.conn.executescript(SCHEMA)
         self.conn.commit()
 

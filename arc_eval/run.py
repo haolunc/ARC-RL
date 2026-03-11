@@ -22,10 +22,11 @@ from .db import ResultDB
 def load_tasks(data_dir: str) -> dict[str, dict]:
     """Load all task JSON files from a directory, sorted by name."""
     import json
+
     tasks = {}
     data_path = Path(data_dir)
     for f in sorted(data_path.glob("*.json")):
-        with open(f) as fp:
+        with open(f, encoding="utf-8") as fp:
             tasks[f.stem] = json.load(fp)
     return tasks
 
@@ -50,7 +51,12 @@ def evaluate_task(
 
     for test_idx, test_case in enumerate(test_cases):
         test_input = test_case["input"]
-        test_output = test_case["output"]
+        test_output = test_case.get("output")
+        if test_output is None:
+            raise ValueError(
+                f"Task {task_id} test case {test_idx} has no public output."
+            )
+
         print(f"  Test case {test_idx + 1}/{len(test_cases)}")
 
         # Build initial conversation
@@ -58,24 +64,41 @@ def evaluate_task(
         solved = False
 
         for attempt in range(1, max_retries + 1):
-            # Call LLM
             num_msgs = len([m for m in messages if m["role"] != "system"])
-            print(f"    [{attempt}/{max_retries}] Calling LLM ({num_msgs} messages in context)...", flush=True)
+            prompt_chars = sum(len(m["content"]) for m in messages)
+
+            print(
+                f"    [{attempt}/{max_retries}] Calling LLM "
+                f"({num_msgs} messages, {prompt_chars} chars in context)...",
+                flush=True,
+            )
+
             t0 = time.time()
             try:
                 response = call_llm(messages, temperature=temperature)
             except RuntimeError as e:
                 db.insert_attempt(
-                    run_id, task_id, test_idx, attempt,
-                    llm_response=None, extracted_code=None,
-                    train_pass=None, test_correct=None, cell_accuracy=None,
-                    error_type="api_error", error_msg=str(e),
+                    run_id=run_id,
+                    task_id=task_id,
+                    test_index=test_idx,
+                    attempt=attempt,
+                    llm_response=None,
+                    extracted_code=None,
+                    train_pass=None,
+                    test_correct=None,
+                    cell_accuracy=None,
+                    error_type="api_error",
+                    error_msg=str(e),
                 )
-                print(f"    [{attempt}/{max_retries}] API error ({time.time()-t0:.0f}s): {e}")
+                print(f"    [{attempt}/{max_retries}] API error ({time.time() - t0:.0f}s): {e}")
                 break
+
             llm_time = time.time() - t0
             resp_len = len(response)
-            print(f"    [{attempt}/{max_retries}] LLM responded ({llm_time:.0f}s, {resp_len} chars)")
+            print(
+                f"    [{attempt}/{max_retries}] LLM responded "
+                f"({llm_time:.0f}s, {resp_len} chars)"
+            )
 
             # Extract code
             code = extract_code(response)
@@ -86,10 +109,17 @@ def evaluate_task(
                     "```python code block."
                 )
                 db.insert_attempt(
-                    run_id, task_id, test_idx, attempt,
-                    llm_response=response, extracted_code=None,
-                    train_pass=None, test_correct=None, cell_accuracy=None,
-                    error_type="extraction_failed", error_msg=error_msg,
+                    run_id=run_id,
+                    task_id=task_id,
+                    test_index=test_idx,
+                    attempt=attempt,
+                    llm_response=response,
+                    extracted_code=None,
+                    train_pass=None,
+                    test_correct=None,
+                    cell_accuracy=None,
+                    error_type="extraction_failed",
+                    error_msg=error_msg,
                 )
                 messages = append_retry(messages, response, error_msg)
                 print(f"    [{attempt}/{max_retries}] FAIL: code extraction failed")
@@ -105,10 +135,17 @@ def evaluate_task(
             if not train_result["passed"]:
                 error_msg = train_result["error_msg"]
                 db.insert_attempt(
-                    run_id, task_id, test_idx, attempt,
-                    llm_response=response, extracted_code=code,
-                    train_pass=False, test_correct=None, cell_accuracy=None,
-                    error_type="train_fail", error_msg=error_msg,
+                    run_id=run_id,
+                    task_id=task_id,
+                    test_index=test_idx,
+                    attempt=attempt,
+                    llm_response=response,
+                    extracted_code=code,
+                    train_pass=False,
+                    test_correct=None,
+                    cell_accuracy=None,
+                    error_type="train_fail",
+                    error_msg=error_msg,
                 )
                 messages = append_retry(messages, response, error_msg)
                 print(f"    [{attempt}/{max_retries}] FAIL: train verification failed")
@@ -119,10 +156,17 @@ def evaluate_task(
             if not test_result["success"]:
                 error_msg = f"Error on test input:\n{test_result['error']}"
                 db.insert_attempt(
-                    run_id, task_id, test_idx, attempt,
-                    llm_response=response, extracted_code=code,
-                    train_pass=True, test_correct=None, cell_accuracy=None,
-                    error_type="test_exec_error", error_msg=error_msg,
+                    run_id=run_id,
+                    task_id=task_id,
+                    test_index=test_idx,
+                    attempt=attempt,
+                    llm_response=response,
+                    extracted_code=code,
+                    train_pass=True,
+                    test_correct=None,
+                    cell_accuracy=None,
+                    error_type="test_exec_error",
+                    error_msg=error_msg,
                 )
                 messages = append_retry(messages, response, error_msg)
                 print(f"    [{attempt}/{max_retries}] FAIL: test execution error")
@@ -134,36 +178,51 @@ def evaluate_task(
             if cmp["correct"]:
                 solved = True
                 db.insert_attempt(
-                    run_id, task_id, test_idx, attempt,
-                    llm_response=response, extracted_code=code,
-                    train_pass=True, test_correct=True,
+                    run_id=run_id,
+                    task_id=task_id,
+                    test_index=test_idx,
+                    attempt=attempt,
+                    llm_response=response,
+                    extracted_code=code,
+                    train_pass=True,
+                    test_correct=True,
                     cell_accuracy=1.0,
-                    error_type=None, error_msg=None,
+                    error_type=None,
+                    error_msg=None,
                 )
                 print(f"    [{attempt}/{max_retries}] SOLVED!")
                 break
-            else:
-                msg_parts = ["Wrong output for test input:"]
-                msg_parts.append(f"Expected:\n{format_grid(test_output)}")
-                msg_parts.append(f"Got:\n{format_grid(test_result['output'])}")
-                if not cmp["shape_match"]:
-                    msg_parts.append(
-                        f"Shape mismatch: expected {cmp['expected_shape']}, "
-                        f"got {cmp['predicted_shape']}"
-                    )
-                else:
-                    msg_parts.append(f"Cell accuracy: {cmp['cell_accuracy']:.1%}")
-                error_msg = "\n".join(msg_parts)
 
-                db.insert_attempt(
-                    run_id, task_id, test_idx, attempt,
-                    llm_response=response, extracted_code=code,
-                    train_pass=True, test_correct=False,
-                    cell_accuracy=cmp["cell_accuracy"],
-                    error_type="wrong_output", error_msg=error_msg,
+            msg_parts = ["Wrong output for test input:"]
+            msg_parts.append(f"Expected:\n{format_grid(test_output)}")
+            msg_parts.append(f"Got:\n{format_grid(test_result['output'])}")
+            if not cmp["shape_match"]:
+                msg_parts.append(
+                    f"Shape mismatch: expected {cmp['expected_shape']}, "
+                    f"got {cmp['predicted_shape']}"
                 )
-                messages = append_retry(messages, response, error_msg)
-                print(f"    [{attempt}/{max_retries}] FAIL: wrong output (cell acc: {cmp['cell_accuracy']:.1%})")
+            else:
+                msg_parts.append(f"Cell accuracy: {cmp['cell_accuracy']:.1%}")
+            error_msg = "\n".join(msg_parts)
+
+            db.insert_attempt(
+                run_id=run_id,
+                task_id=task_id,
+                test_index=test_idx,
+                attempt=attempt,
+                llm_response=response,
+                extracted_code=code,
+                train_pass=True,
+                test_correct=False,
+                cell_accuracy=cmp["cell_accuracy"],
+                error_type="wrong_output",
+                error_msg=error_msg,
+            )
+            messages = append_retry(messages, response, error_msg)
+            print(
+                f"    [{attempt}/{max_retries}] FAIL: wrong output "
+                f"(cell acc: {cmp['cell_accuracy']:.1%})"
+            )
 
         if solved:
             passed_count += 1
@@ -172,9 +231,9 @@ def evaluate_task(
 
     elapsed = time.time() - start_time
 
-    # Write task-level result
     db.upsert_task(
-        run_id, task_id,
+        run_id=run_id,
+        task_id=task_id,
         solved=all_solved,
         num_test_cases=len(test_cases),
         test_cases_passed=passed_count,
@@ -193,35 +252,51 @@ def evaluate_task(
 def main():
     parser = argparse.ArgumentParser(description="ARC-AGI LLM Evaluation Pipeline")
     parser.add_argument(
-        "--dataset", choices=["arc1", "arc2"], default="arc1",
+        "--dataset",
+        choices=["arc1", "arc2"],
+        default="arc1",
         help="Dataset to evaluate (default: arc1)",
     )
     parser.add_argument(
-        "--split", choices=["training", "evaluation"], default="training",
+        "--split",
+        choices=["training", "evaluation"],
+        default="training",
         help="Data split (default: training)",
     )
     parser.add_argument(
-        "--task-id", type=str, default=None,
+        "--task-id",
+        type=str,
+        default=None,
         help="Run a single task by ID",
     )
     parser.add_argument(
-        "--max-tasks", type=int, default=None,
+        "--max-tasks",
+        type=int,
+        default=None,
         help="Max number of tasks to evaluate",
     )
     parser.add_argument(
-        "--max-retries", type=int, default=DEFAULT_MAX_RETRIES,
+        "--max-retries",
+        type=int,
+        default=DEFAULT_MAX_RETRIES,
         help=f"Max retry attempts per test case (default: {DEFAULT_MAX_RETRIES})",
     )
     parser.add_argument(
-        "--timeout", type=int, default=DEFAULT_TIMEOUT,
+        "--timeout",
+        type=int,
+        default=DEFAULT_TIMEOUT,
         help=f"Code execution timeout in seconds (default: {DEFAULT_TIMEOUT})",
     )
     parser.add_argument(
-        "--temperature", type=float, default=DEFAULT_TEMPERATURE,
+        "--temperature",
+        type=float,
+        default=DEFAULT_TEMPERATURE,
         help=f"LLM temperature (default: {DEFAULT_TEMPERATURE})",
     )
     parser.add_argument(
-        "--run-name", type=str, default=None,
+        "--run-name",
+        type=str,
+        default=None,
         help="Name for this run (default: timestamp). Reusing a name resumes.",
     )
     args = parser.parse_args()
@@ -232,8 +307,9 @@ def main():
 
     if not data_dir.exists():
         print(f"Error: Data directory not found: {data_dir}")
-        print("Run: git clone --depth 1 https://github.com/fchollet/ARC-AGI.git")
-        print("     git clone --depth 1 https://github.com/arcprize/ARC-AGI-2.git")
+        print("Run:")
+        print("  git clone --depth 1 https://github.com/fchollet/ARC-AGI.git")
+        print("  git clone --depth 1 https://github.com/arcprize/ARC-AGI-2.git")
         return
 
     # Load tasks
@@ -243,6 +319,7 @@ def main():
             print(f"Error: Task '{args.task_id}' not found in {data_dir}")
             return
         tasks = {args.task_id: tasks[args.task_id]}
+
     if args.max_tasks:
         task_ids = list(tasks.keys())[: args.max_tasks]
         tasks = {tid: tasks[tid] for tid in task_ids}
@@ -252,15 +329,22 @@ def main():
     results_dir = project_root / "results" / run_name
     results_dir.mkdir(parents=True, exist_ok=True)
     db_path = results_dir / "results.db"
+
     db = ResultDB(db_path)
-    db.insert_run(run_name, args.dataset, args.split,
-                  args.max_retries, args.timeout, args.temperature)
+    db.insert_run(
+        run_name,
+        args.dataset,
+        args.split,
+        args.max_retries,
+        args.timeout,
+        args.temperature,
+    )
 
     # Skip already-completed tasks (resume support)
     done = db.get_completed_task_ids(run_name)
     remaining = {tid: td for tid, td in tasks.items() if tid not in done}
 
-    print(f"=== ARC-AGI Evaluation ===")
+    print("=== ARC-AGI Evaluation ===")
     print(f"Dataset:     {args.dataset} / {args.split}")
     print(f"Total tasks: {len(tasks)}")
     if done:
@@ -274,27 +358,40 @@ def main():
     # Evaluate
     solved_so_far = 0
     total_so_far = 0
+
     for i, (task_id, task_data) in enumerate(remaining.items(), 1):
         n_test = len(task_data["test"])
         n_train = len(task_data["train"])
         print(f"[{i}/{len(remaining)}] Task: {task_id} ({n_train} train, {n_test} test)")
-        result = evaluate_task(
-            task_id, task_data, args.max_retries, args.timeout,
-            args.temperature, db, run_name,
-        )
+
+        try:
+            result = evaluate_task(
+                task_id=task_id,
+                task_data=task_data,
+                max_retries=args.max_retries,
+                timeout=args.timeout,
+                temperature=args.temperature,
+                db=db,
+                run_id=run_name,
+            )
+        except Exception as e:
+            print(f"  ERROR on task {task_id}: {e}\n")
+            continue
+
         total_so_far += 1
         if result["solved"]:
             solved_so_far += 1
+
         status = "SOLVED" if result["solved"] else "FAILED"
+        running_rate = solved_so_far / total_so_far if total_so_far else 0.0
         print(
             f"  {status} ({result['test_cases_passed']}/{result['num_test_cases']} "
             f"test cases, {result['total_time_seconds']:.1f}s) "
-            f"| Running: {solved_so_far}/{total_so_far} solved ({solved_so_far/total_so_far:.0%})\n"
+            f"| Running: {solved_so_far}/{total_so_far} solved ({running_rate:.0%})\n"
         )
 
-    # Print summary
     summary = db.get_summary(run_name)
-    print(f"=== Summary ===")
+    print("=== Summary ===")
     print(f"Tasks evaluated: {summary['tasks_evaluated']}")
     print(f"Tasks solved:    {summary['tasks_solved']} ({summary['solve_rate']:.1%})")
     print(f"Test cases:      {summary['test_cases_passed']}/{summary['total_test_cases']}")

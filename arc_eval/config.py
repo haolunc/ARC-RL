@@ -1,10 +1,16 @@
 """Configuration constants for ARC evaluation pipeline."""
 
+import os
+
 API_BASE_URL = "http://promaxgb10-d668.eecs.umich.edu:8000/v1"
-API_KEY = "api_RPnuSxgxJQamqW04ma9uJW27vc4TyBdy"
+
+# Read key from environment variable instead of hardcoding
+API_KEY = os.getenv("ARC_API_KEY")
+
 MODEL = "Qwen/Qwen3-VL-30B-A3B-Instruct"
 
-PYTHON_PATH = "/opt/homebrew/Caskroom/miniforge/base/envs/eecs545/bin/python"
+# Use system python on Great Lakes
+PYTHON_PATH = "python"
 
 DATASET_PATHS = {
     "arc1": {
@@ -17,6 +23,7 @@ DATASET_PATHS = {
     },
 }
 
-DEFAULT_MAX_RETRIES = 5
-DEFAULT_TIMEOUT = 30
-DEFAULT_TEMPERATURE = 0.7
+DEFAULT_MAX_RETRIES = 2
+DEFAULT_TIMEOUT = 120
+DEFAULT_TEMPERATURE = 0.2
+DEFAULT_MAX_TOKENS = 400
