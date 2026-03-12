@@ -1,0 +1,13 @@
+python_path: "/opt/homebrew/Caskroom/miniforge/base/envs/arc/bin/python"
+
+datasets:
+  arc1:
+    training: "ARC-AGI/data/training"
+    evaluation: "ARC-AGI/data/evaluation"
+  arc2:
+    training: "ARC-AGI-2/data/training"
+    evaluation: "ARC-AGI-2/data/evaluation"
+
+defaults:
+  max_retries: 5
+  timeout: 30
