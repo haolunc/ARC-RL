@@ -3,9 +3,21 @@
 import re
 
 
+def extract_thinking(text: str) -> tuple[str | None, str]:
+    """Extract <think>...</think> content and return (thinking, stripped_text).
+
+    Returns the thinking content separately for logging, and the text
+    with thinking tags removed.
+    """
+    thinking_parts = re.findall(r"<think>(.*?)</think>", text, flags=re.DOTALL)
+    thinking = "\n\n".join(thinking_parts).strip() if thinking_parts else None
+    stripped = re.sub(r"<think>.*?</think>", "", text, flags=re.DOTALL).strip()
+    return thinking, stripped
+
+
 def strip_thinking(text: str) -> str:
     """Remove <think>...</think> tags from Qwen3 responses."""
-    return re.sub(r"<think>.*?</think>", "", text, flags=re.DOTALL).strip()
+    return extract_thinking(text)[1]
 
 
 def extract_code(response: str) -> str | None:
@@ -18,7 +30,7 @@ def extract_code(response: str) -> str | None:
 
     Returns None if no valid code found.
     """
-    text = strip_thinking(response)
+    _, text = extract_thinking(response)
 
     # Try ```python blocks
     matches = re.findall(r"```python\s*\n(.*?)```", text, re.DOTALL)

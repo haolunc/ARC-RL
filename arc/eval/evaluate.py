@@ -3,6 +3,12 @@
 from .prompt import format_grid
 
 
+def _get_shape(grid):
+    rows = len(grid)
+    cols = len(grid[0]) if rows > 0 else 0
+    return rows, cols
+
+
 def compare_grids(
     predicted: list[list[int]], expected: list[list[int]]
 ) -> dict:
@@ -17,10 +23,8 @@ def compare_grids(
             "expected_shape": [rows, cols],
         }
     """
-    pred_rows = len(predicted)
-    pred_cols = len(predicted[0]) if pred_rows > 0 else 0
-    exp_rows = len(expected)
-    exp_cols = len(expected[0]) if exp_rows > 0 else 0
+    pred_rows, pred_cols = _get_shape(predicted)
+    exp_rows, exp_cols = _get_shape(expected)
 
     result = {
         "predicted_shape": [pred_rows, pred_cols],
@@ -77,7 +81,8 @@ def format_wrong_output_msg(
     return "\n".join(parts)
 
 
-def verify_on_train(code: str, train_examples: list[dict], execute_fn, timeout: int) -> dict:
+def verify_on_train(code: str, train_examples: list[dict], execute_fn, timeout: int,
+                    **exec_kwargs) -> dict:
     """Run code against all training examples.
 
     Returns:
@@ -89,7 +94,7 @@ def verify_on_train(code: str, train_examples: list[dict], execute_fn, timeout: 
     """
     details = []
     for i, ex in enumerate(train_examples, 1):
-        result = execute_fn(code, ex["input"], timeout=timeout)
+        result = execute_fn(code, ex["input"], timeout=timeout, **exec_kwargs)
         if not result["success"]:
             return {
                 "passed": False,

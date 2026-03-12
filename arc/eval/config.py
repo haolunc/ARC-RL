@@ -1,6 +1,7 @@
-"""Configuration — loads .env + config.yaml + endpoint.yaml."""
+"""Configuration — loads unified config YAML + .env."""
 
 import os
+import sys
 from pathlib import Path
 
 from dotenv import load_dotenv
@@ -10,32 +11,48 @@ _ROOT = Path(__file__).resolve().parent.parent.parent
 
 load_dotenv(_ROOT / ".env")
 
-with open(_ROOT / "config.yaml") as f:
-    _cfg = yaml.safe_load(f)
 
-with open(_ROOT / "endpoint.yaml") as f:
-    _ep_cfg = yaml.safe_load(f)
+def load_config(config_path: str) -> dict:
+    """Load and validate unified config YAML.
 
+    Returns dict with keys: python_path, datasets, endpoint, data, eval.
+    The endpoint dict includes resolved api_key (not just the env var name).
+    """
+    path = Path(config_path)
+    if not path.is_absolute():
+        path = _ROOT / path
 
-# --- active endpoint ---
-def _load_endpoint(name: str):
-    ep = _ep_cfg["endpoints"][name]
-    return {
-        "base_url": ep["base_url"],
-        "api_key": os.environ[ep["api_key_env"]],
-        "model": ep["model"],
-        "temperature": ep.get("temperature", 0.7),
-    }
+    if not path.exists():
+        print(f"Error: Config file not found: {path}")
+        sys.exit(1)
 
+    with open(path) as f:
+        cfg = yaml.safe_load(f)
 
-_active = _load_endpoint(_ep_cfg["active"])
+    # Validate required sections
+    for section in ("python_path", "datasets", "endpoint", "data", "eval"):
+        if section not in cfg:
+            print(f"Error: Missing '{section}' in {path}")
+            sys.exit(1)
 
-API_BASE_URL = _active["base_url"]
-API_KEY = _active["api_key"]
-MODEL = _active["model"]
-DEFAULT_TEMPERATURE = _active["temperature"]
+    # Resolve API key from environment variable
+    ep = cfg["endpoint"]
+    api_key_env = ep["api_key_env"]
+    api_key = os.environ.get(api_key_env)
+    if not api_key:
+        print(f"Error: Environment variable '{api_key_env}' not set (check .env)")
+        sys.exit(1)
 
-PYTHON_PATH = _cfg["python_path"]
-DATASET_PATHS = _cfg["datasets"]
-DEFAULT_MAX_RETRIES = _cfg["defaults"]["max_retries"]
-DEFAULT_TIMEOUT = _cfg["defaults"]["timeout"]
+    ep["api_key"] = api_key
+    ep.setdefault("llm_timeout", 180)
+
+    # Eval section defaults
+    ev = cfg["eval"]
+    _EVAL_DEFAULTS = {"mode": "simple", "max_retries": 5, "max_steps": 20, "timeout": 30}
+    for key, default in _EVAL_DEFAULTS.items():
+        ev.setdefault(key, default)
+    if ev["mode"] not in ("simple", "agentic"):
+        print(f"Error: eval.mode must be 'simple' or 'agentic', got '{ev['mode']}'")
+        sys.exit(1)
+
+    return cfg

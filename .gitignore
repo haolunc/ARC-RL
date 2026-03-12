@@ -1,5 +1,6 @@
 LLM.md
 .env
+config.yaml
 endpoint.yaml
 __pycache__/
 *.pyc
@@ -9,3 +10,4 @@ CLAUDE.md
 .claude/
 results/
 sh/
+.pytest_cache
