@@ -1,0 +1,57 @@
+{
+  "model": "Qwen3-VL-8B-instruct",
+  "base_url": "http://127.0.0.1:8000/v1",
+  "args": {
+    "base_url": "http://127.0.0.1:8000/v1",
+    "model": null,
+    "api_key": "",
+    "arc1_root": "ARC-AGI/data",
+    "arc2_root": "ARC-AGI-2/data",
+    "timeout": 120,
+    "temperature": 0.0,
+    "max_tokens": 512,
+    "max_tasks": null,
+    "progress_every": 20,
+    "output": "eval/full_result.json"
+  },
+  "results": [
+    {
+      "dataset": "ARC-AGI",
+      "train": {
+        "total": 416,
+        "correct": 56,
+        "accuracy": 0.1346153846153846,
+        "api_errors": 59,
+        "parse_errors": 32,
+        "elapsed_seconds": 713.4238665103912
+      },
+      "test": {
+        "total": 419,
+        "correct": 28,
+        "accuracy": 0.06682577565632458,
+        "api_errors": 124,
+        "parse_errors": 37,
+        "elapsed_seconds": 753.7399110794067
+      }
+    },
+    {
+      "dataset": "ARC-AGI-2",
+      "train": {
+        "total": 1076,
+        "correct": 92,
+        "accuracy": 0.08550185873605948,
+        "api_errors": 239,
+        "parse_errors": 140,
+        "elapsed_seconds": 2080.560296058655
+      },
+      "test": {
+        "total": 167,
+        "correct": 0,
+        "accuracy": 0.0,
+        "api_errors": 107,
+        "parse_errors": 21,
+        "elapsed_seconds": 240.78370666503906
+      }
+    }
+  ]
+}
