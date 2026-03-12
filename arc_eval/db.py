@@ -35,6 +35,8 @@ CREATE TABLE IF NOT EXISTS attempts (
     task_id TEXT NOT NULL,
     test_index INTEGER NOT NULL,
     attempt INTEGER NOT NULL,
+    prompt_chars INTEGER,
+    prompt_tokens INTEGER,
     llm_response TEXT,
     extracted_code TEXT,
     train_pass INTEGER,
@@ -64,36 +66,80 @@ class ResultDB:
         self.conn.executescript(SCHEMA)
         self.conn.commit()
 
-    def insert_run(self, run_id: str, dataset: str, split: str,
-                   max_retries: int, timeout: int, temperature: float):
+    def insert_run(
+        self,
+        run_id: str,
+        dataset: str,
+        split: str,
+        max_retries: int,
+        timeout: int,
+        temperature: float,
+    ):
         self.conn.execute(
             "INSERT OR IGNORE INTO runs VALUES (?, ?, ?, ?, ?, ?, ?)",
-            (run_id, dataset, split, max_retries, timeout, temperature,
-             datetime.now().isoformat()),
+            (
+                run_id,
+                dataset,
+                split,
+                max_retries,
+                timeout,
+                temperature,
+                datetime.now().isoformat(),
+            ),
         )
         self.conn.commit()
 
-    def insert_attempt(self, run_id: str, task_id: str, test_index: int,
-                       attempt: int, llm_response: str | None,
-                       extracted_code: str | None, train_pass: bool | None,
-                       test_correct: bool | None, cell_accuracy: float | None,
-                       error_type: str | None, error_msg: str | None):
+    def insert_attempt(
+        self,
+        run_id: str,
+        task_id: str,
+        test_index: int,
+        attempt: int,
+        prompt_chars: int | None,
+        prompt_tokens: int | None,
+        llm_response: str | None,
+        extracted_code: str | None,
+        train_pass: bool | None,
+        test_correct: bool | None,
+        cell_accuracy: float | None,
+        error_type: str | None,
+        error_msg: str | None,
+    ):
         self.conn.execute(
             "INSERT INTO attempts "
-            "(run_id, task_id, test_index, attempt, llm_response, extracted_code, "
-            "train_pass, test_correct, cell_accuracy, error_type, error_msg, created_at) "
-            "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
-            (run_id, task_id, test_index, attempt, llm_response, extracted_code,
-             int(train_pass) if train_pass is not None else None,
-             int(test_correct) if test_correct is not None else None,
-             cell_accuracy, error_type, error_msg,
-             datetime.now().isoformat()),
+            "(run_id, task_id, test_index, attempt, prompt_chars, prompt_tokens, "
+            "llm_response, extracted_code, train_pass, test_correct, cell_accuracy, "
+            "error_type, error_msg, created_at) "
+            "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+            (
+                run_id,
+                task_id,
+                test_index,
+                attempt,
+                prompt_chars,
+                prompt_tokens,
+                llm_response,
+                extracted_code,
+                int(train_pass) if train_pass is not None else None,
+                int(test_correct) if test_correct is not None else None,
+                cell_accuracy,
+                error_type,
+                error_msg,
+                datetime.now().isoformat(),
+            ),
         )
         self.conn.commit()
 
-    def upsert_task(self, run_id: str, task_id: str, solved: bool,
-                    num_test_cases: int, test_cases_passed: int,
-                    total_time_seconds: float, final_code: str | None):
+    def upsert_task(
+        self,
+        run_id: str,
+        task_id: str,
+        solved: bool,
+        num_test_cases: int,
+        test_cases_passed: int,
+        total_time_seconds: float,
+        final_code: str | None,
+    ):
         self.conn.execute(
             "INSERT INTO tasks "
             "(run_id, task_id, solved, num_test_cases, test_cases_passed, "
@@ -104,22 +150,32 @@ class ResultDB:
             "test_cases_passed=excluded.test_cases_passed, "
             "total_time_seconds=excluded.total_time_seconds, "
             "final_code=excluded.final_code, completed_at=excluded.completed_at",
-            (run_id, task_id, int(solved), num_test_cases, test_cases_passed,
-             total_time_seconds, final_code, datetime.now().isoformat()),
+            (
+                run_id,
+                task_id,
+                int(solved),
+                num_test_cases,
+                test_cases_passed,
+                total_time_seconds,
+                final_code,
+                datetime.now().isoformat(),
+            ),
         )
         self.conn.commit()
 
     def get_completed_task_ids(self, run_id: str) -> set[str]:
         """Get task IDs already completed in this run (for resuming)."""
         cur = self.conn.execute(
-            "SELECT task_id FROM tasks WHERE run_id = ?", (run_id,)
+            "SELECT task_id FROM tasks WHERE run_id = ?",
+            (run_id,),
         )
         return {row[0] for row in cur.fetchall()}
 
     def get_summary(self, run_id: str) -> dict:
         cur = self.conn.execute(
             "SELECT COUNT(*), SUM(solved), SUM(num_test_cases), SUM(test_cases_passed) "
-            "FROM tasks WHERE run_id = ?", (run_id,)
+            "FROM tasks WHERE run_id = ?",
+            (run_id,),
         )
         row = cur.fetchone()
         total = row[0] or 0

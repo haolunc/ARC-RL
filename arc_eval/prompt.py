@@ -46,15 +46,34 @@ def append_retry(
     llm_response: str,
     error_msg: str,
 ) -> list[dict]:
-    """Append a failed attempt and feedback."""
-    new_messages = list(messages)
-    new_messages.append({"role": "assistant", "content": llm_response})
-    new_messages.append({
+    """Append a failed attempt and feedback, keeping context compact.
+
+    Keeps:
+    - original system prompt
+    - original task prompt
+    - most recent assistant response
+    - latest retry instruction
+    """
+    system_msg = messages[0]
+    initial_user_msg = messages[1]
+
+    compact_response = llm_response
+    if len(compact_response) > 4000:
+        compact_response = compact_response[:4000] + "\n... (truncated)"
+
+    compact_error = error_msg
+    if len(compact_error) > 2000:
+        compact_error = compact_error[:2000] + "\n... (truncated)"
+
+    retry_user_msg = {
         "role": "user",
         "content": (
             "Your previous code was incorrect.\n\n"
-            f"Feedback:\n{error_msg}\n\n"
+            f"Feedback:\n{compact_error}\n\n"
             "Write a corrected `transform(input_grid)` function."
         ),
-    })
-    return new_messages
+    }
+
+    assistant_msg = {"role": "assistant", "content": compact_response}
+
+    return [system_msg, initial_user_msg, assistant_msg, retry_user_msg]

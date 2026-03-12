@@ -8,6 +8,7 @@ from .config import (
     API_KEY,
     MODEL,
     DEFAULT_TEMPERATURE,
+    DEFAULT_MAX_TOKENS,
 )
 
 client = OpenAI(
@@ -22,7 +23,7 @@ def call_llm(
     temperature: float = DEFAULT_TEMPERATURE,
     model: str = MODEL,
     max_api_retries: int = 2,
-    max_tokens: int = 400,
+    max_tokens: int = DEFAULT_MAX_TOKENS,
 ) -> str:
     """Call the LLM endpoint and return the assistant's response text."""
     for attempt in range(max_api_retries):

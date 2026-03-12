@@ -10,6 +10,8 @@ from .config import (
     DEFAULT_MAX_RETRIES,
     DEFAULT_TEMPERATURE,
     DEFAULT_TIMEOUT,
+    SAFE_MAX_INPUT_TOKENS,
+    CHARS_PER_TOKEN_ESTIMATE,
 )
 from .prompt import build_initial_messages, append_retry, format_grid
 from .llm_client import call_llm
@@ -31,6 +33,45 @@ def load_tasks(data_dir: str) -> dict[str, dict]:
     return tasks
 
 
+def approx_token_count(messages: list[dict]) -> int:
+    """Approximate token count from message contents using a chars/token heuristic."""
+    total_chars = sum(len(m["content"]) for m in messages)
+    return total_chars // CHARS_PER_TOKEN_ESTIMATE
+
+
+def enforce_context_budget(messages: list[dict]) -> list[dict]:
+    """Trim conversation history if approximate input tokens exceed safe budget.
+
+    Strategy:
+    - keep system prompt
+    - keep original task prompt
+    - keep only the latest assistant/user retry pair
+    """
+    approx_tokens = approx_token_count(messages)
+    if approx_tokens <= SAFE_MAX_INPUT_TOKENS:
+        return messages
+
+    print(
+        f"    Warning: prompt too large (~{approx_tokens} tokens). "
+        f"Trimming to stay under ~{SAFE_MAX_INPUT_TOKENS} tokens."
+    )
+
+    system_msgs = [m for m in messages if m["role"] == "system"]
+    non_system = [m for m in messages if m["role"] != "system"]
+
+    if len(non_system) <= 1:
+        return messages
+
+    initial_user = non_system[0]
+    tail = non_system[-2:] if len(non_system) >= 3 else non_system[1:]
+    trimmed = system_msgs + [initial_user] + tail
+
+    trimmed_tokens = approx_token_count(trimmed)
+    print(f"    Trimmed context to ~{trimmed_tokens} tokens")
+
+    return trimmed
+
+
 def evaluate_task(
     task_id: str,
     task_data: dict,
@@ -40,7 +81,13 @@ def evaluate_task(
     db: ResultDB,
     run_id: str,
 ) -> dict:
-    """Evaluate a single ARC task. Logs every attempt to SQLite immediately."""
+    """Evaluate a single ARC task. Logs every attempt to SQLite immediately.
+
+    Important:
+    - Retries are allowed for API/extraction/train/test-exec failures.
+    - Retries are NOT allowed after checking test correctness, to avoid leaking
+      the hidden test output into subsequent prompts.
+    """
     train_examples = task_data["train"]
     test_cases = task_data["test"]
     start_time = time.time()
@@ -59,17 +106,19 @@ def evaluate_task(
 
         print(f"  Test case {test_idx + 1}/{len(test_cases)}")
 
-        # Build initial conversation
         messages = build_initial_messages(train_examples, test_input)
         solved = False
 
         for attempt in range(1, max_retries + 1):
+            messages = enforce_context_budget(messages)
+
             num_msgs = len([m for m in messages if m["role"] != "system"])
             prompt_chars = sum(len(m["content"]) for m in messages)
+            prompt_tokens = approx_token_count(messages)
 
             print(
                 f"    [{attempt}/{max_retries}] Calling LLM "
-                f"({num_msgs} messages, {prompt_chars} chars in context)...",
+                f"({num_msgs} messages, {prompt_chars} chars, ~{prompt_tokens} tokens in context)...",
                 flush=True,
             )
 
@@ -82,6 +131,8 @@ def evaluate_task(
                     task_id=task_id,
                     test_index=test_idx,
                     attempt=attempt,
+                    prompt_chars=prompt_chars,
+                    prompt_tokens=prompt_tokens,
                     llm_response=None,
                     extracted_code=None,
                     train_pass=None,
@@ -90,7 +141,9 @@ def evaluate_task(
                     error_type="api_error",
                     error_msg=str(e),
                 )
-                print(f"    [{attempt}/{max_retries}] API error ({time.time() - t0:.0f}s): {e}")
+                print(
+                    f"    [{attempt}/{max_retries}] API error ({time.time() - t0:.0f}s): {e}"
+                )
                 break
 
             llm_time = time.time() - t0
@@ -100,7 +153,6 @@ def evaluate_task(
                 f"({llm_time:.0f}s, {resp_len} chars)"
             )
 
-            # Extract code
             code = extract_code(response)
             if code is None:
                 error_msg = (
@@ -113,6 +165,8 @@ def evaluate_task(
                     task_id=task_id,
                     test_index=test_idx,
                     attempt=attempt,
+                    prompt_chars=prompt_chars,
+                    prompt_tokens=prompt_tokens,
                     llm_response=response,
                     extracted_code=None,
                     train_pass=None,
@@ -127,7 +181,7 @@ def evaluate_task(
 
             last_code = code
 
-            # Verify on training examples
+            # Verify on training examples only
             train_result = verify_on_train(
                 code, train_examples, execute_transform, timeout
             )
@@ -139,6 +193,8 @@ def evaluate_task(
                     task_id=task_id,
                     test_index=test_idx,
                     attempt=attempt,
+                    prompt_chars=prompt_chars,
+                    prompt_tokens=prompt_tokens,
                     llm_response=response,
                     extracted_code=code,
                     train_pass=False,
@@ -160,6 +216,8 @@ def evaluate_task(
                     task_id=task_id,
                     test_index=test_idx,
                     attempt=attempt,
+                    prompt_chars=prompt_chars,
+                    prompt_tokens=prompt_tokens,
                     llm_response=response,
                     extracted_code=code,
                     train_pass=True,
@@ -172,7 +230,7 @@ def evaluate_task(
                 print(f"    [{attempt}/{max_retries}] FAIL: test execution error")
                 continue
 
-            # Compare with expected
+            # Compare with expected test output
             cmp = compare_grids(test_result["output"], test_output)
 
             if cmp["correct"]:
@@ -182,6 +240,8 @@ def evaluate_task(
                     task_id=task_id,
                     test_index=test_idx,
                     attempt=attempt,
+                    prompt_chars=prompt_chars,
+                    prompt_tokens=prompt_tokens,
                     llm_response=response,
                     extracted_code=code,
                     train_pass=True,
@@ -193,23 +253,19 @@ def evaluate_task(
                 print(f"    [{attempt}/{max_retries}] SOLVED!")
                 break
 
-            msg_parts = ["Wrong output for test input:"]
-            msg_parts.append(f"Expected:\n{format_grid(test_output)}")
-            msg_parts.append(f"Got:\n{format_grid(test_result['output'])}")
-            if not cmp["shape_match"]:
-                msg_parts.append(
-                    f"Shape mismatch: expected {cmp['expected_shape']}, "
-                    f"got {cmp['predicted_shape']}"
-                )
-            else:
-                msg_parts.append(f"Cell accuracy: {cmp['cell_accuracy']:.1%}")
-            error_msg = "\n".join(msg_parts)
+            # Important: do NOT reveal test output in feedback, and do NOT retry
+            error_msg = (
+                "Model output on the test input was incorrect. "
+                "Test-output feedback is not provided to avoid leakage."
+            )
 
             db.insert_attempt(
                 run_id=run_id,
                 task_id=task_id,
                 test_index=test_idx,
                 attempt=attempt,
+                prompt_chars=prompt_chars,
+                prompt_tokens=prompt_tokens,
                 llm_response=response,
                 extracted_code=code,
                 train_pass=True,
@@ -218,11 +274,14 @@ def evaluate_task(
                 error_type="wrong_output",
                 error_msg=error_msg,
             )
-            messages = append_retry(messages, response, error_msg)
+
             print(
                 f"    [{attempt}/{max_retries}] FAIL: wrong output "
                 f"(cell acc: {cmp['cell_accuracy']:.1%})"
             )
+
+            # Stop here to avoid leaking information from test evaluation
+            break
 
         if solved:
             passed_count += 1
@@ -301,7 +360,6 @@ def main():
     )
     args = parser.parse_args()
 
-    # Resolve paths
     project_root = Path(__file__).resolve().parent.parent
     data_dir = project_root / DATASET_PATHS[args.dataset][args.split]
 
@@ -312,7 +370,6 @@ def main():
         print("  git clone --depth 1 https://github.com/arcprize/ARC-AGI-2.git")
         return
 
-    # Load tasks
     tasks = load_tasks(str(data_dir))
     if args.task_id:
         if args.task_id not in tasks:
@@ -324,7 +381,6 @@ def main():
         task_ids = list(tasks.keys())[: args.max_tasks]
         tasks = {tid: tasks[tid] for tid in task_ids}
 
-    # Setup DB
     run_name = args.run_name or datetime.now().strftime("%Y%m%d_%H%M%S")
     results_dir = project_root / "results" / run_name
     results_dir.mkdir(parents=True, exist_ok=True)
@@ -340,7 +396,6 @@ def main():
         args.temperature,
     )
 
-    # Skip already-completed tasks (resume support)
     done = db.get_completed_task_ids(run_name)
     remaining = {tid: td for tid, td in tasks.items() if tid not in done}
 
@@ -355,7 +410,6 @@ def main():
     print(f"Results DB:  {db_path}")
     print()
 
-    # Evaluate
     solved_so_far = 0
     total_so_far = 0
 
