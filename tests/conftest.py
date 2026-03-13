@@ -41,11 +41,6 @@ def sample_solution():
 
 
 @pytest.fixture
-def sample_task_with_solution(sample_task, sample_solution):
-    return sample_task, sample_solution
-
-
-@pytest.fixture
 def task_context(sample_task, sample_solution, python_path):
     """Build a task_context dict for tools.execute_tool."""
     return {

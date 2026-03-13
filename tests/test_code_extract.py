@@ -1,6 +1,6 @@
 """Tests for arc.eval.code_extract."""
 
-from arc.eval.code_extract import extract_thinking, strip_thinking, extract_code
+from arc.eval.code_extract import extract_thinking, extract_code
 from .conftest import load_solution
 
 
@@ -37,16 +37,16 @@ def test_extract_thinking_multiline():
     assert stripped == "result"
 
 
-# --- strip_thinking ---
+# --- strip_thinking (via extract_thinking) ---
 
 def test_strip_thinking():
     text = "<think>remove me</think> keep this"
-    assert strip_thinking(text) == "keep this"
+    assert extract_thinking(text)[1] == "keep this"
 
 
 def test_strip_thinking_no_tags():
     text = "nothing to strip"
-    assert strip_thinking(text) == text
+    assert extract_thinking(text)[1] == text
 
 
 # --- extract_code ---

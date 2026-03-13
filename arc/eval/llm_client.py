@@ -34,34 +34,6 @@ class LLMResponse:
     temperature: float | None = None
 
 
-def _extract_response(response, requested_model: str, temperature: float,
-                      duration: float) -> LLMResponse:
-    """Extract all useful fields from an OpenAI API response."""
-    choice = response.choices[0]
-    usage = response.usage
-
-    # Safely extract cached tokens (may not exist on all endpoints)
-    cached = None
-    if usage:
-        details = getattr(usage, 'prompt_tokens_details', None)
-        if details:
-            cached = getattr(details, 'cached_tokens', None)
-
-    return LLMResponse(
-        content=choice.message.content,
-        tool_calls=choice.message.tool_calls,
-        response_id=response.id,
-        actual_model=response.model,
-        finish_reason=choice.finish_reason,
-        input_tokens=usage.prompt_tokens if usage else None,
-        output_tokens=usage.completion_tokens if usage else None,
-        cached_tokens=cached,
-        duration_seconds=round(duration, 3),
-        requested_model=requested_model,
-        temperature=temperature,
-    )
-
-
 def init_client(base_url: str, api_key: str, model: str, temperature: float,
                 timeout: float = 180.0):
     """Initialize the LLM client. Must be called before call_llm()."""
@@ -86,7 +58,27 @@ def _call_with_retry(kwargs: dict, max_retries: int = 3, retry_delay: float = 2.
     for attempt in range(max_retries):
         try:
             response = _client.chat.completions.create(**kwargs)
-            return _extract_response(response, model, temperature, time.time() - t0)
+            duration = time.time() - t0
+            choice = response.choices[0]
+            usage = response.usage
+            cached = None
+            if usage:
+                details = getattr(usage, 'prompt_tokens_details', None)
+                if details:
+                    cached = getattr(details, 'cached_tokens', None)
+            return LLMResponse(
+                content=choice.message.content,
+                tool_calls=choice.message.tool_calls,
+                response_id=response.id,
+                actual_model=response.model,
+                finish_reason=choice.finish_reason,
+                input_tokens=usage.prompt_tokens if usage else None,
+                output_tokens=usage.completion_tokens if usage else None,
+                cached_tokens=cached,
+                duration_seconds=round(duration, 3),
+                requested_model=model,
+                temperature=temperature,
+            )
         except Exception as e:
             last_error = e
             if attempt < max_retries - 1:

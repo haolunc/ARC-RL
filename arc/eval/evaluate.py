@@ -3,12 +3,6 @@
 from .prompt import format_grid
 
 
-def _get_shape(grid):
-    rows = len(grid)
-    cols = len(grid[0]) if rows > 0 else 0
-    return rows, cols
-
-
 def compare_grids(
     predicted: list[list[int]], expected: list[list[int]]
 ) -> dict:
@@ -23,8 +17,10 @@ def compare_grids(
             "expected_shape": [rows, cols],
         }
     """
-    pred_rows, pred_cols = _get_shape(predicted)
-    exp_rows, exp_cols = _get_shape(expected)
+    pred_rows = len(predicted)
+    pred_cols = len(predicted[0]) if pred_rows > 0 else 0
+    exp_rows = len(expected)
+    exp_cols = len(expected[0]) if exp_rows > 0 else 0
 
     result = {
         "predicted_shape": [pred_rows, pred_cols],

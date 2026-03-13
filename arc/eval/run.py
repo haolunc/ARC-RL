@@ -18,32 +18,12 @@ from .db import ResultDB
 
 def load_tasks(data_dir: str) -> dict[str, dict]:
     """Load all task JSON files from a directory, sorted by name."""
-    import json
     tasks = {}
     data_path = Path(data_dir)
     for f in sorted(data_path.glob("*.json")):
         with open(f) as fp:
             tasks[f.stem] = json.load(fp)
     return tasks
-
-
-def _llm_call_kwargs(llm_result, messages=None):
-    """Build common kwargs for db.insert_llm_call from an LLMResponse."""
-    kwargs = {
-        "requested_model": llm_result.requested_model,
-        "temperature": llm_result.temperature,
-        "response_id": llm_result.response_id,
-        "actual_model": llm_result.actual_model,
-        "finish_reason": llm_result.finish_reason,
-        "llm_response": llm_result.content,
-        "input_tokens": llm_result.input_tokens,
-        "output_tokens": llm_result.output_tokens,
-        "cached_tokens": llm_result.cached_tokens,
-        "duration_seconds": llm_result.duration_seconds,
-    }
-    if messages is not None:
-        kwargs["input_messages"] = json.dumps(messages, ensure_ascii=False)
-    return kwargs
 
 
 def _log_api_error(db, run_id, task_id, test_idx, step, messages, error):
@@ -53,17 +33,16 @@ def _log_api_error(db, run_id, task_id, test_idx, step, messages, error):
 
 
 def _finalize_task(db, run_id, task_id, all_solved, passed_count, test_cases, start_time, last_code):
-    elapsed = time.time() - start_time
-    result = {
+    total_time = round(time.time() - start_time, 2)
+    db.upsert_task(run_id, task_id, solved=all_solved, num_test_cases=len(test_cases),
+                   test_cases_passed=passed_count, total_time_seconds=total_time,
+                   final_code=last_code)
+    return {
         "solved": all_solved,
         "test_cases_passed": passed_count,
         "num_test_cases": len(test_cases),
-        "total_time_seconds": round(elapsed, 2),
+        "total_time_seconds": total_time,
     }
-    db.upsert_task(run_id, task_id, solved=all_solved, num_test_cases=len(test_cases),
-                   test_cases_passed=passed_count, total_time_seconds=result["total_time_seconds"],
-                   final_code=last_code)
-    return result
 
 
 def evaluate_task(
@@ -112,10 +91,7 @@ def evaluate_task(
 
             # Extract thinking content for logging
             thinking, _ = extract_thinking(response)
-
-            # Common kwargs for all DB inserts this attempt
-            common = _llm_call_kwargs(llm_result, messages)
-            common["thinking"] = thinking
+            input_messages_json = json.dumps(messages, ensure_ascii=False)
 
             # Extract code
             code = extract_code(response)
@@ -127,7 +103,8 @@ def evaluate_task(
                 )
                 db.insert_llm_call(
                     run_id, task_id, test_idx, attempt,
-                    **common,
+                    llm_result=llm_result, input_messages=input_messages_json,
+                    thinking=thinking,
                     error_type="extraction_failed", error_msg=error_msg,
                 )
                 messages = append_retry(messages, response, error_msg)
@@ -146,7 +123,8 @@ def evaluate_task(
                 error_msg = train_result["error_msg"]
                 db.insert_llm_call(
                     run_id, task_id, test_idx, attempt,
-                    **common, extracted_code=code,
+                    llm_result=llm_result, input_messages=input_messages_json,
+                    thinking=thinking, extracted_code=code,
                     train_pass=False, error_type="train_fail", error_msg=error_msg,
                 )
                 messages = append_retry(messages, response, error_msg)
@@ -160,7 +138,8 @@ def evaluate_task(
                 error_msg = f"Error on test input:\n{test_result['error']}"
                 db.insert_llm_call(
                     run_id, task_id, test_idx, attempt,
-                    **common, extracted_code=code,
+                    llm_result=llm_result, input_messages=input_messages_json,
+                    thinking=thinking, extracted_code=code,
                     train_pass=True, error_type="test_exec_error", error_msg=error_msg,
                 )
                 messages = append_retry(messages, response, error_msg)
@@ -174,7 +153,8 @@ def evaluate_task(
                 solved = True
                 db.insert_llm_call(
                     run_id, task_id, test_idx, attempt,
-                    **common, extracted_code=code,
+                    llm_result=llm_result, input_messages=input_messages_json,
+                    thinking=thinking, extracted_code=code,
                     train_pass=True, test_correct=True, cell_accuracy=1.0,
                 )
                 print(f"    [{attempt}/{max_retries}] SOLVED!")
@@ -182,13 +162,13 @@ def evaluate_task(
             else:
                 # Restricted feedback: no expected vs actual for test
                 feedback_msg = "Your code produced incorrect output for the test input."
-                # Full detail logged to DB for analysis
                 detail_msg = format_wrong_output_msg(
                     "test input", test_output, test_result["output"], cmp
                 )
                 db.insert_llm_call(
                     run_id, task_id, test_idx, attempt,
-                    **common, extracted_code=code,
+                    llm_result=llm_result, input_messages=input_messages_json,
+                    thinking=thinking, extracted_code=code,
                     train_pass=True, test_correct=False,
                     cell_accuracy=cmp["cell_accuracy"],
                     error_type="wrong_output", error_msg=detail_msg,
@@ -278,7 +258,8 @@ def evaluate_task_agentic(
             # Insert one llm_calls row for this step
             llm_call_id = db.insert_llm_call(
                 run_id, task_id, test_idx, step,
-                **_llm_call_kwargs(llm_result, messages),
+                llm_result=llm_result,
+                input_messages=json.dumps(messages, ensure_ascii=False),
                 thinking=thinking,
             )
 
@@ -371,15 +352,14 @@ def main():
     )
 
     python_path = cfg["python_path"]
+    temperature = ep["temperature"]
 
-    # Always read config
     dataset = cfg["data"]["dataset"]
     split = cfg["data"]["split"]
     mode = cfg["eval"]["mode"]
     max_retries = cfg["eval"]["max_retries"]
     max_steps = cfg["eval"]["max_steps"]
     timeout = cfg["eval"]["timeout"]
-    temperature = ep["temperature"]
     max_tasks = cfg["data"].get("max_tasks")
     cfg_task_ids = cfg["data"].get("task_ids")
 

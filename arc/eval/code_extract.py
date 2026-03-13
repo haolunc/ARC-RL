@@ -15,10 +15,6 @@ def extract_thinking(text: str) -> tuple[str | None, str]:
     return thinking, stripped
 
 
-def strip_thinking(text: str) -> str:
-    """Remove <think>...</think> tags from Qwen3 responses."""
-    return extract_thinking(text)[1]
-
 
 def extract_code(response: str) -> str | None:
     """Extract Python code from an LLM response.

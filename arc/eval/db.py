@@ -76,10 +76,6 @@ CREATE TABLE IF NOT EXISTS tool_calls (
 """
 
 
-def _bool_to_int(val):
-    return int(val) if val is not None else None
-
-
 _LLM_CALL_COLUMNS = (
     "run_id", "task_id", "test_index", "step",
     "input_messages", "requested_model", "temperature",
@@ -107,18 +103,9 @@ class ResultDB:
 
     def insert_llm_call(self, run_id: str, task_id: str, test_index: int,
                         step: int, *,
+                        llm_result=None,
                         input_messages: str | None = None,
-                        requested_model: str | None = None,
-                        temperature: float | None = None,
-                        response_id: str | None = None,
-                        actual_model: str | None = None,
-                        finish_reason: str | None = None,
-                        llm_response: str | None = None,
                         thinking: str | None = None,
-                        input_tokens: int | None = None,
-                        output_tokens: int | None = None,
-                        cached_tokens: int | None = None,
-                        duration_seconds: float | None = None,
                         success: bool = True,
                         error_type: str | None = None,
                         error_msg: str | None = None,
@@ -126,16 +113,37 @@ class ResultDB:
                         train_pass: bool | None = None,
                         test_correct: bool | None = None,
                         cell_accuracy: float | None = None) -> int:
-        """Insert an LLM call record. Returns the row id."""
+        """Insert an LLM call record. Returns the row id.
+
+        If llm_result (LLMResponse) is provided, its fields are extracted
+        automatically for the response metadata columns.
+        """
+        if llm_result is not None:
+            requested_model = llm_result.requested_model
+            temperature = llm_result.temperature
+            response_id = llm_result.response_id
+            actual_model = llm_result.actual_model
+            finish_reason = llm_result.finish_reason
+            llm_response = llm_result.content
+            input_tokens = llm_result.input_tokens
+            output_tokens = llm_result.output_tokens
+            cached_tokens = llm_result.cached_tokens
+            duration_seconds = llm_result.duration_seconds
+        else:
+            requested_model = temperature = response_id = actual_model = None
+            finish_reason = llm_response = None
+            input_tokens = output_tokens = cached_tokens = duration_seconds = None
+
         values = (
             run_id, task_id, test_index, step,
             input_messages, requested_model, temperature,
             response_id, actual_model, finish_reason, llm_response, thinking,
             input_tokens, output_tokens, cached_tokens,
-            duration_seconds, _bool_to_int(success),
+            duration_seconds, int(success) if success is not None else None,
             error_type, error_msg,
             extracted_code,
-            _bool_to_int(train_pass), _bool_to_int(test_correct),
+            int(train_pass) if train_pass is not None else None,
+            int(test_correct) if test_correct is not None else None,
             cell_accuracy,
             datetime.now().isoformat(),
         )

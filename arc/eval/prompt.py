@@ -1,6 +1,6 @@
 """Prompt construction for ARC tasks."""
 
-SYSTEM_PROMPT = """\
+_BASE_PROMPT = """\
 You are an expert puzzle solver and Python programmer specializing in ARC (Abstraction and Reasoning Corpus) tasks.
 
 Each task shows input/output grid examples. Grids are 2D matrices of integers 0-9, where each integer represents a color:
@@ -11,10 +11,12 @@ Your job: study the training examples, discover the transformation rule, then wr
 Rules:
 - Write a function: def transform(input_grid: list[list[int]]) -> list[list[int]]
 - You may use only the Python standard library and numpy.
+- The output grid dimensions may differ from the input."""
+
+SYSTEM_PROMPT = _BASE_PROMPT + """
 - Do NOT import any other libraries.
 - Output the function inside a single ```python code block.
-- Do NOT include test code, example calls, or print statements outside the function.
-- The output grid dimensions may differ from the input."""
+- Do NOT include test code, example calls, or print statements outside the function."""
 
 
 def format_grid(grid: list[list[int]]) -> str:
@@ -55,13 +57,7 @@ def build_initial_messages(
     return messages
 
 
-AGENTIC_SYSTEM_PROMPT = """\
-You are an expert puzzle solver and Python programmer specializing in ARC (Abstraction and Reasoning Corpus) tasks.
-
-Each task shows input/output grid examples. Grids are 2D matrices of integers 0-9, where each integer represents a color:
-0=black, 1=blue, 2=red, 3=green, 4=yellow, 5=gray, 6=magenta, 7=orange, 8=azure, 9=maroon.
-
-Your job: study the training examples, discover the transformation rule, then write and submit a Python function that implements it.
+AGENTIC_SYSTEM_PROMPT = _BASE_PROMPT + """
 
 You have 3 tools available:
 
@@ -81,12 +77,7 @@ You have 3 tools available:
 2. Formulate a hypothesis about the transformation rule.
 3. Write a `transform` function and test it with `test_transform`.
 4. Iterate and fix until all training examples pass.
-5. Submit with `submit_transform` when ready.
-
-Rules for your transform function:
-- Signature: `def transform(input_grid: list[list[int]]) -> list[list[int]]`
-- You may use only the Python standard library and numpy.
-- The output grid dimensions may differ from the input."""
+5. Submit with `submit_transform` when ready."""
 
 
 def build_agentic_messages(
