@@ -9,36 +9,26 @@
 #SBATCH --output=logs/%x_%j.out
 #SBATCH --error=logs/%x_%j.err
 
-# Paths
-SCRATCH=/scratch/eecs545w26_class_root/eecs545w26_class/haolunca
-SIF=${SCRATCH}/qwen35-deploy/vllm-nightly.sif
-HF_CACHE=${SCRATCH}/qwen35-deploy/hf_cache
+module load gcc/13 cuda/12.8 python/3.12.1
+source ~/vllm_from_source/bin/activate
 
-# Create log directory
+SCRATCH=/scratch/eecs545w26_class_root/eecs545w26_class/haolunca
+export HF_HOME=${SCRATCH}/qwen35-deploy/hf_cache
+
 mkdir -p logs
 
-module load singularity
-
-echo "Node: $SLURMD_NODENAME"
-echo "GPUs allocated: $CUDA_VISIBLE_DEVICES"
-nvidia-smi
-
-# Launch vLLM inside Singularity container
-singularity exec --nv \
-    --bind ${HF_CACHE}:/root/.cache/huggingface \
-    ${SIF} \
-    vllm serve Qwen/Qwen3.5-35B-A3B-GPTQ-Int4 \
-        --port 8000 \
-        --host 0.0.0.0 \
-        --tensor-parallel-size 1 \
-        --max-model-len 65536 \
-        --gpu-memory-utilization 0.78 \
-        --kv-cache-dtype fp8 \
-        --quantization gptq_marlin \
-        --dtype bfloat16 \
-        --max-num-batched-tokens 2096 \
-        --enable-prefix-caching \
-        --reasoning-parser qwen3 \
-        --enable-auto-tool-choice \
-        --tool-call-parser qwen3_coder \
-        --trust-remote-code
+vllm serve Qwen/Qwen3.5-35B-A3B-GPTQ-Int4 \
+    --port 8000 \
+    --host 0.0.0.0 \
+    --tensor-parallel-size 1 \
+    --max-model-len 131072 \
+    --gpu-memory-utilization 0.90 \
+    --kv-cache-dtype fp8 \
+    --quantization gptq_marlin \
+    --dtype bfloat16 \
+    --max-num-batched-tokens 16384 \
+    --enable-prefix-caching \
+    --reasoning-parser qwen3 \
+    --enable-auto-tool-choice \
+    --tool-call-parser qwen3_coder \
+    --trust-remote-code

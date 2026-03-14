@@ -48,7 +48,7 @@ def load_config(config_path: str) -> dict:
 
     # Eval section defaults
     ev = cfg["eval"]
-    _EVAL_DEFAULTS = {"mode": "simple", "max_retries": 5, "max_steps": 20, "timeout": 30}
+    _EVAL_DEFAULTS = {"mode": "simple", "max_retries": 5, "max_steps": 20, "timeout": 30, "max_workers": 4}
     for key, default in _EVAL_DEFAULTS.items():
         ev.setdefault(key, default)
     if ev["mode"] not in ("simple", "agentic"):

@@ -1,6 +1,7 @@
 """SQLite logging for ARC evaluation pipeline."""
 
 import sqlite3
+import threading
 from datetime import datetime
 from pathlib import Path
 
@@ -97,7 +98,8 @@ class ResultDB:
 
     def __init__(self, db_path: str | Path):
         self.db_path = str(db_path)
-        self.conn = sqlite3.connect(self.db_path)
+        self._lock = threading.Lock()
+        self.conn = sqlite3.connect(self.db_path, check_same_thread=False)
         self.conn.executescript(SCHEMA)
         self.conn.commit()
 
@@ -147,9 +149,10 @@ class ResultDB:
             cell_accuracy,
             datetime.now().isoformat(),
         )
-        cur = self.conn.execute(_LLM_CALL_SQL, values)
-        self.conn.commit()
-        return cur.lastrowid
+        with self._lock:
+            cur = self.conn.execute(_LLM_CALL_SQL, values)
+            self.conn.commit()
+            return cur.lastrowid
 
     def insert_tool_call(self, llm_call_id: int, tool_call_index: int, *,
                          tool_call_id: str | None = None,
@@ -160,38 +163,40 @@ class ResultDB:
                          test_correct: bool | None = None,
                          duration_seconds: float | None = None) -> int:
         """Insert a tool call record. Returns the row id."""
-        cur = self.conn.execute(
-            "INSERT INTO tool_calls "
-            "(llm_call_id, tool_call_index, tool_call_id, tool_name, "
-            "tool_arguments, tool_output, extracted_code, test_correct, "
-            "duration_seconds, created_at) "
-            "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
-            (llm_call_id, tool_call_index, tool_call_id, tool_name,
-             tool_arguments, tool_output, extracted_code,
-             int(test_correct) if test_correct is not None else None,
-             duration_seconds,
-             datetime.now().isoformat()),
-        )
-        self.conn.commit()
-        return cur.lastrowid
+        with self._lock:
+            cur = self.conn.execute(
+                "INSERT INTO tool_calls "
+                "(llm_call_id, tool_call_index, tool_call_id, tool_name, "
+                "tool_arguments, tool_output, extracted_code, test_correct, "
+                "duration_seconds, created_at) "
+                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+                (llm_call_id, tool_call_index, tool_call_id, tool_name,
+                 tool_arguments, tool_output, extracted_code,
+                 int(test_correct) if test_correct is not None else None,
+                 duration_seconds,
+                 datetime.now().isoformat()),
+            )
+            self.conn.commit()
+            return cur.lastrowid
 
     def upsert_task(self, run_id: str, task_id: str, solved: bool,
                     num_test_cases: int, test_cases_passed: int,
                     total_time_seconds: float, final_code: str | None):
-        self.conn.execute(
-            "INSERT INTO tasks "
-            "(run_id, task_id, solved, num_test_cases, test_cases_passed, "
-            "total_time_seconds, final_code, completed_at) "
-            "VALUES (?, ?, ?, ?, ?, ?, ?, ?) "
-            "ON CONFLICT(run_id, task_id) DO UPDATE SET "
-            "solved=excluded.solved, num_test_cases=excluded.num_test_cases, "
-            "test_cases_passed=excluded.test_cases_passed, "
-            "total_time_seconds=excluded.total_time_seconds, "
-            "final_code=excluded.final_code, completed_at=excluded.completed_at",
-            (run_id, task_id, int(solved), num_test_cases, test_cases_passed,
-             total_time_seconds, final_code, datetime.now().isoformat()),
-        )
-        self.conn.commit()
+        with self._lock:
+            self.conn.execute(
+                "INSERT INTO tasks "
+                "(run_id, task_id, solved, num_test_cases, test_cases_passed, "
+                "total_time_seconds, final_code, completed_at) "
+                "VALUES (?, ?, ?, ?, ?, ?, ?, ?) "
+                "ON CONFLICT(run_id, task_id) DO UPDATE SET "
+                "solved=excluded.solved, num_test_cases=excluded.num_test_cases, "
+                "test_cases_passed=excluded.test_cases_passed, "
+                "total_time_seconds=excluded.total_time_seconds, "
+                "final_code=excluded.final_code, completed_at=excluded.completed_at",
+                (run_id, task_id, int(solved), num_test_cases, test_cases_passed,
+                 total_time_seconds, final_code, datetime.now().isoformat()),
+            )
+            self.conn.commit()
 
     def get_completed_task_ids(self, run_id: str) -> set[str]:
         """Get task IDs already completed in this run."""

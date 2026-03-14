@@ -8,3 +8,11 @@ dependencies = [
     "PyYAML",
     "numpy",
 ]
+
+[project.optional-dependencies]
+dev = ["pytest"]
+
+[tool.pytest.ini_options]
+markers = [
+    "endpoint: tests that require a live LLM endpoint (deselect with '-m not endpoint')",
+]

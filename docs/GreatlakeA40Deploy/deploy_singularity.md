@@ -28,7 +28,7 @@ mkdir -p logs
 
 module load singularity
 
-SCRATCH=/scratch/eecs545w26_class_root/eecs545w26_class/haolunca
+SCRATCH=/scratch/eecs545w26_class_root/eecs545w26_class/<username>
 mkdir -p ${SCRATCH}/qwen35-deploy
 
 singularity pull ${SCRATCH}/qwen35-deploy/vllm-nightly.sif docker://vllm/vllm-openai:latest
@@ -51,7 +51,7 @@ srun --account=eecs545w26_class --partition=standard --mem=16G --cpus-per-task=2
 
 module load singularity
 
-SCRATCH=/scratch/eecs545w26_class_root/eecs545w26_class/haolunca
+SCRATCH=/scratch/eecs545w26_class_root/eecs545w26_class/<username>
 export HF_HOME=${SCRATCH}/qwen35-deploy/hf_cache
 
 singularity exec ${SCRATCH}/qwen35-deploy/vllm-nightly.sif \
@@ -75,7 +75,7 @@ Create `~/deploy_vllm.sh`:
 #SBATCH --error=logs/%x_%j.err
 
 # Paths
-SCRATCH=/scratch/eecs545w26_class_root/eecs545w26_class/haolunca
+SCRATCH=/scratch/eecs545w26_class_root/eecs545w26_class/<username>
 SIF=${SCRATCH}/qwen35-deploy/vllm-nightly.sif
 HF_CACHE=${SCRATCH}/qwen35-deploy/hf_cache
 
@@ -96,12 +96,12 @@ singularity exec --nv \
         --port 8000 \
         --host 0.0.0.0 \
         --tensor-parallel-size 1 \
-        --max-model-len 65536 \
-        --gpu-memory-utilization 0.78 \
+        --max-model-len 131072 \
+        --gpu-memory-utilization 0.90 \
         --kv-cache-dtype fp8 \
         --quantization gptq_marlin \
         --dtype bfloat16 \
-        --max-num-batched-tokens 2096 \
+        --max-num-batched-tokens 16384 \
         --enable-prefix-caching \
         --reasoning-parser qwen3 \
         --enable-auto-tool-choice \
@@ -151,8 +151,9 @@ curl -s http://<node>:8000/v1/chat/completions \
 
 ## Notes
 
-- **GPU memory**: The model uses ~21 GiB on A40 (46 GiB total), leaving room for KV cache.
-- **Startup time**: Model loading takes ~6 minutes (weight download from HF cache + GPU loading + CUDA graph compilation).
+- **GPU memory**: Model weights use ~21 GiB on A40 (46 GiB total). With `gpu-memory-utilization=0.90`, ~17 GiB is available for KV cache.
+- **KV cache**: ~390K tokens with fp8 KV cache. At `max-model-len=131072` (128K), supports ~24 concurrent requests with `--max-num-batched-tokens 16384`, achieving ~600 tokens/s generation throughput.
+- **Startup time**: ~6 minutes (weight download from HF cache + GPU loading + CUDA graph compilation).
 - **GPU quota**: Only one GPU job per account can run at a time (`AssocGrpGRES`). Cancel other GPU jobs before deploying.
 - **Logs**: Check `~/logs/qwen35-35b-a3b_<jobid>.out` and `.err` for startup progress.
 - **Service endpoint**: `http://<node>:8000/v1/` — OpenAI-compatible API. Use the node name from `squeue` output.

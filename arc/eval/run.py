@@ -2,7 +2,9 @@
 
 import argparse
 import json
+import threading
 import time
+from concurrent.futures import ThreadPoolExecutor, as_completed
 from datetime import datetime
 from pathlib import Path
 
@@ -14,6 +16,15 @@ from .safe_exec import execute_transform
 from .evaluate import compare_grids, verify_on_train, format_wrong_output_msg
 from .tools import TOOL_DEFINITIONS, execute_tool
 from .db import ResultDB
+
+# Global print lock to prevent interleaved output from parallel tasks
+_print_lock = threading.Lock()
+
+
+def _tprint(task_id: str, msg: str):
+    """Thread-safe print with task ID prefix."""
+    with _print_lock:
+        print(f"[{task_id[:8]}] {msg}", flush=True)
 
 
 def load_tasks(data_dir: str) -> dict[str, dict]:
@@ -64,10 +75,12 @@ def evaluate_task(
     passed_count = 0
     last_code = None
 
+    log = lambda msg: _tprint(task_id, msg)
+
     for test_idx, test_case in enumerate(test_cases):
         test_input = test_case["input"]
         test_output = test_case["output"]
-        print(f"  Test case {test_idx + 1}/{len(test_cases)}")
+        log(f"Test case {test_idx + 1}/{len(test_cases)}")
 
         # Build initial conversation
         messages = build_initial_messages(train_examples, test_input)
@@ -76,18 +89,18 @@ def evaluate_task(
         for attempt in range(1, max_retries + 1):
             # Call LLM
             num_msgs = len([m for m in messages if m["role"] != "system"])
-            print(f"    [{attempt}/{max_retries}] Calling LLM ({num_msgs} messages in context)...", flush=True)
+            log(f"[{attempt}/{max_retries}] Calling LLM ({num_msgs} messages in context)...")
             try:
                 llm_result = call_llm(messages, temperature=temperature)
             except RuntimeError as e:
                 _log_api_error(db, run_id, task_id, test_idx, attempt, messages, e)
-                print(f"    [{attempt}/{max_retries}] API error: {e}")
+                log(f"[{attempt}/{max_retries}] API error: {e}")
                 break
 
             response = llm_result.content
-            print(f"    [{attempt}/{max_retries}] LLM responded "
-                  f"({llm_result.duration_seconds:.0f}s, {len(response)} chars, "
-                  f"{llm_result.input_tokens or '?'} in / {llm_result.output_tokens or '?'} out)")
+            log(f"[{attempt}/{max_retries}] LLM responded "
+                f"({llm_result.duration_seconds:.0f}s, {len(response)} chars, "
+                f"{llm_result.input_tokens or '?'} in / {llm_result.output_tokens or '?'} out)")
 
             # Extract thinking content for logging
             thinking, _ = extract_thinking(response)
@@ -108,7 +121,7 @@ def evaluate_task(
                     error_type="extraction_failed", error_msg=error_msg,
                 )
                 messages = append_retry(messages, response, error_msg)
-                print(f"    [{attempt}/{max_retries}] FAIL: code extraction failed")
+                log(f"[{attempt}/{max_retries}] FAIL: code extraction failed")
                 continue
 
             last_code = code
@@ -128,7 +141,7 @@ def evaluate_task(
                     train_pass=False, error_type="train_fail", error_msg=error_msg,
                 )
                 messages = append_retry(messages, response, error_msg)
-                print(f"    [{attempt}/{max_retries}] FAIL: train verification failed")
+                log(f"[{attempt}/{max_retries}] FAIL: train verification failed")
                 continue
 
             # Run on test input
@@ -143,7 +156,7 @@ def evaluate_task(
                     train_pass=True, error_type="test_exec_error", error_msg=error_msg,
                 )
                 messages = append_retry(messages, response, error_msg)
-                print(f"    [{attempt}/{max_retries}] FAIL: test execution error")
+                log(f"[{attempt}/{max_retries}] FAIL: test execution error")
                 continue
 
             # Compare with expected
@@ -157,7 +170,7 @@ def evaluate_task(
                     thinking=thinking, extracted_code=code,
                     train_pass=True, test_correct=True, cell_accuracy=1.0,
                 )
-                print(f"    [{attempt}/{max_retries}] SOLVED!")
+                log(f"[{attempt}/{max_retries}] SOLVED!")
                 break
             else:
                 # Restricted feedback: no expected vs actual for test
@@ -174,7 +187,7 @@ def evaluate_task(
                     error_type="wrong_output", error_msg=detail_msg,
                 )
                 messages = append_retry(messages, response, feedback_msg)
-                print(f"    [{attempt}/{max_retries}] FAIL: wrong output (cell acc: {cmp['cell_accuracy']:.1%})")
+                log(f"[{attempt}/{max_retries}] FAIL: wrong output (cell acc: {cmp['cell_accuracy']:.1%})")
 
         if solved:
             passed_count += 1
@@ -223,10 +236,12 @@ def evaluate_task_agentic(
     passed_count = 0
     last_code = None
 
+    log = lambda msg: _tprint(task_id, msg)
+
     for test_idx, test_case in enumerate(test_cases):
         test_input = test_case["input"]
         test_output = test_case["output"]
-        print(f"  Test case {test_idx + 1}/{len(test_cases)}")
+        log(f"Test case {test_idx + 1}/{len(test_cases)}")
 
         task_context = {
             "train_examples": train_examples,
@@ -240,14 +255,14 @@ def evaluate_task_agentic(
         solved = False
 
         for step in range(1, max_steps + 1):
-            print(f"    [step {step}/{max_steps}] Calling LLM...", flush=True)
+            log(f"[step {step}/{max_steps}] Calling LLM...")
             try:
                 llm_result = call_llm(
                     messages, tools=TOOL_DEFINITIONS, temperature=temperature
                 )
             except RuntimeError as e:
                 _log_api_error(db, run_id, task_id, test_idx, step, messages, e)
-                print(f"    [step {step}/{max_steps}] API error: {e}")
+                log(f"[step {step}/{max_steps}] API error: {e}")
                 break
 
             # Extract thinking from content
@@ -268,9 +283,9 @@ def evaluate_task_agentic(
 
             if llm_result.tool_calls:
                 n_tools = len(llm_result.tool_calls)
-                print(f"    [step {step}/{max_steps}] LLM made {n_tools} tool call(s) "
-                      f"({llm_result.duration_seconds:.0f}s, "
-                      f"{llm_result.input_tokens or '?'} in / {llm_result.output_tokens or '?'} out)")
+                log(f"[step {step}/{max_steps}] LLM made {n_tools} tool call(s) "
+                    f"({llm_result.duration_seconds:.0f}s, "
+                    f"{llm_result.input_tokens or '?'} in / {llm_result.output_tokens or '?'} out)")
 
                 for tc_idx, tc in enumerate(llm_result.tool_calls):
                     tool_name = tc.function.name
@@ -279,7 +294,7 @@ def evaluate_task_agentic(
                     except json.JSONDecodeError:
                         tool_args = {"code": tc.function.arguments}
 
-                    print(f"      -> {tool_name}", flush=True)
+                    log(f"  -> {tool_name}")
                     t_tool = time.time()
                     result = execute_tool(tool_name, tool_args, task_context)
                     tool_duration = time.time() - t_tool
@@ -307,7 +322,7 @@ def evaluate_task_agentic(
                     if is_submit and result["solved"]:
                         last_code = result["extracted_code"]
                         solved = True
-                        print(f"    [step {step}/{max_steps}] SOLVED!")
+                        log(f"[step {step}/{max_steps}] SOLVED!")
                         break
 
                 if solved:
@@ -318,8 +333,8 @@ def evaluate_task_agentic(
             else:
                 # Text-only response (thinking aloud)
                 content_preview = (llm_result.content or "")[:80]
-                print(f"    [step {step}/{max_steps}] Text response "
-                      f"({llm_result.duration_seconds:.0f}s): {content_preview}...")
+                log(f"[step {step}/{max_steps}] Text response "
+                    f"({llm_result.duration_seconds:.0f}s): {content_preview}...")
 
         if solved:
             passed_count += 1
@@ -360,6 +375,7 @@ def main():
     max_retries = cfg["eval"]["max_retries"]
     max_steps = cfg["eval"]["max_steps"]
     timeout = cfg["eval"]["timeout"]
+    max_workers = cfg["eval"].get("max_workers", 4)
     max_tasks = cfg["data"].get("max_tasks")
     cfg_task_ids = cfg["data"].get("task_ids")
 
@@ -409,16 +425,18 @@ def main():
         print(f"Max retries: {max_retries}")
     print(f"Timeout:     {timeout}s")
     print(f"Temperature: {temperature}")
+    print(f"Workers:     {max_workers}")
     print(f"Results DB:  {db_path}")
     print()
 
     # Evaluate
-    solved_so_far = 0
-    total_so_far = 0
-    for i, (task_id, task_data) in enumerate(remaining.items(), 1):
+    solved_counter = {"solved": 0, "total": 0}
+    counter_lock = threading.Lock()
+
+    def _run_one(task_id, task_data):
         n_test = len(task_data["test"])
         n_train = len(task_data["train"])
-        print(f"[{i}/{len(remaining)}] Task: {task_id} ({n_train} train, {n_test} test)")
+        _tprint(task_id, f"START ({n_train} train, {n_test} test)")
         if mode == "agentic":
             result = evaluate_task_agentic(
                 task_id, task_data, max_steps, timeout,
@@ -429,15 +447,30 @@ def main():
                 task_id, task_data, max_retries, timeout,
                 temperature, python_path, db, run_name,
             )
-        total_so_far += 1
-        if result["solved"]:
-            solved_so_far += 1
+        with counter_lock:
+            solved_counter["total"] += 1
+            if result["solved"]:
+                solved_counter["solved"] += 1
+            s, t = solved_counter["solved"], solved_counter["total"]
         status = "SOLVED" if result["solved"] else "FAILED"
-        print(
-            f"  {status} ({result['test_cases_passed']}/{result['num_test_cases']} "
+        _tprint(task_id,
+            f"{status} ({result['test_cases_passed']}/{result['num_test_cases']} "
             f"test cases, {result['total_time_seconds']:.1f}s) "
-            f"| Running: {solved_so_far}/{total_so_far} solved ({solved_so_far/total_so_far:.0%})\n"
+            f"| Running: {s}/{t} solved ({s/t:.0%})"
         )
+        return result
+
+    with ThreadPoolExecutor(max_workers=max_workers) as executor:
+        futures = {
+            executor.submit(_run_one, task_id, task_data): task_id
+            for task_id, task_data in remaining.items()
+        }
+        for future in as_completed(futures):
+            task_id = futures[future]
+            try:
+                future.result()
+            except Exception as e:
+                _tprint(task_id, f"ERROR: {e}")
 
     # Print summary
     summary = db.get_summary(run_name)

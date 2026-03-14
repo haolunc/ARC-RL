@@ -6,6 +6,16 @@ from pathlib import Path
 import pytest
 
 ROOT = Path(__file__).resolve().parent.parent
+
+
+def pytest_addoption(parser):
+    parser.addoption(
+        "--endpoint-config",
+        action="store",
+        default=None,
+        help="Path to config YAML for endpoint tests",
+    )
+
 DATA_DIR = ROOT / "ARC-AGI-2" / "data" / "training"
 SOLUTIONS_DIR = ROOT / "reference_solutions" / "solutions"
 PYTHON_PATH = "/opt/homebrew/Caskroom/miniforge/base/envs/arc/bin/python"

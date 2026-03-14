@@ -4,6 +4,7 @@ LLM evaluation pipeline for [ARC-AGI](https://github.com/fchollet/ARC-AGI) tasks
 
 - **Simple mode**: Retry loop — prompt LLM, extract code via regex, execute, give feedback, retry.
 - **Agentic mode**: Tool-call loop — LLM actively explores grids, tests solutions, and submits answers via tool calls (`run_python`, `test_transform`, `submit_transform`).
+- **Parallel workers**: Tasks are evaluated concurrently using `max_workers` threads (default 4).
 
 ## Setup
 
@@ -60,6 +61,7 @@ eval:                                 # Evaluation parameters
   max_retries: 5                      # max retry attempts (simple mode)
   max_steps: 20                       # max tool-call rounds (agentic mode)
   timeout: 30                         # code execution timeout in seconds
+  max_workers: 4                      # parallel task evaluation (1 = sequential)
   run_name: null                      # null = auto timestamp
 ```
 

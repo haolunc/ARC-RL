@@ -25,4 +25,5 @@ eval:
   max_retries: 5         # for simple mode
   max_steps: 20          # for agentic mode (max tool call rounds)
   timeout: 30            # code execution timeout in seconds
+  max_workers: 4         # parallel task evaluation (1 = sequential)
   run_name: null         # null = auto timestamp, or "my_experiment"

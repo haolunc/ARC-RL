@@ -1,0 +1,35 @@
+\relax 
+\@writefile{toc}{\contentsline {section}{\numberline {1}Introduction}{1}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{\textbf  {The central problem we address is:}}{1}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {1.1}Significance}{2}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {1.2}Evaluation}{2}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {2}Methodology}{2}{}\protected@file@percent }
+\citation{shao2024deepseekmathpushinglimitsmathematical}
+\citation{chollet2019measureintelligence}
+\citation{arcprize_guide}
+\citation{lee2024arcleabstractionreasoningcorpus}
+\citation{lee2024enhancinganalogicalreasoningabstraction}
+\@writefile{toc}{\contentsline {section}{\numberline {3}Related work}{4}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {4}Experimental results}{4}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.1}Baseline Result}{4}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {4.1.1}Task Success Rate}{5}{}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {1}{\ignorespaces Task success rate on ARC benchmarks. Qwen3-VL uses deterministic decoding (temp=0.0, 2 retries). Qwen3.5 uses stochastic decoding (temp=0.7, 5 retries). $^\dagger $Partial evaluation; 175 of 1,000 ARC-AGI-2 training tasks completed so far. The two models are evaluated on different benchmarks and settings, so their results are not directly comparable.}}{5}{}\protected@file@percent }
+\newlabel{tab:arc_baseline_results}{{1}{5}{}{}{}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {4.1.2}Retry Effectiveness}{5}{}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {2}{\ignorespaces Pass@K for Qwen3.5-35B-A3B on ARC-AGI-2 (175 tasks, temp=0.7). Each retry provides diminishing but non-trivial improvement.}}{5}{}\protected@file@percent }
+\newlabel{tab:retry_effectiveness}{{2}{5}{}{}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {1}{\ignorespaces Pass@K curves on ARC-AGI-2. Qwen3-VL results (on ARC-AGI-1) are shown for reference only and are not directly comparable due to different benchmarks and settings.}}{6}{}\protected@file@percent }
+\newlabel{fig:passk}{{1}{6}{}{}{}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {4.1.3}Prompt Token Analysis}{6}{}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {2}{\ignorespaces Distribution of prompt token counts across ARC tasks for ARC-AGI-1 and ARC-AGI-2. ARC-AGI-2 tasks generally require longer prompts due to increased task complexity.}}{6}{}\protected@file@percent }
+\newlabel{fig:prompt_tokens}{{2}{6}{}{}{}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {4.1.4}Failure Mode Analysis}{7}{}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {3}{\ignorespaces Failure mode breakdown for Qwen3.5 on ARC-AGI-2 (433 LLM calls, 175 tasks). Training failure dominates, indicating that inferring the correct rule remains the primary challenge.}}{7}{}\protected@file@percent }
+\newlabel{fig:failure_modes}{{3}{7}{}{}{}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {4.1.5}How These Results Support Our Claim}{7}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {5}Future milestones}{8}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {6}Conclusion}{8}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {7}Author Contributions}{8}{}\protected@file@percent }
+\bibstyle{unsrtnat}
+\bibdata{ref}
+\gdef \@abspage@last{8}
