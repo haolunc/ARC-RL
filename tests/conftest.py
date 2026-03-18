@@ -7,18 +7,18 @@ import pytest
 
 ROOT = Path(__file__).resolve().parent.parent
 
+DATA_DIR = ROOT / "ARC-AGI-2" / "data" / "training"
+SOLUTIONS_DIR = ROOT / "reference_solutions" / "solutions"
+PYTHON_PATH = "/opt/homebrew/Caskroom/miniforge/base/envs/arc/bin/python"
+
 
 def pytest_addoption(parser):
     parser.addoption(
         "--endpoint-config",
         action="store",
         default=None,
-        help="Path to config YAML for endpoint tests",
+        help="Path to config YAML for LLM integration tests",
     )
-
-DATA_DIR = ROOT / "ARC-AGI-2" / "data" / "training"
-SOLUTIONS_DIR = ROOT / "reference_solutions" / "solutions"
-PYTHON_PATH = "/opt/homebrew/Caskroom/miniforge/base/envs/arc/bin/python"
 
 
 def load_task(task_id: str) -> dict:
@@ -28,9 +28,14 @@ def load_task(task_id: str) -> dict:
 
 
 def load_solution(task_id: str) -> str:
-    """Load a reference solution by task ID."""
+    """Load a reference solution by task ID.
+
+    Reference solutions define `transform()`. An alias `test_transform = transform`
+    is appended so they work with the new driver template.
+    """
     path = SOLUTIONS_DIR / f"{task_id}.py"
-    return path.read_text()
+    code = path.read_text()
+    return code + "\ntest_transform = transform\n"
 
 
 @pytest.fixture
@@ -51,12 +56,11 @@ def sample_solution():
 
 
 @pytest.fixture
-def task_context(sample_task, sample_solution, python_path):
-    """Build a task_context dict for tools.execute_tool."""
+def task_context(sample_task, python_path):
+    """Build a task_context dict for tools.run_python_tool."""
     return {
         "train_examples": sample_task["train"],
-        "test_input": sample_task["test"][0]["input"],
-        "test_output": sample_task["test"][0]["output"],
+        "test_inputs": [tc["input"] for tc in sample_task["test"]],
         "timeout": 30,
         "python_path": python_path,
     }

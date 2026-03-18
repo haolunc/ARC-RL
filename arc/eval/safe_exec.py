@@ -14,7 +14,7 @@ import numpy as np
 
 if __name__ == "__main__":
     input_grid = json.loads(sys.stdin.read())
-    result = transform(input_grid)
+    result = test_transform(input_grid)
     # Normalize output to plain list of lists of ints
     if hasattr(result, "tolist"):
         result = result.tolist()
@@ -30,7 +30,7 @@ import numpy as np
 # Pre-loaded grid data
 train_inputs = {train_inputs_json}
 train_outputs = {train_outputs_json}
-test_input = {test_input_json}
+test_inputs = {test_inputs_json}
 
 {code}
 '''
@@ -77,10 +77,10 @@ def execute_transform(
     timeout: int,
     python_path: str,
 ) -> dict:
-    """Execute a transform function in a subprocess.
+    """Execute a test_transform function in a subprocess.
 
     Args:
-        code: Python source code containing def transform(...).
+        code: Python source code containing def test_transform(...).
         input_grid: The input grid to pass to the function.
         timeout: Max execution time in seconds.
         python_path: Path to Python interpreter.
@@ -112,7 +112,7 @@ def execute_transform(
 def execute_analysis(
     code: str,
     train_examples: list[dict],
-    test_input: list[list[int]],
+    test_inputs: list[list[list[int]]],
     timeout: int,
     python_path: str,
 ) -> dict:
@@ -125,7 +125,7 @@ def execute_analysis(
     driver = ANALYSIS_DRIVER_TEMPLATE.format(
         train_inputs_json=json.dumps([ex["input"] for ex in train_examples]),
         train_outputs_json=json.dumps([ex["output"] for ex in train_examples]),
-        test_input_json=json.dumps(test_input),
+        test_inputs_json=json.dumps(test_inputs),
         code=code,
     )
     result = _run_sandboxed(driver, python_path, timeout)

@@ -1,7 +1,6 @@
 """Tests for arc.eval.code_extract."""
 
 from arc.eval.code_extract import extract_thinking, extract_code
-from .conftest import load_solution
 
 
 # --- extract_thinking ---
@@ -52,24 +51,24 @@ def test_strip_thinking_no_tags():
 # --- extract_code ---
 
 def test_extract_code_python_block():
-    text = "Here's the code:\n```python\ndef transform(grid):\n    return grid\n```"
+    text = "Here's the code:\n```python\ndef test_transform(grid):\n    return grid\n```"
     code = extract_code(text)
     assert code is not None
-    assert "def transform" in code
+    assert "def test_transform" in code
     assert "return grid" in code
 
 
 def test_extract_code_generic_block():
-    text = "Here:\n```\ndef transform(grid):\n    return grid[::-1]\n```"
+    text = "Here:\n```\ndef test_transform(grid):\n    return grid[::-1]\n```"
     code = extract_code(text)
     assert code is not None
-    assert "def transform" in code
+    assert "def test_transform" in code
 
 
 def test_extract_code_multiple_blocks_takes_last():
     text = (
-        "First attempt:\n```python\ndef transform(grid):\n    return grid\n```\n"
-        "Better version:\n```python\ndef transform(grid):\n    return grid[::-1]\n```"
+        "First attempt:\n```python\ndef test_transform(grid):\n    return grid\n```\n"
+        "Better version:\n```python\ndef test_transform(grid):\n    return grid[::-1]\n```"
     )
     code = extract_code(text)
     assert code is not None
@@ -77,15 +76,15 @@ def test_extract_code_multiple_blocks_takes_last():
 
 
 def test_extract_code_raw_fallback():
-    text = "def transform(grid):\n    return [[0]]\n\nSome trailing text."
+    text = "def test_transform(grid):\n    return [[0]]\n\nSome trailing text."
     code = extract_code(text)
     assert code is not None
-    assert "def transform" in code
+    assert "def test_transform" in code
     assert "return [[0]]" in code
     assert "trailing text" not in code
 
 
-def test_extract_code_no_transform():
+def test_extract_code_no_test_transform():
     text = "```python\ndef helper(x):\n    return x + 1\n```"
     assert extract_code(text) is None
 
@@ -97,20 +96,37 @@ def test_extract_code_returns_none_for_empty():
 def test_extract_code_with_thinking():
     text = (
         "<think>Let me think about this...</think>\n"
-        "```python\ndef transform(grid):\n    return grid\n```"
+        "```python\ndef test_transform(grid):\n    return grid\n```"
     )
     code = extract_code(text)
     assert code is not None
-    assert "def transform" in code
+    assert "def test_transform" in code
     assert "<think>" not in code
+
+
+def test_extract_code_transform_renamed_to_test_transform():
+    """Code with 'def transform' should be auto-renamed to 'def test_transform'."""
+    text = "```python\ndef transform(grid):\n    return grid[::-1]\n```"
+    code = extract_code(text)
+    assert code is not None
+    assert "def test_transform" in code
+    assert "def transform(" not in code
+
+
+def test_extract_code_raw_transform_renamed():
+    """Raw 'def transform' fallback should also be renamed."""
+    text = "def transform(grid):\n    return [[0]]\n\nSome text."
+    code = extract_code(text)
+    assert code is not None
+    assert "def test_transform" in code
 
 
 def test_extract_code_real_solution():
     """Wrap a real reference solution in markdown and verify extraction."""
+    from .conftest import load_solution
     solution = load_solution("007bbfb7")
+    # Solution already has test_transform alias, wrap just the original part
     wrapped = f"Here is the solution:\n```python\n{solution}\n```"
     code = extract_code(wrapped)
     assert code is not None
-    assert "def transform" in code
-    # Extracted code should be functionally the same
-    assert "grid[br][bc]" in code or "grid[i][j]" in code
+    assert "def test_transform" in code

@@ -15,48 +15,53 @@ def extract_thinking(text: str) -> tuple[str | None, str]:
     return thinking, stripped
 
 
-
 def extract_code(response: str) -> str | None:
-    """Extract Python code from an LLM response.
+    """Extract Python code containing test_transform (or transform) from an LLM response.
 
     Tries in order:
-    1. ```python ... ``` code blocks (takes the last one)
-    2. ``` ... ``` code blocks
-    3. Raw function definition fallback
+    1. ```python ... ``` code blocks with def test_transform (takes last)
+    2. ```python ... ``` code blocks with def transform (takes last, renames to test_transform)
+    3. ``` ... ``` code blocks (same priority)
+    4. Raw function definition fallback
 
     Returns None if no valid code found.
     """
     _, text = extract_thinking(response)
 
-    # Try ```python blocks
+    # Try ```python blocks — prefer test_transform, fallback to transform
     matches = re.findall(r"```python\s*\n(.*?)```", text, re.DOTALL)
     if matches:
         code = matches[-1].strip()
-        if "def transform" in code:
+        if "def test_transform" in code:
             return code
+        if "def transform" in code:
+            return code.replace("def transform", "def test_transform", 1)
 
     # Try generic ``` blocks
     matches = re.findall(r"```\s*\n(.*?)```", text, re.DOTALL)
     if matches:
         for m in reversed(matches):
             code = m.strip()
-            if "def transform" in code:
+            if "def test_transform" in code:
                 return code
+            if "def transform" in code:
+                return code.replace("def transform", "def test_transform", 1)
 
-    # Fallback: find def transform in raw text
-    match = re.search(r"(def transform\b.*)", text, re.DOTALL)
-    if match:
-        code = match.group(1)
-        # Try to find the end of the function (next top-level definition or end)
-        lines = code.split("\n")
-        func_lines = [lines[0]]
-        for line in lines[1:]:
-            # Stop at next top-level definition or empty-ish end
-            if line and not line[0].isspace() and not line.startswith("#"):
-                break
-            func_lines.append(line)
-        code = "\n".join(func_lines).rstrip()
-        if code:
-            return code
+    # Fallback: find def test_transform or def transform in raw text
+    for func_name in ("def test_transform", "def transform"):
+        match = re.search(rf"({func_name}\b.*)", text, re.DOTALL)
+        if match:
+            code = match.group(1)
+            lines = code.split("\n")
+            func_lines = [lines[0]]
+            for line in lines[1:]:
+                if line and not line[0].isspace() and not line.startswith("#"):
+                    break
+                func_lines.append(line)
+            code = "\n".join(func_lines).rstrip()
+            if code:
+                if "def transform(" in code and "def test_transform" not in code:
+                    code = code.replace("def transform", "def test_transform", 1)
+                return code
 
     return None

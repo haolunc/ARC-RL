@@ -1,7 +1,5 @@
 """Tests for arc.eval.safe_exec."""
 
-import pytest
-
 from arc.eval.safe_exec import execute_transform, execute_analysis
 from .conftest import load_task, load_solution, PYTHON_PATH
 
@@ -9,7 +7,7 @@ from .conftest import load_task, load_solution, PYTHON_PATH
 # --- execute_transform ---
 
 def test_execute_transform_identity(python_path):
-    code = "def transform(grid):\n    return grid"
+    code = "def test_transform(grid):\n    return grid"
     grid = [[1, 2], [3, 4]]
     result = execute_transform(code, grid, timeout=10, python_path=python_path)
     assert result["success"] is True
@@ -51,7 +49,7 @@ def test_execute_transform_numpy(python_path):
     """Code using numpy should work (numpy is imported in driver)."""
     code = (
         "import numpy as np\n"
-        "def transform(grid):\n"
+        "def test_transform(grid):\n"
         "    arr = np.array(grid)\n"
         "    return arr.tolist()\n"
     )
@@ -65,7 +63,7 @@ def test_execute_transform_ndarray_output(python_path):
     """Code returning np.array should be auto-converted to list."""
     code = (
         "import numpy as np\n"
-        "def transform(grid):\n"
+        "def test_transform(grid):\n"
         "    return np.array(grid)\n"
     )
     grid = [[1, 2], [3, 4]]
@@ -75,21 +73,21 @@ def test_execute_transform_ndarray_output(python_path):
 
 
 def test_execute_transform_runtime_error(python_path):
-    code = "def transform(grid):\n    return 1 / 0"
+    code = "def test_transform(grid):\n    return 1 / 0"
     result = execute_transform(code, [[1]], timeout=10, python_path=python_path)
     assert result["success"] is False
     assert "ZeroDivisionError" in result["error"]
 
 
 def test_execute_transform_syntax_error(python_path):
-    code = "def transform(grid)\n    return grid"  # missing colon
+    code = "def test_transform(grid)\n    return grid"  # missing colon
     result = execute_transform(code, [[1]], timeout=10, python_path=python_path)
     assert result["success"] is False
     assert "SyntaxError" in result["error"]
 
 
 def test_execute_transform_timeout(python_path):
-    code = "def transform(grid):\n    while True: pass"
+    code = "def test_transform(grid):\n    while True: pass"
     result = execute_transform(code, [[1]], timeout=2, python_path=python_path)
     assert result["success"] is False
     assert "timed out" in result["error"].lower()
@@ -101,7 +99,7 @@ def test_execute_analysis_basic(python_path):
     task = load_task("007bbfb7")
     code = "print(len(train_inputs))"
     result = execute_analysis(
-        code, task["train"], task["test"][0]["input"],
+        code, task["train"], [tc["input"] for tc in task["test"]],
         timeout=10, python_path=python_path,
     )
     assert result["success"] is True
@@ -109,16 +107,16 @@ def test_execute_analysis_basic(python_path):
 
 
 def test_execute_analysis_preloaded_vars(python_path):
-    """Verify that train_inputs, train_outputs, test_input are accessible."""
+    """Verify that train_inputs, train_outputs, test_inputs are accessible."""
     task = load_task("007bbfb7")
     code = (
         "print(type(train_inputs).__name__)\n"
         "print(type(train_outputs).__name__)\n"
-        "print(type(test_input).__name__)\n"
+        "print(type(test_inputs).__name__)\n"
         "print(len(train_inputs), len(train_outputs))\n"
     )
     result = execute_analysis(
-        code, task["train"], task["test"][0]["input"],
+        code, task["train"], [tc["input"] for tc in task["test"]],
         timeout=10, python_path=python_path,
     )
     assert result["success"] is True
@@ -130,7 +128,7 @@ def test_execute_analysis_numpy(python_path):
     task = load_task("007bbfb7")
     code = "arr = np.array(train_inputs[0])\nprint(arr.shape)"
     result = execute_analysis(
-        code, task["train"], task["test"][0]["input"],
+        code, task["train"], [tc["input"] for tc in task["test"]],
         timeout=10, python_path=python_path,
     )
     assert result["success"] is True
@@ -141,7 +139,7 @@ def test_execute_analysis_error(python_path):
     task = load_task("007bbfb7")
     code = "raise ValueError('test error')"
     result = execute_analysis(
-        code, task["train"], task["test"][0]["input"],
+        code, task["train"], [tc["input"] for tc in task["test"]],
         timeout=10, python_path=python_path,
     )
     assert result["success"] is False
@@ -152,7 +150,7 @@ def test_execute_analysis_timeout(python_path):
     task = load_task("007bbfb7")
     code = "while True: pass"
     result = execute_analysis(
-        code, task["train"], task["test"][0]["input"],
+        code, task["train"], [tc["input"] for tc in task["test"]],
         timeout=2, python_path=python_path,
     )
     assert result["success"] is False

@@ -3,7 +3,7 @@ name = "arc-rl"
 version = "0.1.0"
 requires-python = ">=3.11"
 dependencies = [
-    "openai",
+    "openai>=1.66",
     "python-dotenv",
     "PyYAML",
     "numpy",
@@ -14,5 +14,5 @@ dev = ["pytest"]
 
 [tool.pytest.ini_options]
 markers = [
-    "endpoint: tests that require a live LLM endpoint (deselect with '-m not endpoint')",
+    "llm: tests that make real LLM API calls (deselect with '-m not llm')",
 ]

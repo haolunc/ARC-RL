@@ -1,4 +1,4 @@
-"""Configuration — loads unified config YAML + .env."""
+"""Configuration — loads config YAML + endpoint.yaml + .env."""
 
 import os
 import sys
@@ -8,15 +8,21 @@ from dotenv import load_dotenv
 import yaml
 
 _ROOT = Path(__file__).resolve().parent.parent.parent
+_VALID_MODES = ("native_tools", "sandbox_tools", "direct")
+
+EXEC_TIMEOUT = 30
+MAX_TOOL_CALLS = 10
+TEMPERATURE = 0.7
+_DATA_DIR_TEMPLATE = "ARC-AGI-2/data/{split}"
 
 load_dotenv(_ROOT / ".env")
 
 
 def load_config(config_path: str) -> dict:
-    """Load and validate unified config YAML.
+    """Load and validate config YAML, resolving endpoint from endpoint.yaml.
 
-    Returns dict with keys: python_path, datasets, endpoint, data, eval.
-    The endpoint dict includes resolved api_key (not just the env var name).
+    Returns dict with keys: python_path, endpoint, data, eval.
+    The endpoint dict is fully resolved (name → details, api_key resolved).
     """
     path = Path(config_path)
     if not path.is_absolute():
@@ -30,29 +36,44 @@ def load_config(config_path: str) -> dict:
         cfg = yaml.safe_load(f)
 
     # Validate required sections
-    for section in ("python_path", "datasets", "endpoint", "data", "eval"):
+    for section in ("python_path", "endpoint", "data", "eval"):
         if section not in cfg:
             print(f"Error: Missing '{section}' in {path}")
             sys.exit(1)
 
-    # Resolve API key from environment variable
-    ep = cfg["endpoint"]
-    api_key_env = ep["api_key_env"]
-    api_key = os.environ.get(api_key_env)
-    if not api_key:
-        print(f"Error: Environment variable '{api_key_env}' not set (check .env)")
+    # Resolve endpoint name from endpoint.yaml
+    endpoint_name = cfg["endpoint"]
+    endpoint_yaml = _ROOT / "endpoint.yaml"
+    if not endpoint_yaml.exists():
+        print(f"Error: endpoint.yaml not found at {endpoint_yaml}")
         sys.exit(1)
 
-    ep["api_key"] = api_key
-    ep.setdefault("llm_timeout", 180)
+    with open(endpoint_yaml) as f:
+        endpoints = yaml.safe_load(f).get("endpoints", {})
 
-    # Eval section defaults
+    if endpoint_name not in endpoints:
+        available = ", ".join(endpoints.keys())
+        print(f"Error: Endpoint '{endpoint_name}' not found in endpoint.yaml. Available: {available}")
+        sys.exit(1)
+
+    ep = endpoints[endpoint_name]
+    ep["name"] = endpoint_name
+
+    # Resolve API key from environment variable
+    api_key_env = ep.get("api_key_env")
+    if api_key_env:
+        api_key = os.environ.get(api_key_env)
+        if not api_key:
+            print(f"Error: Environment variable '{api_key_env}' not set (check .env)")
+            sys.exit(1)
+    else:
+        ep["api_key"] = "no-key"
+
+    cfg["endpoint"] = ep
+
     ev = cfg["eval"]
-    _EVAL_DEFAULTS = {"mode": "simple", "max_retries": 5, "max_steps": 20, "timeout": 30, "max_workers": 4}
-    for key, default in _EVAL_DEFAULTS.items():
-        ev.setdefault(key, default)
-    if ev["mode"] not in ("simple", "agentic"):
-        print(f"Error: eval.mode must be 'simple' or 'agentic', got '{ev['mode']}'")
+    if ev["mode"] not in _VALID_MODES:
+        print(f"Error: eval.mode must be one of {_VALID_MODES}, got '{ev['mode']}'")
         sys.exit(1)
 
     return cfg

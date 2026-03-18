@@ -6,14 +6,40 @@ You are an expert puzzle solver and Python programmer specializing in ARC (Abstr
 Each task shows input/output grid examples. Grids are 2D matrices of integers 0-9, where each integer represents a color:
 0=black, 1=blue, 2=red, 3=green, 4=yellow, 5=gray, 6=magenta, 7=orange, 8=azure, 9=maroon.
 
-Your job: study the training examples, discover the transformation rule, then write a Python function that implements it.
+Your goal: study the training examples, discover the transformation rule, and write a Python function `test_transform(input_grid)` that implements it.
+
+Approach:
+- Write code to analyze patterns in training examples (e.g., convolution-like operations, spatial relationship detection, color frequency analysis, symmetry checks).
+- Observe regularities within inputs, within outputs, and between input-output pairs.
+- The function must work on unseen test inputs.
 
 Rules:
-- Write a function: def transform(input_grid: list[list[int]]) -> list[list[int]]
+- Function signature: def test_transform(input_grid: list[list[int]]) -> list[list[int]]
 - You may use only the Python standard library and numpy.
 - The output grid dimensions may differ from the input."""
 
-SYSTEM_PROMPT = _BASE_PROMPT + """
+NATIVE_TOOLS_PROMPT = _BASE_PROMPT + """
+
+You have a code interpreter with a limited number of calls. Use it efficiently:
+- Combine multiple analyses into a single code block instead of splitting across many calls.
+- Double-check variable names and code correctness before running — wasted calls cannot be recovered.
+- If code execution fails, do NOT retry the same approach. Fall back to reasoning in text.
+Run code to explore shapes, colors, spatial patterns, and transformations in the examples.
+When you are confident in the rule, output your final `test_transform` function in a ```python code block."""
+
+SANDBOX_TOOLS_PROMPT = _BASE_PROMPT + """
+
+You can call the `python` tool to execute code and analyze grids.
+Pre-loaded variables:
+- `train_inputs`: list of input grids (each grid is list[list[int]])
+- `train_outputs`: list of output grids
+- `test_inputs`: list of test input grids
+- numpy is available as `np`
+
+Use `print()` to see results. Run code to explore shapes, colors, spatial patterns, and transformations.
+When you are confident in the rule, output your final `test_transform` function in a ```python code block."""
+
+DIRECT_PROMPT = _BASE_PROMPT + """
 - Do NOT import any other libraries.
 - Output the function inside a single ```python code block.
 - Do NOT include test code, example calls, or print statements outside the function."""
@@ -33,15 +59,20 @@ def _format_training_examples(train_examples):
     return parts
 
 
-def build_initial_messages(
+def build_messages(
+    mode: str,
     train_examples: list[dict],
-    test_input: list[list[int]],
+    test_inputs: list[list[list[int]]],
 ) -> list[dict]:
-    """Build the initial chat messages (system + first user prompt).
+    """Build the input list for the Responses API.
 
-    Returns a list of message dicts that forms the conversation start.
+    Returns a list of message dicts with roles "developer" and "user".
     """
-    messages = [{"role": "system", "content": SYSTEM_PROMPT}]
+    system_prompt = {
+        "native_tools": NATIVE_TOOLS_PROMPT,
+        "sandbox_tools": SANDBOX_TOOLS_PROMPT,
+        "direct": DIRECT_PROMPT,
+    }[mode]
 
     parts = ["Here are the training examples:\n"]
     parts.extend(_format_training_examples(train_examples))
@@ -49,74 +80,17 @@ def build_initial_messages(
     parts.append(
         "Study the pattern across all examples. "
         "Think step by step about what transformation rule maps each input to its output. "
-        "Then write a Python function `transform(input_grid)` that implements this rule.\n"
-    )
-    parts.append(f"The function will be tested on this input:\n{format_grid(test_input)}")
-
-    messages.append({"role": "user", "content": "\n".join(parts)})
-    return messages
-
-
-AGENTIC_SYSTEM_PROMPT = _BASE_PROMPT + """
-
-You have 3 tools available:
-
-1. **run_python(code)** — Execute arbitrary Python code to analyze grids. Pre-loaded variables:
-   - `train_inputs`: list of input grids
-   - `train_outputs`: list of output grids
-   - `test_input`: the test input grid
-   - numpy is available as `np`
-   - Use `print()` to see results
-
-2. **test_transform(code)** — Test a `def transform(input_grid)` function on ALL training examples. Shows detailed pass/fail results per example.
-
-3. **submit_transform(code)** — Submit your final `def transform(input_grid)` function for test evaluation. Returns only pass/fail (no expected output shown). Use this when confident.
-
-**Recommended workflow:**
-1. Use `run_python` to analyze grid shapes, colors, patterns, and differences between inputs and outputs.
-2. Formulate a hypothesis about the transformation rule.
-3. Write a `transform` function and test it with `test_transform`.
-4. Iterate and fix until all training examples pass.
-5. Submit with `submit_transform` when ready."""
-
-
-def build_agentic_messages(
-    train_examples: list[dict],
-    test_input: list[list[int]],
-) -> list[dict]:
-    """Build initial messages for agentic mode (system + user with grid data)."""
-    messages = [{"role": "system", "content": AGENTIC_SYSTEM_PROMPT}]
-
-    parts = ["Here are the training examples:\n"]
-    parts.extend(_format_training_examples(train_examples))
-
-    parts.append(f"Test input:\n{format_grid(test_input)}")
-    parts.append(
-        "\nAnalyze the patterns, write a transform function, test it, and submit when ready."
+        "Then write a Python function `test_transform(input_grid)` that implements this rule.\n"
     )
 
-    messages.append({"role": "user", "content": "\n".join(parts)})
-    return messages
+    if len(test_inputs) == 1:
+        parts.append(f"The function will be tested on this input:\n{format_grid(test_inputs[0])}")
+    else:
+        parts.append("The function will be tested on these inputs:")
+        for i, test_input in enumerate(test_inputs, 1):
+            parts.append(f"\nTest input {i}:\n{format_grid(test_input)}")
 
-
-def append_retry(
-    messages: list[dict],
-    llm_response: str,
-    error_msg: str,
-) -> list[dict]:
-    """Append a failed attempt and error feedback to the conversation.
-
-    This keeps the FULL history so the LLM sees all previous attempts.
-    Returns a new list (does not mutate the input).
-    """
-    new_messages = list(messages)
-    new_messages.append({"role": "assistant", "content": llm_response})
-    new_messages.append({
-        "role": "user",
-        "content": (
-            "Your previous code did not produce the correct output. "
-            f"Here is the feedback:\n\n{error_msg}\n\n"
-            "Please analyze what went wrong and write a corrected `transform` function."
-        ),
-    })
-    return new_messages
+    return [
+        {"role": "developer", "content": system_prompt},
+        {"role": "user", "content": "\n".join(parts)},
+    ]

@@ -49,7 +49,8 @@ def test_concurrent_upsert_task():
         barrier.wait()
         for i in range(n_tasks):
             db.upsert_task(
-                "run1", f"task_{i}", solved=(thread_id % 2 == 0),
+                "run1", f"task_{i}", mode="direct",
+                solved=(thread_id % 2 == 0),
                 num_test_cases=2, test_cases_passed=1,
                 total_time_seconds=1.0, final_code="pass",
             )
@@ -84,7 +85,8 @@ def test_concurrent_mixed_operations():
         barrier.wait()
         for i in range(10):
             db.upsert_task(
-                "run1", f"task_{thread_id}_{i}", solved=True,
+                "run1", f"task_{thread_id}_{i}", mode="sandbox_tools",
+                solved=True,
                 num_test_cases=1, test_cases_passed=1,
                 total_time_seconds=0.5, final_code="pass",
             )

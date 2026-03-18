@@ -1,29 +1,14 @@
 python_path: "/opt/homebrew/Caskroom/miniforge/base/envs/arc/bin/python"
 
-datasets:
-  arc1:
-    training: "ARC-AGI/data/training"
-    evaluation: "ARC-AGI/data/evaluation"
-  arc2:
-    training: "ARC-AGI-2/data/training"
-    evaluation: "ARC-AGI-2/data/evaluation"
-
-endpoint:
-  base_url: "http://your-server:8000/v1"
-  model: "Qwen/Qwen3-VL-30B-A3B-Instruct"
-  api_key_env: QWEN_API_KEY
-  temperature: 0.7
+endpoint: qwen_official          # name from endpoint.yaml
 
 data:
-  dataset: arc1          # arc1 or arc2
-  split: training        # training or evaluation
-  task_ids: null         # null = all tasks, or ["task_id_1", "task_id_2"]
-  max_tasks: null        # null = no limit
+  split: training                # training or evaluation
+  task_ids: null                 # null = all tasks, or ["task_id_1", "task_id_2"]
+  max_tasks: null                # null = no limit
 
 eval:
-  mode: "simple"         # "simple" (retry loop) or "agentic" (tool call loop)
-  max_retries: 5         # for simple mode
-  max_steps: 20          # for agentic mode (max tool call rounds)
-  timeout: 30            # code execution timeout in seconds
-  max_workers: 4         # parallel task evaluation (1 = sequential)
-  run_name: null         # null = auto timestamp, or "my_experiment"
+  mode: "native_tools"           # native_tools | sandbox_tools | direct
+  max_workers: 4                 # parallel task evaluation (1 = sequential)
+  llm_timeout: 180               # LLM API request timeout (seconds)
+  run_name: null                 # null = auto timestamp, or "my_experiment"

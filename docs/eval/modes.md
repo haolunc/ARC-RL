@@ -84,7 +84,7 @@ messages = [system_prompt, user_prompt, assistant_response_1, user_error_feedbac
 - **预注入变量**：
   - `train_inputs`: 所有训练输入网格的列表 (`list[list[list[int]]]`)
   - `train_outputs`: 所有训练输出网格的列表
-  - `test_input`: 测试输入网格 (`list[list[int]]`)
+  - `test_inputs`: 测试输入网格列表 (`list[list[list[int]]]`)
   - `np`: numpy 已导入
 - **返回**：stdout 输出（截断到 5000 字符）+ stderr（如果有）
 - **用途**：分析网格形状、颜色分布、模式识别、差异计算等

@@ -36,7 +36,7 @@ Token 字段通过 `getattr` 防御性提取，兼容 vLLM 等不完整实现。
 统一的 LLM 调用函数，简单模式和智能体模式共用：
 
 ```python
-def call_llm(messages, tools=None, temperature=None, model=None, max_api_retries=3) -> LLMResponse:
+def call_llm(client, model, temperature, messages, tools=None, max_api_retries=3) -> LLMResponse:
 ```
 
 - 不传 `tools` 时用于简单模式（文本调用），返回的 `tool_calls` 为 `None`
@@ -69,12 +69,12 @@ def execute_transform(code, input_grid, timeout, python_path) -> dict:
 用于 `run_python` 工具（智能体模式专用）：
 
 ```python
-def execute_analysis(code, train_examples, test_input, timeout, python_path) -> dict:
+def execute_analysis(code, train_examples, test_inputs, timeout, python_path) -> dict:
     # 返回 {"success": True, "output": stdout} 或 {"success": False, "error": msg}
 ```
 
 - 使用 `ANALYSIS_DRIVER_TEMPLATE` 将网格数据作为 JSON 字面量注入脚本顶部
-- 预注入变量：`train_inputs`, `train_outputs`, `test_input`
+- 预注入变量：`train_inputs`, `train_outputs`, `test_inputs`
 - numpy 已导入为 `np`
 - 捕获 stdout 作为返回值（截断到 5000 字符）
 - stderr 截断到 2000 字符，如有则附加到输出末尾
@@ -86,5 +86,5 @@ def execute_analysis(code, train_examples, test_input, timeout, python_path) -> 
 | 用途 | 执行 transform 函数 | 执行任意分析代码 |
 | 输入传递 | stdin (JSON) | 脚本内 JSON 字面量 |
 | 输出 | JSON 网格 | stdout 文本 |
-| 预注入变量 | 无 | `train_inputs`, `train_outputs`, `test_input` |
+| 预注入变量 | 无 | `train_inputs`, `train_outputs`, `test_inputs` |
 | 输出截断 | 无 | 5000 字符 |

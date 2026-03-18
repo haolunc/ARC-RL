@@ -8,17 +8,29 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 from datetime import datetime
 from pathlib import Path
 
-from .config import load_config
-from .prompt import build_initial_messages, build_agentic_messages, append_retry
-from .llm_client import init_client, call_llm
+from .config import load_config, EXEC_TIMEOUT, MAX_TOOL_CALLS, TEMPERATURE, _DATA_DIR_TEMPLATE
+from .prompt import build_messages
+from openai import OpenAI
+from .llm_client import solve
 from .code_extract import extract_code, extract_thinking
 from .safe_exec import execute_transform
-from .evaluate import compare_grids, verify_on_train, format_wrong_output_msg
-from .tools import TOOL_DEFINITIONS, execute_tool
+from .evaluate import compare_grids
+from .tools import TOOL_DEFINITION, extract_tool_code, run_python_tool
 from .db import ResultDB
 
-# Global print lock to prevent interleaved output from parallel tasks
 _print_lock = threading.Lock()
+
+
+def _safe_json_dumps(obj):
+    """Serialize to JSON, converting non-serializable API objects to dicts."""
+    def _default(o):
+        # Handle raw API response objects
+        if hasattr(o, "model_dump"):
+            return o.model_dump()
+        if hasattr(o, "__dict__"):
+            return {k: v for k, v in o.__dict__.items() if not k.startswith("_")}
+        return str(o)
+    return json.dumps(obj, ensure_ascii=False, default=_default)
 
 
 def _tprint(task_id: str, msg: str):
@@ -37,17 +49,135 @@ def load_tasks(data_dir: str) -> dict[str, dict]:
     return tasks
 
 
-def _log_api_error(db, run_id, task_id, test_idx, step, messages, error):
-    db.insert_llm_call(run_id, task_id, test_idx, step,
-                       input_messages=json.dumps(messages, ensure_ascii=False),
-                       success=False, error_type="api_error", error_msg=str(error))
+def _log_solve_result(solve_result, db, run_id, task_id):
+    """Log all steps from a SolveResult to the database."""
+    for step_idx, step in enumerate(solve_result.steps, 1):
+        thinking = None
+        if step.llm_result.content:
+            thinking, _ = extract_thinking(step.llm_result.content)
+
+        llm_call_id = db.insert_llm_call(
+            run_id, task_id, 0, step_idx,
+            llm_result=step.llm_result,
+            input_messages=_safe_json_dumps(step.input_messages),
+            thinking=thinking,
+        )
+
+        for tc in step.tool_calls:
+            db.insert_tool_call(
+                llm_call_id, tc.index,
+                tool_call_id=tc.call_id,
+                tool_name=tc.tool_name,
+                tool_arguments=tc.arguments,
+                tool_output=tc.output,
+                duration_seconds=tc.duration_seconds,
+            )
 
 
-def _finalize_task(db, run_id, task_id, all_solved, passed_count, test_cases, start_time, last_code):
+def _make_tool_runner(task_context):
+    """Create a tool runner callback for solve()."""
+    def run_tool(tool_call):
+        code = extract_tool_code(tool_call)
+        result = run_python_tool(code, task_context)
+        output = result["output"]
+        return code, output
+    return run_tool
+
+
+def evaluate_task(
+    task_id: str,
+    task_data: dict,
+    mode: str,
+    python_path: str,
+    db: ResultDB,
+    run_id: str,
+    client: OpenAI,
+    model: str,
+) -> dict:
+    """Evaluate a single ARC task. One LLM session, validated against all test cases."""
+    train_examples = task_data["train"]
+    test_cases = task_data["test"]
+    start_time = time.time()
+    log = lambda msg: _tprint(task_id, msg)
+
+    test_inputs = [tc["input"] for tc in test_cases]
+
+    # Build prompt with ALL test inputs
+    input_msgs = build_messages(mode, train_examples, test_inputs)
+
+    task_context = {
+        "train_examples": train_examples,
+        "test_inputs": test_inputs,
+        "timeout": EXEC_TIMEOUT,
+        "python_path": python_path,
+    }
+
+    def _fail(code=None):
+        total_time = round(time.time() - start_time, 2)
+        db.upsert_task(run_id, task_id, mode=mode, solved=False,
+                       num_test_cases=len(test_cases), test_cases_passed=0,
+                       total_time_seconds=total_time, final_code=code)
+        return {"solved": False, "test_cases_passed": 0,
+                "num_test_cases": len(test_cases), "total_time_seconds": total_time}
+
+    # Solve with a single LLM session
+    try:
+        if mode == "sandbox_tools":
+            result = solve(
+                client, model, TEMPERATURE, input_msgs,
+                tools=[TOOL_DEFINITION], max_tool_calls=MAX_TOOL_CALLS,
+                run_tool_fn=_make_tool_runner(task_context), log=log)
+        else:
+            tools = [{"type": "code_interpreter"}] if mode == "native_tools" else None
+            result = solve(client, model, TEMPERATURE, input_msgs, tools=tools, log=log)
+    except RuntimeError as e:
+        log(f"API error: {e}")
+        db.insert_llm_call(
+            run_id, task_id, 0, 0,
+            input_messages=_safe_json_dumps(input_msgs),
+            success=False, error_type="api_error", error_msg=str(e))
+        return _fail()
+
+    # Log all LLM/tool calls to DB
+    _log_solve_result(result, db, run_id, task_id)
+
+    if not result.content:
+        log("FAIL: no response text")
+        return _fail()
+
+    # Extract ONE test_transform function
+    code = extract_code(result.content)
+    if code is None:
+        log("FAIL: could not extract test_transform function")
+        return _fail()
+
+    # Validate against ALL test cases
+    all_solved = True
+    passed_count = 0
+    for test_idx, test_case in enumerate(test_cases):
+        test_input = test_case["input"]
+        test_output = test_case["output"]
+        log(f"Validating test case {test_idx + 1}/{len(test_cases)}")
+
+        test_result = execute_transform(code, test_input, timeout=EXEC_TIMEOUT,
+                                        python_path=python_path)
+        if not test_result["success"]:
+            log(f"FAIL: execution error — {test_result['error'][:100]}")
+            all_solved = False
+            continue
+
+        cmp = compare_grids(test_result["output"], test_output)
+        if cmp["correct"]:
+            log("SOLVED!")
+            passed_count += 1
+        else:
+            log(f"FAIL: wrong output (cell acc: {cmp['cell_accuracy']:.1%})")
+            all_solved = False
+
     total_time = round(time.time() - start_time, 2)
-    db.upsert_task(run_id, task_id, solved=all_solved, num_test_cases=len(test_cases),
-                   test_cases_passed=passed_count, total_time_seconds=total_time,
-                   final_code=last_code)
+    db.upsert_task(run_id, task_id, mode=mode, solved=all_solved,
+                   num_test_cases=len(test_cases), test_cases_passed=passed_count,
+                   total_time_seconds=total_time, final_code=code)
     return {
         "solved": all_solved,
         "test_cases_passed": passed_count,
@@ -56,335 +186,37 @@ def _finalize_task(db, run_id, task_id, all_solved, passed_count, test_cases, st
     }
 
 
-def evaluate_task(
-    task_id: str,
-    task_data: dict,
-    max_retries: int,
-    timeout: int,
-    temperature: float,
-    python_path: str,
-    db: ResultDB,
-    run_id: str,
-) -> dict:
-    """Evaluate a single ARC task. Logs every attempt to SQLite immediately."""
-    train_examples = task_data["train"]
-    test_cases = task_data["test"]
-    start_time = time.time()
-
-    all_solved = True
-    passed_count = 0
-    last_code = None
-
-    log = lambda msg: _tprint(task_id, msg)
-
-    for test_idx, test_case in enumerate(test_cases):
-        test_input = test_case["input"]
-        test_output = test_case["output"]
-        log(f"Test case {test_idx + 1}/{len(test_cases)}")
-
-        # Build initial conversation
-        messages = build_initial_messages(train_examples, test_input)
-        solved = False
-
-        for attempt in range(1, max_retries + 1):
-            # Call LLM
-            num_msgs = len([m for m in messages if m["role"] != "system"])
-            log(f"[{attempt}/{max_retries}] Calling LLM ({num_msgs} messages in context)...")
-            try:
-                llm_result = call_llm(messages, temperature=temperature)
-            except RuntimeError as e:
-                _log_api_error(db, run_id, task_id, test_idx, attempt, messages, e)
-                log(f"[{attempt}/{max_retries}] API error: {e}")
-                break
-
-            response = llm_result.content
-            log(f"[{attempt}/{max_retries}] LLM responded "
-                f"({llm_result.duration_seconds:.0f}s, {len(response)} chars, "
-                f"{llm_result.input_tokens or '?'} in / {llm_result.output_tokens or '?'} out)")
-
-            # Extract thinking content for logging
-            thinking, _ = extract_thinking(response)
-            input_messages_json = json.dumps(messages, ensure_ascii=False)
-
-            # Extract code
-            code = extract_code(response)
-            if code is None:
-                error_msg = (
-                    "Could not extract a valid Python function from your response. "
-                    "Please write a `def transform(input_grid)` function inside a "
-                    "```python code block."
-                )
-                db.insert_llm_call(
-                    run_id, task_id, test_idx, attempt,
-                    llm_result=llm_result, input_messages=input_messages_json,
-                    thinking=thinking,
-                    error_type="extraction_failed", error_msg=error_msg,
-                )
-                messages = append_retry(messages, response, error_msg)
-                log(f"[{attempt}/{max_retries}] FAIL: code extraction failed")
-                continue
-
-            last_code = code
-
-            # Verify on training examples
-            train_result = verify_on_train(
-                code, train_examples, execute_transform, timeout,
-                python_path=python_path,
-            )
-
-            if not train_result["passed"]:
-                error_msg = train_result["error_msg"]
-                db.insert_llm_call(
-                    run_id, task_id, test_idx, attempt,
-                    llm_result=llm_result, input_messages=input_messages_json,
-                    thinking=thinking, extracted_code=code,
-                    train_pass=False, error_type="train_fail", error_msg=error_msg,
-                )
-                messages = append_retry(messages, response, error_msg)
-                log(f"[{attempt}/{max_retries}] FAIL: train verification failed")
-                continue
-
-            # Run on test input
-            test_result = execute_transform(code, test_input, timeout=timeout,
-                                            python_path=python_path)
-            if not test_result["success"]:
-                error_msg = f"Error on test input:\n{test_result['error']}"
-                db.insert_llm_call(
-                    run_id, task_id, test_idx, attempt,
-                    llm_result=llm_result, input_messages=input_messages_json,
-                    thinking=thinking, extracted_code=code,
-                    train_pass=True, error_type="test_exec_error", error_msg=error_msg,
-                )
-                messages = append_retry(messages, response, error_msg)
-                log(f"[{attempt}/{max_retries}] FAIL: test execution error")
-                continue
-
-            # Compare with expected
-            cmp = compare_grids(test_result["output"], test_output)
-
-            if cmp["correct"]:
-                solved = True
-                db.insert_llm_call(
-                    run_id, task_id, test_idx, attempt,
-                    llm_result=llm_result, input_messages=input_messages_json,
-                    thinking=thinking, extracted_code=code,
-                    train_pass=True, test_correct=True, cell_accuracy=1.0,
-                )
-                log(f"[{attempt}/{max_retries}] SOLVED!")
-                break
-            else:
-                # Restricted feedback: no expected vs actual for test
-                feedback_msg = "Your code produced incorrect output for the test input."
-                detail_msg = format_wrong_output_msg(
-                    "test input", test_output, test_result["output"], cmp
-                )
-                db.insert_llm_call(
-                    run_id, task_id, test_idx, attempt,
-                    llm_result=llm_result, input_messages=input_messages_json,
-                    thinking=thinking, extracted_code=code,
-                    train_pass=True, test_correct=False,
-                    cell_accuracy=cmp["cell_accuracy"],
-                    error_type="wrong_output", error_msg=detail_msg,
-                )
-                messages = append_retry(messages, response, feedback_msg)
-                log(f"[{attempt}/{max_retries}] FAIL: wrong output (cell acc: {cmp['cell_accuracy']:.1%})")
-
-        if solved:
-            passed_count += 1
-        else:
-            all_solved = False
-
-    return _finalize_task(db, run_id, task_id, all_solved, passed_count, test_cases, start_time, last_code)
-
-
-def _serialize_assistant_msg(llm_result) -> dict:
-    """Convert an LLMResponse to a serializable dict for message history."""
-    d = {"role": "assistant"}
-    if llm_result.content:
-        d["content"] = llm_result.content
-    if llm_result.tool_calls:
-        d["tool_calls"] = [
-            {
-                "id": tc.id,
-                "type": "function",
-                "function": {
-                    "name": tc.function.name,
-                    "arguments": tc.function.arguments,
-                },
-            }
-            for tc in llm_result.tool_calls
-        ]
-    return d
-
-
-def evaluate_task_agentic(
-    task_id: str,
-    task_data: dict,
-    max_steps: int,
-    timeout: int,
-    temperature: float,
-    python_path: str,
-    db: ResultDB,
-    run_id: str,
-) -> dict:
-    """Agentic evaluation: LLM uses tools to explore, test, and submit."""
-    train_examples = task_data["train"]
-    test_cases = task_data["test"]
-    start_time = time.time()
-
-    all_solved = True
-    passed_count = 0
-    last_code = None
-
-    log = lambda msg: _tprint(task_id, msg)
-
-    for test_idx, test_case in enumerate(test_cases):
-        test_input = test_case["input"]
-        test_output = test_case["output"]
-        log(f"Test case {test_idx + 1}/{len(test_cases)}")
-
-        task_context = {
-            "train_examples": train_examples,
-            "test_input": test_input,
-            "test_output": test_output,
-            "timeout": timeout,
-            "python_path": python_path,
-        }
-
-        messages = build_agentic_messages(train_examples, test_input)
-        solved = False
-
-        for step in range(1, max_steps + 1):
-            log(f"[step {step}/{max_steps}] Calling LLM...")
-            try:
-                llm_result = call_llm(
-                    messages, tools=TOOL_DEFINITIONS, temperature=temperature
-                )
-            except RuntimeError as e:
-                _log_api_error(db, run_id, task_id, test_idx, step, messages, e)
-                log(f"[step {step}/{max_steps}] API error: {e}")
-                break
-
-            # Extract thinking from content
-            thinking = None
-            if llm_result.content:
-                thinking, _ = extract_thinking(llm_result.content)
-
-            # Insert one llm_calls row for this step
-            llm_call_id = db.insert_llm_call(
-                run_id, task_id, test_idx, step,
-                llm_result=llm_result,
-                input_messages=json.dumps(messages, ensure_ascii=False),
-                thinking=thinking,
-            )
-
-            # Append assistant message to history
-            messages.append(_serialize_assistant_msg(llm_result))
-
-            if llm_result.tool_calls:
-                n_tools = len(llm_result.tool_calls)
-                log(f"[step {step}/{max_steps}] LLM made {n_tools} tool call(s) "
-                    f"({llm_result.duration_seconds:.0f}s, "
-                    f"{llm_result.input_tokens or '?'} in / {llm_result.output_tokens or '?'} out)")
-
-                for tc_idx, tc in enumerate(llm_result.tool_calls):
-                    tool_name = tc.function.name
-                    try:
-                        tool_args = json.loads(tc.function.arguments)
-                    except json.JSONDecodeError:
-                        tool_args = {"code": tc.function.arguments}
-
-                    log(f"  -> {tool_name}")
-                    t_tool = time.time()
-                    result = execute_tool(tool_name, tool_args, task_context)
-                    tool_duration = time.time() - t_tool
-
-                    # Append tool result to messages
-                    messages.append({
-                        "role": "tool",
-                        "tool_call_id": tc.id,
-                        "content": result["output"],
-                    })
-
-                    # Log tool call to DB
-                    is_submit = tool_name == "submit_transform"
-                    db.insert_tool_call(
-                        llm_call_id, tc_idx,
-                        tool_call_id=tc.id,
-                        tool_name=tool_name,
-                        tool_arguments=tc.function.arguments,
-                        tool_output=result["output"],
-                        extracted_code=result.get("extracted_code"),
-                        test_correct=result["solved"] if is_submit else None,
-                        duration_seconds=round(tool_duration, 3),
-                    )
-
-                    if is_submit and result["solved"]:
-                        last_code = result["extracted_code"]
-                        solved = True
-                        log(f"[step {step}/{max_steps}] SOLVED!")
-                        break
-
-                if solved:
-                    break
-
-                if result.get("extracted_code"):
-                    last_code = result["extracted_code"]
-            else:
-                # Text-only response (thinking aloud)
-                content_preview = (llm_result.content or "")[:80]
-                log(f"[step {step}/{max_steps}] Text response "
-                    f"({llm_result.duration_seconds:.0f}s): {content_preview}...")
-
-        if solved:
-            passed_count += 1
-        else:
-            all_solved = False
-
-    return _finalize_task(db, run_id, task_id, all_solved, passed_count, test_cases, start_time, last_code)
-
-
 def main():
     parser = argparse.ArgumentParser(description="ARC-AGI LLM Evaluation Pipeline")
-    parser.add_argument(
-        "config", type=str,
-        help="Path to config YAML file",
-    )
+    parser.add_argument("config", type=str, help="Path to config YAML file")
     args = parser.parse_args()
 
-    # Load config
     cfg = load_config(args.config)
     project_root = Path(__file__).resolve().parent.parent.parent
 
     # Initialize LLM client
     ep = cfg["endpoint"]
-    init_client(
+    ev = cfg["eval"]
+    client = OpenAI(
         base_url=ep["base_url"],
         api_key=ep["api_key"],
-        model=ep["model"],
-        temperature=ep["temperature"],
-        timeout=float(ep["llm_timeout"]),
+        timeout=float(ev["llm_timeout"]),
     )
+    model = ep["model"]
 
     python_path = cfg["python_path"]
-    temperature = ep["temperature"]
+    mode = ev["mode"]
+    max_workers = ev.get("max_workers", 1)
 
-    dataset = cfg["data"]["dataset"]
     split = cfg["data"]["split"]
-    mode = cfg["eval"]["mode"]
-    max_retries = cfg["eval"]["max_retries"]
-    max_steps = cfg["eval"]["max_steps"]
-    timeout = cfg["eval"]["timeout"]
-    max_workers = cfg["eval"].get("max_workers", 4)
     max_tasks = cfg["data"].get("max_tasks")
     cfg_task_ids = cfg["data"].get("task_ids")
 
     # Resolve data directory
-    data_dir = project_root / cfg["datasets"][dataset][split]
+    data_dir = project_root / _DATA_DIR_TEMPLATE.format(split=split)
     if not data_dir.exists():
         print(f"Error: Data directory not found: {data_dir}")
-        print("Run: git clone --depth 1 https://github.com/fchollet/ARC-AGI.git")
-        print("     git clone --depth 1 https://github.com/arcprize/ARC-AGI-2.git")
+        print("Run: git clone --depth 1 https://github.com/arcprize/ARC-AGI-2.git")
         return
 
     all_tasks = load_tasks(str(data_dir))
@@ -413,20 +245,15 @@ def main():
     remaining = {tid: td for tid, td in tasks.items() if tid not in done}
 
     print(f"=== ARC-AGI Evaluation ===")
-    print(f"Run name:    {run_name}")
-    print(f"Mode:        {mode}")
-    print(f"Dataset:     {dataset} / {split}")
-    print(f"Total tasks: {len(tasks)}")
+    print(f"Run name:       {run_name}")
+    print(f"Mode:           {mode}")
+    print(f"Endpoint:       {ep['name']} ({ep['model']})")
+    print(f"Split:          {split}")
+    print(f"Total tasks:    {len(tasks)}")
     if done:
-        print(f"Resuming:    {len(done)} already done, {len(remaining)} remaining")
-    if mode == "agentic":
-        print(f"Max steps:   {max_steps}")
-    else:
-        print(f"Max retries: {max_retries}")
-    print(f"Timeout:     {timeout}s")
-    print(f"Temperature: {temperature}")
-    print(f"Workers:     {max_workers}")
-    print(f"Results DB:  {db_path}")
+        print(f"Resuming:       {len(done)} already done, {len(remaining)} remaining")
+    print(f"Workers:        {max_workers}")
+    print(f"Results DB:     {db_path}")
     print()
 
     # Evaluate
@@ -437,16 +264,10 @@ def main():
         n_test = len(task_data["test"])
         n_train = len(task_data["train"])
         _tprint(task_id, f"START ({n_train} train, {n_test} test)")
-        if mode == "agentic":
-            result = evaluate_task_agentic(
-                task_id, task_data, max_steps, timeout,
-                temperature, python_path, db, run_name,
-            )
-        else:
-            result = evaluate_task(
-                task_id, task_data, max_retries, timeout,
-                temperature, python_path, db, run_name,
-            )
+        result = evaluate_task(
+            task_id, task_data, mode,
+            python_path, db, run_name, client, model,
+        )
         with counter_lock:
             solved_counter["total"] += 1
             if result["solved"]:
@@ -474,13 +295,14 @@ def main():
 
     # Print summary
     summary = db.get_summary(run_name)
-    print(f"=== Summary ===")
+    print(f"\n=== Summary ===")
     print(f"Tasks evaluated: {summary['tasks_evaluated']}")
     print(f"Tasks solved:    {summary['tasks_solved']} ({summary['solve_rate']:.1%})")
     print(f"Test cases:      {summary['test_cases_passed']}/{summary['total_test_cases']}")
     print(f"LLM calls:       {summary['total_llm_calls']}")
     print(f"Tokens:          {summary['total_input_tokens']} in / {summary['total_output_tokens']} out"
-          + (f" ({summary['total_cached_tokens']} cached)" if summary['total_cached_tokens'] else ""))
+          + (f" ({summary['total_cached_tokens']} cached)" if summary['total_cached_tokens'] else "")
+          + (f" ({summary['total_reasoning_tokens']} reasoning)" if summary['total_reasoning_tokens'] else ""))
     print(f"LLM time:        {summary['total_llm_duration_seconds']:.1f}s")
     print(f"Results DB:      {db_path}")
 
