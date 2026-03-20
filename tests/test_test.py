@@ -1,6 +1,6 @@
 """Tests for arc.eval.test — code extraction and grid comparison."""
 
-from arc.eval.test import extract_code, compare_grids
+from arc.eval.test import extract_code, compare_grids, run_tests
 
 
 # --- extract_code tests ---
@@ -134,3 +134,52 @@ def test_compare_grids_all_wrong():
 def test_compare_grids_single_cell():
     assert compare_grids([[5]], [[5]])["correct"] is True
     assert compare_grids([[5]], [[0]])["correct"] is False
+
+
+# --- run_tests tests ---
+
+_CORRECT_8D5021E8 = """\
+def test_transform(input_grid):
+    mirrored = [row[::-1] + row for row in input_grid]
+    return mirrored * 3
+"""
+
+_WRONG_CODE = """\
+def test_transform(input_grid):
+    return [[0]]
+"""
+
+_ERROR_CODE = """\
+def test_transform(input_grid):
+    raise ValueError("oops")
+"""
+
+
+def test_run_tests_correct_answer(python_path, puzzle_8d5021e8):
+    result = run_tests(_CORRECT_8D5021E8, puzzle_8d5021e8["test"], python_path)
+    assert result["status"] == "success"
+    assert result["passed"] == 1
+    assert result["total"] == 1
+    assert result["correct"] is True
+
+
+def test_run_tests_wrong_answer(python_path, puzzle_8d5021e8):
+    result = run_tests(_WRONG_CODE, puzzle_8d5021e8["test"], python_path)
+    assert result["status"] == "wrong_answer"
+    assert result["passed"] == 0
+    assert result["correct"] is False
+
+
+def test_run_tests_runtime_error(python_path, puzzle_8d5021e8):
+    result = run_tests(_ERROR_CODE, puzzle_8d5021e8["test"], python_path)
+    assert result["status"] == "error_exec"
+
+
+def test_run_tests_json_parse_failure(python_path, puzzle_8d5021e8):
+    bad_code = """\
+def test_transform(input_grid):
+    print("extra garbage")
+    return input_grid
+"""
+    result = run_tests(bad_code, puzzle_8d5021e8["test"], python_path)
+    assert result["status"] == "error_exec"
