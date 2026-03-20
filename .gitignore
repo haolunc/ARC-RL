@@ -10,3 +10,4 @@ CLAUDE.md
 results/
 sh/
 .pytest_cache
+tests/api_output/
