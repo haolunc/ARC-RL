@@ -28,6 +28,18 @@ python -m arc.eval.run config.yaml
 
 Results are stored in `results/<run_name>/results.db` (SQLite). Set `run_name` in config to resume a previous run — completed tasks are automatically skipped.
 
+## Testing
+
+Tests read `python_path` and endpoint settings from `config.yaml`, so set that up first (see Setup above).
+
+```bash
+# Run all unit tests (no API calls)
+python -m pytest tests/ -v -m "not api"
+
+# Run API tests (calls live LLM endpoint from config.yaml)
+python -m pytest tests/ -v -m api
+```
+
 ## Project Structure
 
 ```

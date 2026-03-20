@@ -3,22 +3,47 @@ from pathlib import Path
 
 import pytest
 
-PUZZLE_DIR = Path(__file__).parent.parent / "ARC-AGI-2" / "data" / "training"
-PYTHON_PATH = "/opt/homebrew/Caskroom/miniforge/base/envs/arc/bin/python"
+_ROOT = Path(__file__).parent.parent
+_PUZZLE_DIR = _ROOT / "ARC-AGI-2" / "data" / "training"
+_CONFIG_PATH = _ROOT / "config.yaml"
 
 
-@pytest.fixture
-def python_path():
-    return PYTHON_PATH
+def _load_cfg():
+    if not _CONFIG_PATH.exists():
+        pytest.skip("config.yaml not found — copy config.yaml.example and edit")
+    from arc.eval.config import load_config
+    return load_config(str(_CONFIG_PATH))
+
+
+@pytest.fixture(scope="session")
+def cfg():
+    return _load_cfg()
+
+
+@pytest.fixture(scope="session")
+def python_path(cfg):
+    return cfg["python_path"]
+
+
+@pytest.fixture(scope="session")
+def qwen_client(cfg):
+    from openai import OpenAI
+    ep = cfg["endpoint"]
+    ev = cfg["eval"]
+    return OpenAI(
+        base_url=ep["base_url"],
+        api_key=ep["api_key"],
+        timeout=float(ev.get("llm_timeout", 180)),
+    )
 
 
 @pytest.fixture
 def puzzle_8d5021e8():
-    with open(PUZZLE_DIR / "8d5021e8.json") as f:
+    with open(_PUZZLE_DIR / "8d5021e8.json") as f:
         return json.load(f)
 
 
 @pytest.fixture
 def puzzle_992798f6():
-    with open(PUZZLE_DIR / "992798f6.json") as f:
+    with open(_PUZZLE_DIR / "992798f6.json") as f:
         return json.load(f)
