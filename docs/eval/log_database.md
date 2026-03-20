@@ -12,8 +12,7 @@ CREATE TABLE IF NOT EXISTS results (
     run_name        TEXT    NOT NULL,
     task_id         TEXT    NOT NULL,
     mode            TEXT    NOT NULL,       -- sandbox_tools | direct
-    model           TEXT    NOT NULL,
-    endpoint_name   TEXT    NOT NULL,
+    endpoint_name   TEXT    NOT NULL,       -- model 从 endpoint.yaml 查
     status          TEXT    NOT NULL,       -- success | error_llm | error_extract | error_exec | wrong_answer
     raw_response    TEXT,                   -- LLM 完整文本输出
     extracted_code  TEXT,                   -- 提取出的 test_transform 代码

@@ -11,3 +11,6 @@ dependencies = [
 
 [project.optional-dependencies]
 dev = ["pytest"]
+
+[tool.pytest.ini_options]
+markers = ["api: marks tests that call live LLM APIs (deselect with '-m not api')"]
