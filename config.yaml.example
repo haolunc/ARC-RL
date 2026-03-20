@@ -1,0 +1,14 @@
+python_path: "/opt/homebrew/Caskroom/miniforge/base/envs/arc/bin/python"
+
+endpoint: qwen_official          # name from endpoint.yaml
+
+data:
+  split: training                # training or evaluation
+  task_ids: null                 # null = all tasks, or ["task_id_1", "task_id_2"]
+  max_tasks: null                # null = no limit
+
+eval:
+  mode: "sandbox_tools"          # sandbox_tools | direct
+  max_workers: 4                 # parallel task evaluation (1 = sequential)
+  llm_timeout: 180               # LLM API request timeout (seconds)
+  run_name: null                 # null = auto timestamp, or "my_experiment"

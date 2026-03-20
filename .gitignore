@@ -1,0 +1,12 @@
+.env
+config.yaml
+endpoint.yaml
+__pycache__/
+*.pyc
+*.egg-info/
+docs_ref/
+CLAUDE.md
+.claude/
+results/
+sh/
+.pytest_cache
