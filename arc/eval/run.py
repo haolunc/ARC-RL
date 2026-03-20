@@ -67,6 +67,7 @@ def evaluate_single_task(task_id, task_data, client, cfg, db, log_db):
             "test_passed": test_result["passed"],
             "test_total": test_result["total"],
             "correct": 1 if test_result["correct"] else 0,
+            "test_details": json.dumps(test_result["details"]),
             "error_message": None,
         })
         db.save_result(base_result)

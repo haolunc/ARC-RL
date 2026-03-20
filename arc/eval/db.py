@@ -14,6 +14,7 @@ CREATE TABLE IF NOT EXISTS results (
     token_usage     TEXT,
     tool_rounds     INTEGER DEFAULT 0,
     duration_s      REAL,
+    test_details    TEXT,
     error_message   TEXT,
     created_at      TEXT    DEFAULT (datetime('now'))
 );
@@ -21,7 +22,7 @@ CREATE TABLE IF NOT EXISTS results (
 
 _COLUMNS = [
     "task_id", "status", "test_passed", "test_total", "correct",
-    "token_usage", "tool_rounds", "duration_s", "error_message",
+    "token_usage", "tool_rounds", "duration_s", "test_details", "error_message",
 ]
 
 
