@@ -6,13 +6,8 @@ from pathlib import Path
 
 _CREATE_TABLE = """
 CREATE TABLE IF NOT EXISTS results (
-    run_name        TEXT    NOT NULL,
-    task_id         TEXT    NOT NULL,
-    mode            TEXT    NOT NULL,
-    endpoint_name   TEXT    NOT NULL,
+    task_id         TEXT    PRIMARY KEY,
     status          TEXT    NOT NULL,
-    raw_response    TEXT,
-    extracted_code  TEXT,
     test_passed     INTEGER DEFAULT 0,
     test_total      INTEGER DEFAULT 0,
     correct         INTEGER DEFAULT 0,
@@ -20,14 +15,12 @@ CREATE TABLE IF NOT EXISTS results (
     tool_rounds     INTEGER DEFAULT 0,
     duration_s      REAL,
     error_message   TEXT,
-    created_at      TEXT    DEFAULT (datetime('now')),
-    PRIMARY KEY (run_name, task_id)
+    created_at      TEXT    DEFAULT (datetime('now'))
 );
 """
 
 _COLUMNS = [
-    "run_name", "task_id", "mode", "endpoint_name", "status",
-    "raw_response", "extracted_code", "test_passed", "test_total", "correct",
+    "task_id", "status", "test_passed", "test_total", "correct",
     "token_usage", "tool_rounds", "duration_s", "error_message",
 ]
 
@@ -48,17 +41,13 @@ class ResultDB:
         )
         self.conn.commit()
 
-    def get_completed_task_ids(self, run_name: str) -> set[str]:
-        cursor = self.conn.execute(
-            "SELECT task_id FROM results WHERE run_name = ?", (run_name,)
-        )
+    def get_completed_task_ids(self) -> set[str]:
+        cursor = self.conn.execute("SELECT task_id FROM results")
         return {row[0] for row in cursor.fetchall()}
 
-    def get_run_summary(self, run_name: str) -> dict:
+    def get_run_summary(self) -> dict:
         self.conn.row_factory = sqlite3.Row
-        rows = self.conn.execute(
-            "SELECT * FROM results WHERE run_name = ?", (run_name,)
-        ).fetchall()
+        rows = self.conn.execute("SELECT * FROM results").fetchall()
         self.conn.row_factory = None
 
         if not rows:
@@ -92,3 +81,30 @@ class ResultDB:
             "avg_duration_s": avg_duration,
             "total_tokens": total_tokens,
         }
+
+
+_CREATE_LOG_TABLE = """
+CREATE TABLE IF NOT EXISTS logs (
+    task_id         TEXT    PRIMARY KEY,
+    text            TEXT,
+    extracted_code  TEXT,
+    raw_responses   TEXT,
+    created_at      TEXT    DEFAULT (datetime('now'))
+);
+"""
+
+
+class LogDB:
+    def __init__(self, db_path: Path):
+        self.conn = sqlite3.connect(str(db_path))
+        self.conn.execute(_CREATE_LOG_TABLE)
+        self.conn.commit()
+
+    def save_log(self, task_id: str, text: str | None, extracted_code: str | None,
+                 raw_responses: list[dict] | None):
+        self.conn.execute(
+            "INSERT OR REPLACE INTO logs (task_id, text, extracted_code, raw_responses)"
+            " VALUES (?, ?, ?, ?)",
+            (task_id, text, extracted_code, json.dumps(raw_responses) if raw_responses else None),
+        )
+        self.conn.commit()

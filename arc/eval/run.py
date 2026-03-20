@@ -10,7 +10,7 @@ from pathlib import Path
 from openai import OpenAI
 
 from arc.eval.config import load_config, _DATA_DIR_TEMPLATE
-from arc.eval.db import ResultDB
+from arc.eval.db import ResultDB, LogDB
 from arc.eval.llm import call_llm
 from arc.eval.prompt import build_messages
 from arc.eval.test import run_tests
@@ -28,60 +28,54 @@ def load_tasks(data_dir: str) -> dict[str, dict]:
     return tasks
 
 
-def evaluate_single_task(task_id, task_data, client, cfg, db, run_name):
+def evaluate_single_task(task_id, task_data, client, cfg, db, log_db):
     """Evaluate a single ARC task: prompt -> LLM -> test -> DB."""
     start = time.time()
-    mode = cfg["eval"]["mode"]
-    endpoint_name = cfg["endpoint"]["name"]
-
-    base_result = {
-        "run_name": run_name,
-        "task_id": task_id,
-        "mode": mode,
-        "endpoint_name": endpoint_name,
-    }
+    base_result = {"task_id": task_id}
+    text = None
+    extracted_code = None
+    raw_responses = None
 
     try:
         messages = build_messages(task_data["train"], [tc["input"] for tc in task_data["test"]])
         llm_result = call_llm(client, cfg, messages)
+        text = llm_result.text
+        extracted_code = llm_result.extracted_code
+        raw_responses = llm_result.raw_responses
 
         base_result.update({
-            "raw_response": llm_result.text,
             "token_usage": json.dumps(llm_result.usage),
             "tool_rounds": llm_result.tool_rounds,
             "duration_s": time.time() - start,
         })
 
-        code = llm_result.extracted_code
-        if code is None:
+        if extracted_code is None:
             base_result.update({
                 "status": "error_extract",
-                "extracted_code": None,
                 "test_passed": 0, "test_total": len(task_data["test"]),
                 "correct": 0,
                 "error_message": "No test_transform function found in LLM output",
             })
             db.save_result(base_result)
+            log_db.save_log(task_id, text, None, raw_responses)
             return base_result
 
-        test_result = run_tests(code, task_data["test"], cfg["python_path"])
+        test_result = run_tests(extracted_code, task_data["test"], cfg["python_path"])
 
         base_result.update({
             "status": test_result["status"],
-            "extracted_code": code,
             "test_passed": test_result["passed"],
             "test_total": test_result["total"],
             "correct": 1 if test_result["correct"] else 0,
             "error_message": None,
         })
         db.save_result(base_result)
+        log_db.save_log(task_id, text, extracted_code, raw_responses)
         return base_result
 
     except Exception as e:
         base_result.update({
             "status": "error_llm",
-            "raw_response": base_result.get("raw_response"),
-            "extracted_code": None,
             "test_passed": 0, "test_total": 0,
             "correct": 0,
             "token_usage": base_result.get("token_usage"),
@@ -90,6 +84,7 @@ def evaluate_single_task(task_id, task_data, client, cfg, db, run_name):
             "error_message": str(e),
         })
         db.save_result(base_result)
+        log_db.save_log(task_id, text, extracted_code, raw_responses)
         return base_result
 
 
@@ -130,8 +125,9 @@ def main():
     results_dir = project_root / "results" / run_name
     results_dir.mkdir(parents=True, exist_ok=True)
     db = ResultDB(results_dir / "results.db")
+    log_db = LogDB(results_dir / "logs.db")
 
-    done = db.get_completed_task_ids(run_name)
+    done = db.get_completed_task_ids()
     remaining = {tid: td for tid, td in tasks.items() if tid not in done}
 
     print(f"Run: {run_name} | Mode: {mode} | Tasks: {len(remaining)}/{len(tasks)} remaining")
@@ -139,7 +135,7 @@ def main():
     completed = 0
     with ThreadPoolExecutor(max_workers=max_workers) as pool:
         futures = {
-            pool.submit(evaluate_single_task, tid, td, client, cfg, db, run_name): tid
+            pool.submit(evaluate_single_task, tid, td, client, cfg, db, log_db): tid
             for tid, td in remaining.items()
         }
         for future in as_completed(futures):
@@ -149,7 +145,7 @@ def main():
             status = result["status"]
             print(f"[{completed}/{len(remaining)}] {tid}: {status}")
 
-    summary = db.get_run_summary(run_name)
+    summary = db.get_run_summary()
     print(f"\nDone. Accuracy: {summary['correct']}/{summary['total']} ({summary['accuracy']:.1%})")
 
 
