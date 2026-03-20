@@ -1,14 +1,6 @@
 """Prompt constants and message building for ARC evaluation."""
 
 
-TOOL_CALL_INSTRUCTION = (
-    "You have access to a Python code interpreter. "
-    "You are encouraged to write Python code to explore and verify your ideas — "
-    "for example: convolution-like operations, spatial relationship detection, "
-    "color frequency analysis, symmetry checks, etc. "
-    "Don't just think — actively write code to experiment."
-)
-
 _BASE_PROMPT = """\
 You are an expert puzzle solver and Python programmer specializing in ARC (Abstraction and Reasoning Corpus) tasks.
 
@@ -28,7 +20,12 @@ Rules:
 - The output grid dimensions may differ from the input."""
 
 SANDBOX_TOOLS_INSTRUCTION = _BASE_PROMPT + """
-You have a tool to execute code and analyze grids with a limited number of calls. Use it efficiently:
+You have access to a Python code interpreter. \
+You are encouraged to write Python code to explore and verify your ideas — \
+for example: convolution-like operations, spatial relationship detection, \
+color frequency analysis, symmetry checks, etc. \
+Don't just think — actively write code to experiment.
+You have a limited number of calls. Use them efficiently:
 - Combine multiple analyses into a single code block instead of splitting across many calls.
 - Double-check variable names and code correctness before running — wasted calls cannot be recovered.
 When you are confident in the rule, output your final `test_transform` function in a ```python code block."""

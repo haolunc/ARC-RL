@@ -5,12 +5,12 @@ import pytest
 
 _ROOT = Path(__file__).parent.parent
 _PUZZLE_DIR = _ROOT / "ARC-AGI-2" / "data" / "training"
-_CONFIG_PATH = _ROOT / "config.yaml"
+_CONFIG_PATH = _ROOT / "test_config.yaml"
 
 
 def _load_cfg():
     if not _CONFIG_PATH.exists():
-        pytest.skip("config.yaml not found — copy config.yaml.example and edit")
+        pytest.skip("test_config.yaml not found — copy config.yaml.example to test_config.yaml and edit")
     from arc.eval.config import load_config
     return load_config(str(_CONFIG_PATH))
 
@@ -46,4 +46,10 @@ def puzzle_8d5021e8():
 @pytest.fixture
 def puzzle_992798f6():
     with open(_PUZZLE_DIR / "992798f6.json") as f:
+        return json.load(f)
+
+
+@pytest.fixture
+def puzzle_8dab14c2():
+    with open(_PUZZLE_DIR / "8dab14c2.json") as f:
         return json.load(f)

@@ -13,7 +13,7 @@ from arc.eval.config import load_config, _DATA_DIR_TEMPLATE
 from arc.eval.db import ResultDB
 from arc.eval.llm import call_llm
 from arc.eval.prompt import build_messages
-from arc.eval.test import extract_code, run_tests
+from arc.eval.test import run_tests
 
 
 def load_tasks(data_dir: str) -> dict[str, dict]:
@@ -52,7 +52,7 @@ def evaluate_single_task(task_id, task_data, client, cfg, db, run_name):
             "duration_s": time.time() - start,
         })
 
-        code = extract_code(llm_result.text)
+        code = llm_result.extracted_code
         if code is None:
             base_result.update({
                 "status": "error_extract",

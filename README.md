@@ -30,13 +30,18 @@ Results are stored in `results/<run_name>/results.db` (SQLite). Set `run_name` i
 
 ## Testing
 
-Tests read `python_path` and endpoint settings from `config.yaml`, so set that up first (see Setup above).
+Tests read `python_path` and endpoint settings from `test_config.yaml`, so create one first:
+
+```bash
+cp config.yaml.example test_config.yaml
+# Edit test_config.yaml with your settings
+```
 
 ```bash
 # Run all unit tests (no API calls)
 python -m pytest tests/ -v -m "not api"
 
-# Run API tests (calls live LLM endpoint from config.yaml)
+# Run API tests (calls live LLM endpoint from test_config.yaml)
 python -m pytest tests/ -v -m api
 ```
 

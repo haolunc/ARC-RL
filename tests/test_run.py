@@ -43,7 +43,7 @@ def test_evaluate_single_task_success(qwen_client, cfg, puzzle_8d5021e8, tmp_pat
 
 
 def test_evaluate_single_task_error_extract(cfg, puzzle_8d5021e8, tmp_path):
-    mock_result = LLMResult(text="no code here at all", usage={"input": 10, "output": 5, "reasoning": 0, "cached": 0}, tool_rounds=0)
+    mock_result = LLMResult(text="no code here at all", extracted_code=None, usage={"input": 10, "output": 5, "reasoning": 0, "cached": 0}, tool_rounds=0, raw_responses=[])
     db = ResultDB(tmp_path / "results.db")
     with patch("arc.eval.run.call_llm", return_value=mock_result):
         result = evaluate_single_task(

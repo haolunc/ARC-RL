@@ -68,6 +68,8 @@ def _save_result(name: str, result: LLMResult):
     out.write_text(result.text, encoding="utf-8")
     meta = _API_OUTPUT_DIR / f"{name}_meta.json"
     meta.write_text(json.dumps({"usage": result.usage, "tool_rounds": result.tool_rounds}, indent=2))
+    raw = _API_OUTPUT_DIR / f"{name}_raw.json"
+    raw.write_text(json.dumps(result.raw_responses, indent=2, default=str), encoding="utf-8")
 
 
 @pytest.mark.api

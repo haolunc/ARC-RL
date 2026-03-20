@@ -2,6 +2,7 @@
 
 import json
 import os
+import re
 import subprocess
 import tempfile
 import time
@@ -49,8 +50,10 @@ _TOOLS = [
 @dataclass
 class LLMResult:
     text: str
+    extracted_code: str | None
     usage: dict
     tool_rounds: int
+    raw_responses: list[dict]
 
 
 def execute_python(code: str, python_path: str, timeout: int = EXEC_TIMEOUT) -> dict:
@@ -85,15 +88,15 @@ def _serialize_output(output_items) -> str:
     """Serialize response output items into readable text (reasoning + message + tool calls)."""
     parts = []
     for item in output_items:
-        if item.type == "message":
+        if item.type == "reasoning":
+            summaries = getattr(item, "summary", None)
+            if summaries:
+                for s in summaries:
+                    text = getattr(s, "text", str(s))
+                    parts.append(f"[Reasoning]\n{text}")
+        elif item.type == "message":
             for content in item.content:
-                if hasattr(content, "type") and content.type == "reasoning":
-                    summaries = getattr(content, "summary", None)
-                    if summaries:
-                        for s in summaries:
-                            text = getattr(s, "text", str(s))
-                            parts.append(f"[Reasoning]\n{text}")
-                elif hasattr(content, "type") and content.type == "output_text":
+                if hasattr(content, "type") and content.type == "output_text":
                     parts.append(f"[Response]\n{content.text}")
         elif item.type == "function_call":
             try:
@@ -105,17 +108,6 @@ def _serialize_output(output_items) -> str:
     return "\n\n".join(parts)
 
 
-def _extract_text(response) -> str:
-    """Extract only output_text content (for code extraction)."""
-    parts = []
-    for item in response.output:
-        if item.type == "message":
-            for content in item.content:
-                if content.type == "output_text":
-                    parts.append(content.text)
-    return "\n".join(parts)
-
-
 def _usage_to_dict(usage) -> dict:
     return {
         "input": getattr(usage, "input_tokens", 0),
@@ -123,6 +115,20 @@ def _usage_to_dict(usage) -> dict:
         "reasoning": getattr(getattr(usage, "output_tokens_details", None), "reasoning_tokens", 0),
         "cached": getattr(getattr(usage, "input_tokens_details", None), "cached_tokens", 0),
     }
+
+
+def extract_code(text: str) -> str | None:
+    """Extract test_transform function from LLM text output.
+
+    Returns the code string, or None if no valid test_transform found.
+    """
+    matches = re.findall(r"```python\s*\n(.*?)```", text, re.DOTALL)
+    if not matches:
+        return None
+    for code in reversed(matches):
+        if "def test_transform" in code:
+            return code.strip()
+    return None
 
 
 def _api_call(client, **kwargs):
@@ -157,10 +163,13 @@ def call_llm(client, cfg: dict, messages: list[dict]) -> LLMResult:
             input=messages,
             temperature=TEMPERATURE,
         )
+        last_text = _serialize_output(response.output)
         return LLMResult(
-            text=_serialize_output(response.output),
+            text=last_text,
+            extracted_code=extract_code(last_text),
             usage=_usage_to_dict(response.usage),
             tool_rounds=0,
+            raw_responses=[response.model_dump()],
         )
 
     # sandbox_tools mode
@@ -168,6 +177,7 @@ def call_llm(client, cfg: dict, messages: list[dict]) -> LLMResult:
     total_usage = {"input": 0, "output": 0, "reasoning": 0, "cached": 0}
     tool_rounds = 0
     transcript_parts = []
+    raw_responses = []
 
     for round_num in range(MAX_TOOL_ROUNDS):
         remaining = MAX_TOOL_ROUNDS - round_num
@@ -187,11 +197,14 @@ def call_llm(client, cfg: dict, messages: list[dict]) -> LLMResult:
             parallel_tool_calls=True,
         )
 
+        raw_responses.append(response.model_dump())
+
         usage = _usage_to_dict(response.usage)
         for k in total_usage:
             total_usage[k] += usage[k]
 
-        transcript_parts.append(_serialize_output(response.output))
+        last_response_text = _serialize_output(response.output)
+        transcript_parts.append(last_response_text)
 
         input_list += response.output
 
@@ -221,12 +234,18 @@ def call_llm(client, cfg: dict, messages: list[dict]) -> LLMResult:
                 "call_id": tc.call_id,
                 "output": json.dumps(result, ensure_ascii=False),
             })
+
+        continue_msg = "Code execution results returned. Continue analyzing and solving the problem."
+        input_list.append({"role": "user", "content": continue_msg})
+        transcript_parts.append(f"[User]\n{continue_msg}")
     else:
         # Exhausted all rounds — still got tool calls on last round
         raise RuntimeError("exceeded max tool rounds")
 
     return LLMResult(
         text="\n\n".join(transcript_parts),
+        extracted_code=extract_code(last_response_text),
         usage=total_usage,
         tool_rounds=tool_rounds,
+        raw_responses=raw_responses,
     )
