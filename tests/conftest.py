@@ -5,7 +5,7 @@ import pytest
 
 _ROOT = Path(__file__).parent.parent
 _PUZZLE_DIR = _ROOT / "ARC-AGI-2" / "data" / "training"
-_CONFIG_PATH = _ROOT / "test_config.yaml"
+_CONFIG_PATH = _ROOT / "configs" / "test_config.yaml"
 
 
 def _load_cfg():

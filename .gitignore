@@ -1,6 +1,4 @@
 .env
-config.yaml
-test_config.yaml
 endpoint.yaml
 __pycache__/
 *.pyc
@@ -12,3 +10,4 @@ results/
 sh/
 .pytest_cache
 tests/api_output/
+configs/

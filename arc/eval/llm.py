@@ -54,6 +54,7 @@ class LLMResult:
     usage: dict
     tool_rounds: int
     raw_responses: list[dict]
+    error: str | None = None
 
 
 def execute_python(code: str, python_path: str, timeout: int = EXEC_TIMEOUT) -> dict:
@@ -89,9 +90,11 @@ def _serialize_output(output_items) -> str:
     parts = []
     for item in output_items:
         if item.type == "reasoning":
-            summaries = getattr(item, "summary", None)
-            if summaries:
-                for s in summaries:
+            # Qwen official: reasoning in summary (summary_text)
+            # vLLM: reasoning in content (reasoning_text)
+            entries = getattr(item, "summary", None) or getattr(item, "content", None)
+            if entries:
+                for s in entries:
                     text = getattr(s, "text", str(s))
                     parts.append(f"[Reasoning]\n{text}")
         elif item.type == "message":
@@ -131,7 +134,7 @@ def extract_code(text: str) -> str | None:
     return None
 
 
-def _api_call(client, **kwargs):
+def _api_call(client, task_id="", **kwargs):
     """Call client.responses.create with retry on transient errors."""
     for attempt in range(MAX_RETRIES + 1):
         try:
@@ -141,13 +144,15 @@ def _api_call(client, **kwargs):
             openai.APITimeoutError,
             openai.RateLimitError,
             openai.InternalServerError,
-        ):
+        ) as e:
             if attempt == MAX_RETRIES:
                 raise
-            time.sleep(BACKOFF_BASE ** (attempt + 1))
+            wait = BACKOFF_BASE ** (attempt + 1)
+            print(f"[{task_id}] API retry {attempt+1}/{MAX_RETRIES}: {type(e).__name__}, waiting {wait}s")
+            time.sleep(wait)
 
 
-def call_llm(client, cfg: dict, messages: list[dict]) -> LLMResult:
+def call_llm(client, cfg: dict, messages: list[dict], task_id: str, log_db=None) -> LLMResult:
     """Call LLM based on mode (sandbox_tools or direct). Returns LLMResult.
 
     text contains the full transcript: reasoning + response + tool calls + tool results.
@@ -156,18 +161,24 @@ def call_llm(client, cfg: dict, messages: list[dict]) -> LLMResult:
     mode = cfg["eval"]["mode"]
 
     if mode == "direct":
+        print(f"[{task_id}] Direct mode: calling API...")
         response = _api_call(
             client,
+            task_id=task_id,
             model=model,
             instructions=DIRECT_INSTRUCTION,
             input=messages,
             temperature=TEMPERATURE,
         )
+        usage = _usage_to_dict(response.usage)
+        print(f"[{task_id}] Direct mode: done (input={usage['input']}, output={usage['output']} tokens)")
         last_text = _serialize_output(response.output)
+        if log_db:
+            log_db.save_log(task_id, last_text, [response.model_dump()])
         return LLMResult(
             text=last_text,
             extracted_code=extract_code(last_text),
-            usage=_usage_to_dict(response.usage),
+            usage=usage,
             tool_rounds=0,
             raw_responses=[response.model_dump()],
         )
@@ -178,17 +189,27 @@ def call_llm(client, cfg: dict, messages: list[dict]) -> LLMResult:
     tool_rounds = 0
     transcript_parts = []
     raw_responses = []
+    error = None
 
     for round_num in range(MAX_TOOL_ROUNDS):
         remaining = MAX_TOOL_ROUNDS - round_num
 
-        if remaining <= 1:
-            input_list.append({"role": "user", "content": TOOL_CALL_FINAL})
-        elif remaining <= WARN_THRESHOLD:
-            input_list.append({"role": "user", "content": TOOL_CALL_WARNING.format(remaining=remaining)})
+        # All user-injected messages consolidated at loop start
+        continue_msg = "Code execution results returned. Continue analyzing and solving the problem."
+        if round_num > 0:
+            if remaining <= 1:
+                content = continue_msg + TOOL_CALL_FINAL
+                input_list.append({"role": "user", "content": content})
+                transcript_parts.append(f"[User]\n{content}")
+            elif remaining <= WARN_THRESHOLD:
+                content = continue_msg + TOOL_CALL_WARNING.format(remaining=remaining)
+                input_list.append({"role": "user", "content": content})
+                transcript_parts.append(f"[User]\n{content}")
 
+        print(f"[{task_id}] Round {round_num+1}/{MAX_TOOL_ROUNDS}: calling API...")
         response = _api_call(
             client,
+            task_id=task_id,
             model=model,
             instructions=SANDBOX_TOOLS_INSTRUCTION,
             input=input_list,
@@ -211,8 +232,10 @@ def call_llm(client, cfg: dict, messages: list[dict]) -> LLMResult:
         tool_calls = [item for item in response.output if item.type == "function_call"]
 
         if not tool_calls:
+            print(f"[{task_id}] Round {round_num+1}: no tool calls, finishing")
             break
 
+        print(f"[{task_id}] Round {round_num+1}: {len(tool_calls)} tool call(s), usage so far input={total_usage['input']} output={total_usage['output']}")
         tool_rounds += 1
 
         for tc in tool_calls:
@@ -221,6 +244,8 @@ def call_llm(client, cfg: dict, messages: list[dict]) -> LLMResult:
                 result = execute_python(args["code"], cfg["python_path"])
             except (json.JSONDecodeError, KeyError) as e:
                 result = {"stdout": "", "stderr": str(e), "exit_code": -1}
+
+            print(f"[{task_id}] Round {round_num+1}: tool exit_code={result['exit_code']}")
 
             tr_lines = [f"[Tool Result] exit_code={result['exit_code']}"]
             if result["stdout"]:
@@ -235,17 +260,19 @@ def call_llm(client, cfg: dict, messages: list[dict]) -> LLMResult:
                 "output": json.dumps(result, ensure_ascii=False),
             })
 
-        continue_msg = "Code execution results returned. Continue analyzing and solving the problem."
-        input_list.append({"role": "user", "content": continue_msg})
-        transcript_parts.append(f"[User]\n{continue_msg}")
     else:
-        # Exhausted all rounds — still got tool calls on last round
-        raise RuntimeError("exceeded max tool rounds")
+        error = "exceeded max tool rounds"
+        print(f"[{task_id}] Exceeded max tool rounds ({MAX_TOOL_ROUNDS})")
+
+    full_text = "\n\n".join(transcript_parts)
+    if log_db:
+        log_db.save_log(task_id, full_text, raw_responses)
 
     return LLMResult(
-        text="\n\n".join(transcript_parts),
-        extracted_code=extract_code(last_response_text),
+        text=full_text,
+        extracted_code=extract_code(full_text),
         usage=total_usage,
         tool_rounds=tool_rounds,
         raw_responses=raw_responses,
+        error=error,
     )

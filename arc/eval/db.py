@@ -15,6 +15,7 @@ CREATE TABLE IF NOT EXISTS results (
     tool_rounds     INTEGER DEFAULT 0,
     duration_s      REAL,
     test_details    TEXT,
+    extracted_code  TEXT,
     error_message   TEXT,
     created_at      TEXT    DEFAULT (datetime('now'))
 );
@@ -22,13 +23,14 @@ CREATE TABLE IF NOT EXISTS results (
 
 _COLUMNS = [
     "task_id", "status", "test_passed", "test_total", "correct",
-    "token_usage", "tool_rounds", "duration_s", "test_details", "error_message",
+    "token_usage", "tool_rounds", "duration_s", "test_details", "extracted_code", "error_message",
 ]
 
 
 class ResultDB:
     def __init__(self, db_path: Path):
-        self.conn = sqlite3.connect(str(db_path))
+        self.conn = sqlite3.connect(str(db_path), check_same_thread=False)
+        self.conn.execute("PRAGMA journal_mode = WAL")
         self.conn.execute(_CREATE_TABLE)
         self.conn.commit()
 
@@ -88,7 +90,6 @@ _CREATE_LOG_TABLE = """
 CREATE TABLE IF NOT EXISTS logs (
     task_id         TEXT    PRIMARY KEY,
     text            TEXT,
-    extracted_code  TEXT,
     raw_responses   TEXT,
     created_at      TEXT    DEFAULT (datetime('now'))
 );
@@ -97,15 +98,16 @@ CREATE TABLE IF NOT EXISTS logs (
 
 class LogDB:
     def __init__(self, db_path: Path):
-        self.conn = sqlite3.connect(str(db_path))
+        self.conn = sqlite3.connect(str(db_path), check_same_thread=False)
+        self.conn.execute("PRAGMA journal_mode = WAL")
         self.conn.execute(_CREATE_LOG_TABLE)
         self.conn.commit()
 
-    def save_log(self, task_id: str, text: str | None, extracted_code: str | None,
+    def save_log(self, task_id: str, text: str | None,
                  raw_responses: list[dict] | None):
         self.conn.execute(
-            "INSERT OR REPLACE INTO logs (task_id, text, extracted_code, raw_responses)"
-            " VALUES (?, ?, ?, ?)",
-            (task_id, text, extracted_code, json.dumps(raw_responses) if raw_responses else None),
+            "INSERT OR REPLACE INTO logs (task_id, text, raw_responses)"
+            " VALUES (?, ?, ?)",
+            (task_id, text, json.dumps(raw_responses) if raw_responses else None),
         )
         self.conn.commit()

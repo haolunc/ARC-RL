@@ -30,18 +30,18 @@ def load_tasks(data_dir: str) -> dict[str, dict]:
 
 def evaluate_single_task(task_id, task_data, client, cfg, db, log_db):
     """Evaluate a single ARC task: prompt -> LLM -> test -> DB."""
+    print(f"[{task_id}] Starting evaluation")
     start = time.time()
     base_result = {"task_id": task_id}
-    text = None
     extracted_code = None
-    raw_responses = None
 
     try:
         messages = build_messages(task_data["train"], [tc["input"] for tc in task_data["test"]])
-        llm_result = call_llm(client, cfg, messages)
-        text = llm_result.text
+        llm_result = call_llm(client, cfg, messages, task_id, log_db)
         extracted_code = llm_result.extracted_code
-        raw_responses = llm_result.raw_responses
+
+        llm_duration = time.time() - start
+        print(f"[{task_id}] LLM complete: {llm_result.tool_rounds} tool rounds, {llm_duration:.1f}s")
 
         base_result.update({
             "token_usage": json.dumps(llm_result.usage),
@@ -49,18 +49,33 @@ def evaluate_single_task(task_id, task_data, client, cfg, db, log_db):
             "duration_s": time.time() - start,
         })
 
+        if llm_result.error:
+            print(f"[{task_id}] LLM error: {llm_result.error}")
+            base_result.update({
+                "status": "error_llm",
+                "test_passed": 0, "test_total": 0,
+                "correct": 0,
+                "extracted_code": extracted_code,
+                "error_message": llm_result.error,
+            })
+            db.save_result(base_result)
+            return base_result
+
         if extracted_code is None:
+            print(f"[{task_id}] No test_transform found in output")
             base_result.update({
                 "status": "error_extract",
                 "test_passed": 0, "test_total": len(task_data["test"]),
                 "correct": 0,
+                "extracted_code": None,
                 "error_message": "No test_transform function found in LLM output",
             })
             db.save_result(base_result)
-            log_db.save_log(task_id, text, None, raw_responses)
             return base_result
 
+        print(f"[{task_id}] Running tests...")
         test_result = run_tests(extracted_code, task_data["test"], cfg["python_path"])
+        print(f"[{task_id}] Tests: {test_result['passed']}/{test_result['total']}, correct={test_result['correct']}")
 
         base_result.update({
             "status": test_result["status"],
@@ -68,13 +83,14 @@ def evaluate_single_task(task_id, task_data, client, cfg, db, log_db):
             "test_total": test_result["total"],
             "correct": 1 if test_result["correct"] else 0,
             "test_details": json.dumps(test_result["details"]),
+            "extracted_code": extracted_code,
             "error_message": None,
         })
         db.save_result(base_result)
-        log_db.save_log(task_id, text, extracted_code, raw_responses)
         return base_result
 
     except Exception as e:
+        print(f"[{task_id}] Error: {e}")
         base_result.update({
             "status": "error_llm",
             "test_passed": 0, "test_total": 0,
@@ -82,10 +98,10 @@ def evaluate_single_task(task_id, task_data, client, cfg, db, log_db):
             "token_usage": base_result.get("token_usage"),
             "tool_rounds": base_result.get("tool_rounds", 0),
             "duration_s": time.time() - start,
+            "extracted_code": extracted_code,
             "error_message": str(e),
         })
         db.save_result(base_result)
-        log_db.save_log(task_id, text, extracted_code, raw_responses)
         return base_result
 
 

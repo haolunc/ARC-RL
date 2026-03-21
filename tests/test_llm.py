@@ -1,6 +1,7 @@
 """Tests for arc.eval.llm — execute_python and call_llm."""
 
 import json
+from datetime import datetime
 from pathlib import Path
 
 import pytest
@@ -64,11 +65,13 @@ def _build_test_messages(puzzle):
 def _save_result(name: str, result: LLMResult):
     """Save API test result to tests/api_output/ for inspection."""
     _API_OUTPUT_DIR.mkdir(exist_ok=True)
-    out = _API_OUTPUT_DIR / f"{name}.txt"
+    ts = datetime.now().strftime("%Y%m%d_%H%M%S")
+    prefix = f"{name}_{ts}"
+    out = _API_OUTPUT_DIR / f"{prefix}.txt"
     out.write_text(result.text, encoding="utf-8")
-    meta = _API_OUTPUT_DIR / f"{name}_meta.json"
+    meta = _API_OUTPUT_DIR / f"{prefix}_meta.json"
     meta.write_text(json.dumps({"usage": result.usage, "tool_rounds": result.tool_rounds}, indent=2))
-    raw = _API_OUTPUT_DIR / f"{name}_raw.json"
+    raw = _API_OUTPUT_DIR / f"{prefix}_raw.json"
     raw.write_text(json.dumps(result.raw_responses, indent=2, default=str), encoding="utf-8")
 
 
@@ -76,7 +79,7 @@ def _save_result(name: str, result: LLMResult):
 def test_call_llm_direct_mode(qwen_client, cfg, puzzle_8d5021e8):
     cfg_direct = {**cfg, "eval": {**cfg["eval"], "mode": "direct"}}
     messages = _build_test_messages(puzzle_8d5021e8)
-    result = call_llm(qwen_client, cfg_direct, messages)
+    result = call_llm(qwen_client, cfg_direct, messages, "test_8d5021e8")
     _save_result("direct_8d5021e8", result)
     assert isinstance(result, LLMResult)
     assert len(result.text) > 0
@@ -89,7 +92,7 @@ def test_call_llm_direct_mode(qwen_client, cfg, puzzle_8d5021e8):
 def test_call_llm_sandbox_tools_mode(qwen_client, cfg, puzzle_8d5021e8):
     cfg_tools = {**cfg, "eval": {**cfg["eval"], "mode": "sandbox_tools"}}
     messages = _build_test_messages(puzzle_8d5021e8)
-    result = call_llm(qwen_client, cfg_tools, messages)
+    result = call_llm(qwen_client, cfg_tools, messages, "test_8d5021e8")
     _save_result("sandbox_tools_8d5021e8", result)
     assert isinstance(result, LLMResult)
     assert len(result.text) > 0

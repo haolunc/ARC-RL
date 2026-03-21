@@ -40,8 +40,9 @@ TOOL_CALL_WARNING = (
 )
 
 TOOL_CALL_FINAL = (
-    "You have no tool call rounds remaining. "
-    "Do not return any tool calls. Provide your final answer directly."
+    "CRITICAL: This is your FINAL round. You MUST NOT make any more tool calls — "
+    "any tool call will be rejected. Output your final `test_transform` function "
+    "now in a ```python code block. If you are unsure, provide your best attempt."
 )
 
 

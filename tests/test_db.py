@@ -32,7 +32,7 @@ def test_init_creates_table(tmp_path):
     columns = {row[1] for row in cursor.fetchall()}
     expected = {
         "task_id", "status", "test_passed", "test_total", "correct",
-        "token_usage", "tool_rounds", "duration_s", "error_message", "created_at",
+        "token_usage", "tool_rounds", "duration_s", "test_details", "extracted_code", "error_message", "created_at",
     }
     assert columns == expected
     conn.close()
@@ -128,27 +128,26 @@ def test_log_db_init_creates_table(tmp_path):
     assert cursor.fetchone() is not None
     cursor = conn.execute("PRAGMA table_info(logs)")
     columns = {row[1] for row in cursor.fetchall()}
-    assert columns == {"task_id", "text", "extracted_code", "raw_responses", "created_at"}
+    assert columns == {"task_id", "text", "raw_responses", "created_at"}
     conn.close()
 
 
 def test_log_db_save_and_retrieve(tmp_path):
     log_db = LogDB(tmp_path / "logs.db")
     raw_responses = [{"id": "resp_1", "output": [{"type": "message", "content": "hello"}]}]
-    log_db.save_log("abc", "some text", "def test_transform(g): return g", raw_responses)
+    log_db.save_log("abc", "some text", raw_responses)
     conn = sqlite3.connect(tmp_path / "logs.db")
     conn.row_factory = sqlite3.Row
     row = conn.execute("SELECT * FROM logs WHERE task_id = 'abc'").fetchone()
     assert row["text"] == "some text"
-    assert row["extracted_code"] == "def test_transform(g): return g"
     assert json.loads(row["raw_responses"]) == raw_responses
     conn.close()
 
 
 def test_log_db_upsert(tmp_path):
     log_db = LogDB(tmp_path / "logs.db")
-    log_db.save_log("abc", "first", "code1", [{"id": "1"}])
-    log_db.save_log("abc", "second", "code2", [{"id": "2"}])
+    log_db.save_log("abc", "first", [{"id": "1"}])
+    log_db.save_log("abc", "second", [{"id": "2"}])
     conn = sqlite3.connect(tmp_path / "logs.db")
     conn.row_factory = sqlite3.Row
     rows = conn.execute("SELECT * FROM logs WHERE task_id = 'abc'").fetchall()
