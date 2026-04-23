@@ -1,0 +1,28 @@
+=== ARC GPRO Evaluation ===
+Dataset:      arc1 / training
+Model:        qwen3.6-35b-a3b
+Total tasks:  1
+Group size:   1
+GPRO steps:   3
+Temperature:  0.7
+Timeout:      120s
+Results DB:   /home/zikaiz/src/ARC-RL/results/test_qwen36_35b/results.db
+Samples JSONL:/home/zikaiz/src/ARC-RL/results/test_qwen36_35b/gpro_samples.jsonl
+
+[1/1] Task: 007bbfb7 (5 train, 1 test)
+  Test case 1/1
+    [step 1/3] Sampling group of 1 (2085 chars, ~521 tokens)
+  API call finished in 34.43s
+    [step 1/3] SOLVED (best reward=1.000)
+  SOLVED (1/1 test cases, 34.9s) | Running: 1/1 solved (100%)
+
+=== Summary ===
+Tasks evaluated: 1
+Tasks solved:    1 (100.0%)
+Test cases:      1/1
+Results DB:      /home/zikaiz/src/ARC-RL/results/test_qwen36_35b/results.db
+Summary JSON:    /home/zikaiz/src/ARC-RL/results/test_qwen36_35b/summary.json
+Poster report: results/test_qwen36_35b/poster/poster_report.md
+Metrics CSV:   results/test_qwen36_35b/poster/poster_metrics.csv
+Outcomes CSV:  results/test_qwen36_35b/poster/poster_outcomes.csv
+Step CSV:      results/test_qwen36_35b/poster/poster_step_rewards.csv

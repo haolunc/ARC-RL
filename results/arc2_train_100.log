@@ -1,0 +1,1109 @@
+Error: Data directory not found: /home/zikaiz/src/ARC-RL/ARC-AGI-2/data/training
+Run:
+  git clone --depth 1 https://github.com/fchollet/ARC-AGI.git
+  git clone --depth 1 https://github.com/arcprize/ARC-AGI-2.git
+Traceback (most recent call last):
+  File "/home/zikaiz/src/ARC-RL/results/poster_analysis.py", line 202, in <module>
+    main()
+  File "/home/zikaiz/src/ARC-RL/results/poster_analysis.py", line 198, in main
+    analyze_run(run_dir, out_dir)
+  File "/home/zikaiz/src/ARC-RL/results/poster_analysis.py", line 39, in analyze_run
+    raise FileNotFoundError(f"Missing results DB: {db_path}")
+FileNotFoundError: Missing results DB: results/arc2_train_100/results.db
+Error: Data directory not found: /home/zikaiz/src/ARC-RL/ARC-AGI-2/data/training
+Run:
+  git clone --depth 1 https://github.com/fchollet/ARC-AGI.git
+  git clone --depth 1 https://github.com/arcprize/ARC-AGI-2.git
+Traceback (most recent call last):
+  File "/home/zikaiz/src/ARC-RL/results/poster_analysis.py", line 202, in <module>
+    main()
+  File "/home/zikaiz/src/ARC-RL/results/poster_analysis.py", line 198, in main
+    analyze_run(run_dir, out_dir)
+  File "/home/zikaiz/src/ARC-RL/results/poster_analysis.py", line 39, in analyze_run
+    raise FileNotFoundError(f"Missing results DB: {db_path}")
+FileNotFoundError: Missing results DB: results/arc2_train_100/results.db
+Warning: default training path not found. Using fallback: /home/zikaiz/src/ARC-RL/ARC-AGI-2/data/evaluation/training
+=== ARC GPRO Evaluation ===
+Dataset:      arc2 / training
+Model:        qwen3.6-35b-a3b
+Total tasks:  100
+Group size:   2
+GPRO steps:   2
+Temperature:  0.7
+Timeout:      120s
+Results DB:   /home/zikaiz/src/ARC-RL/results/arc2_train_100/results.db
+Samples JSONL:/home/zikaiz/src/ARC-RL/results/arc2_train_100/gpro_samples.jsonl
+
+[1/100] Task: 00576224 (2 train, 1 test)
+  Test case 1/1
+    [step 1/2] Sampling group of 2 (834 chars, ~208 tokens)
+  API call finished in 12.20s
+  API call finished in 12.83s
+    [step 1/2] SOLVED (best reward=1.000)
+  SOLVED (1/1 test cases, 25.4s) | Running: 1/1 solved (100%)
+
+[2/100] Task: 007bbfb7 (5 train, 1 test)
+  Test case 1/1
+    [step 1/2] Sampling group of 2 (2085 chars, ~521 tokens)
+  API call finished in 25.39s
+  API call finished in 18.60s
+    [step 1/2] SOLVED (best reward=1.000)
+  SOLVED (1/1 test cases, 44.8s) | Running: 2/2 solved (100%)
+
+[3/100] Task: 009d5c81 (5 train, 1 test)
+  Test case 1/1
+    [step 1/2] Sampling group of 2 (7267 chars, ~1816 tokens)
+  API call finished in 36.12s
+  API call finished in 45.50s
+    [step 1/2] SOLVED (best reward=1.000)
+  SOLVED (1/1 test cases, 82.4s) | Running: 3/3 solved (100%)
+
+[4/100] Task: 00d62c1b (5 train, 1 test)
+  Test case 1/1
+    [step 1/2] Sampling group of 2 (6393 chars, ~1598 tokens)
+  API call finished in 34.47s
+  API call finished in 32.21s
+    [step 1/2] SOLVED (best reward=1.000)
+  SOLVED (1/1 test cases, 67.4s) | Running: 4/4 solved (100%)
+
+[5/100] Task: 00dbd492 (4 train, 1 test)
+  Test case 1/1
+    [step 1/2] Sampling group of 2 (5070 chars, ~1267 tokens)
+  API call finished in 72.20s
+  API call finished in 47.60s
+    [step 1/2] best reward=-0.500, train fail -> retry
+    [step 2/2] Sampling group of 2 (6717 chars, ~1679 tokens)
+  API call finished in 52.89s
+  API call finished in 51.74s
+    [step 2/2] best reward=-0.500, train fail -> retry
+  FAILED (0/1 test cases, 224.5s) | Running: 4/5 solved (80%)
+
+[6/100] Task: 017c7c7b (3 train, 1 test)
+  Test case 1/1
+    [step 1/2] Sampling group of 2 (1101 chars, ~275 tokens)
+  API call finished in 26.81s
+  API call finished in 24.73s
+    [step 1/2] best reward=0.763, train fail -> retry
+    [step 2/2] Sampling group of 2 (1668 chars, ~417 tokens)
+  API call finished in 55.23s
+  API call finished in 52.55s
+    [step 2/2] SOLVED (best reward=1.000)
+  SOLVED (1/1 test cases, 160.0s) | Running: 5/6 solved (83%)
+
+[7/100] Task: 025d127b (2 train, 1 test)
+  Test case 1/1
+    [step 1/2] Sampling group of 2 (2106 chars, ~526 tokens)
+  API error: Connection error., retrying in 2s...
+  API call finished in 255.84s
+  API error: Connection error., retrying in 2s...
+  API call finished in 163.89s
+    [step 1/2] SOLVED (best reward=1.000)
+  SOLVED (1/1 test cases, 977.7s) | Running: 6/7 solved (86%)
+
+[8/100] Task: 03560426 (3 train, 1 test)
+  Test case 1/1
+    [step 1/2] Sampling group of 2 (2761 chars, ~690 tokens)
+  API call finished in 63.84s
+  API call finished in 72.02s
+    [step 1/2] SOLVED (best reward=1.000)
+  SOLVED (1/1 test cases, 136.2s) | Running: 7/8 solved (88%)
+
+[9/100] Task: 045e512c (3 train, 1 test)
+  Test case 1/1
+    [step 1/2] Sampling group of 2 (9999 chars, ~2499 tokens)
+  API call finished in 170.51s
+  API call finished in 180.37s
+    [step 1/2] best reward=0.696, train fail -> retry
+    [step 2/2] Sampling group of 2 (13193 chars, ~3298 tokens)
+  API error: Connection error., retrying in 2s...
+  API call finished in 90.01s
+    [step 2/2] best reward=-0.500, train fail -> retry
+  FAILED (0/1 test cases, 997.4s) | Running: 7/9 solved (78%)
+
+[10/100] Task: 0520fde7 (3 train, 1 test)
+  Test case 1/1
+    [step 1/2] Sampling group of 2 (945 chars, ~236 tokens)
+  API call finished in 28.86s
+  API call finished in 14.65s
+    [step 1/2] SOLVED (best reward=1.000)
+  SOLVED (1/1 test cases, 44.0s) | Running: 8/10 solved (80%)
+
+[11/100] Task: 05269061 (3 train, 1 test)
+  Test case 1/1
+    [step 1/2] Sampling group of 2 (1669 chars, ~417 tokens)
+  API call finished in 138.49s
+  API call finished in 231.14s
+    [step 1/2] SOLVED (best reward=1.000)
+  SOLVED (1/1 test cases, 370.1s) | Running: 9/11 solved (82%)
+
+[12/100] Task: 05a7bcf2 (3 train, 1 test)
+  Test case 1/1
+    [step 1/2] Sampling group of 2 (19701 chars, ~4925 tokens)
+  API call finished in 177.00s
+  API error: Connection error., retrying in 2s...
+  API call finished in 82.63s
+    [step 1/2] best reward=-0.500, train fail -> retry
+    [step 2/2] Sampling group of 2 (21703 chars, ~5425 tokens)
+  API call finished in 74.49s
+  API call finished in 57.13s
+    [step 2/2] best reward=-0.500, train fail -> retry
+  FAILED (0/1 test cases, 672.2s) | Running: 9/12 solved (75%)
+
+[13/100] Task: 05f2a901 (3 train, 1 test)
+  Test case 1/1
+    [step 1/2] Sampling group of 2 (2956 chars, ~739 tokens)
+  API call finished in 50.01s
+  API call finished in 57.66s
+    [step 1/2] SOLVED (best reward=1.000)
+  SOLVED (1/1 test cases, 108.0s) | Running: 10/13 solved (77%)
+
+[14/100] Task: 0607ce86 (3 train, 1 test)
+  Test case 1/1
+    [step 1/2] Sampling group of 2 (11043 chars, ~2760 tokens)
+  API call finished in 78.80s
+  API call finished in 251.64s
+    [step 1/2] best reward=-0.500, train fail -> retry
+    [step 2/2] Sampling group of 2 (12773 chars, ~3193 tokens)
+  API call finished in 41.56s
+  API call finished in 49.67s
+    [step 2/2] best reward=-0.500, train fail -> retry
+  FAILED (0/1 test cases, 421.9s) | Running: 10/14 solved (71%)
+
+[15/100] Task: 0692e18c (3 train, 1 test)
+  Test case 1/1
+    [step 1/2] Sampling group of 2 (1467 chars, ~366 tokens)
+  API call finished in 19.38s
+  API call finished in 61.54s
+    [step 1/2] best reward=0.467, train fail -> retry
+    [step 2/2] Sampling group of 2 (2568 chars, ~642 tokens)
+  API call finished in 25.53s
+  API call finished in 55.80s
+    [step 2/2] SOLVED (best reward=1.000)
+  SOLVED (1/1 test cases, 162.9s) | Running: 11/15 solved (73%)
+
+[16/100] Task: 06df4c85 (3 train, 1 test)
+  Test case 1/1
+    [step 1/2] Sampling group of 2 (11525 chars, ~2881 tokens)
+  API call finished in 53.57s
+  API call finished in 149.70s
+    [step 1/2] best reward=-0.500, train fail -> retry
+    [step 2/2] Sampling group of 2 (13082 chars, ~3270 tokens)
+  API call finished in 52.25s
+  API call finished in 60.20s
+    [step 2/2] best reward=-0.500, train fail -> retry
+  FAILED (0/1 test cases, 315.9s) | Running: 11/16 solved (69%)
+
+[17/100] Task: 070dd51e (2 train, 1 test)
+  Test case 1/1
+    [step 1/2] Sampling group of 2 (6684 chars, ~1671 tokens)
+  API call finished in 48.16s
+  API call finished in 41.83s
+    [step 1/2] SOLVED (best reward=1.000)
+  SOLVED (1/1 test cases, 90.4s) | Running: 12/17 solved (71%)
+
+[18/100] Task: 08ed6ac7 (2 train, 1 test)
+  Test case 1/1
+    [step 1/2] Sampling group of 2 (1824 chars, ~456 tokens)
+  API call finished in 28.42s
+  API call finished in 28.44s
+    [step 1/2] SOLVED (best reward=1.000)
+  SOLVED (1/1 test cases, 57.2s) | Running: 13/18 solved (72%)
+
+[19/100] Task: 09629e4f (4 train, 1 test)
+  Test case 1/1
+    [step 1/2] Sampling group of 2 (3984 chars, ~996 tokens)
+  API error: Connection error., retrying in 2s...
+  API error: Connection error., retrying in 2s...
+    [step 1/2] best reward=-1.200, train fail -> retry
+    [step 2/2] Sampling group of 2 (4132 chars, ~1033 tokens)
+  API error: Connection error., retrying in 2s...
+  API error: Connection error., retrying in 2s...
+    [step 2/2] best reward=-1.200, train fail -> retry
+  FAILED (0/1 test cases, 348.1s) | Running: 13/19 solved (68%)
+
+[20/100] Task: 0962bcdd (2 train, 1 test)
+  Test case 1/1
+    [step 1/2] Sampling group of 2 (2784 chars, ~696 tokens)
+  API error: Connection error., retrying in 2s...
+  API error: Connection error., retrying in 2s...
+    [step 1/2] best reward=-1.200, train fail -> retry
+    [step 2/2] Sampling group of 2 (2932 chars, ~733 tokens)
+  API error: Connection error., retrying in 2s...
+  API error: Connection error., retrying in 2s...
+    [step 2/2] best reward=-1.200, train fail -> retry
+  FAILED (0/1 test cases, 261.3s) | Running: 13/20 solved (65%)
+
+[21/100] Task: 09c534e7 (3 train, 1 test)
+  Test case 1/1
+    [step 1/2] Sampling group of 2 (13201 chars, ~3300 tokens)
+  API error: Connection error., retrying in 2s...
+  API error: Connection error., retrying in 2s...
+    [step 1/2] best reward=-1.200, train fail -> retry
+    [step 2/2] Sampling group of 2 (13349 chars, ~3337 tokens)
+  API error: Connection error., retrying in 2s...
+  API error: Connection error., retrying in 2s...
+    [step 2/2] best reward=-1.200, train fail -> retry
+  FAILED (0/1 test cases, 260.9s) | Running: 13/21 solved (62%)
+
+[22/100] Task: 0a1d4ef5 (3 train, 1 test)
+  Test case 1/1
+    [step 1/2] Sampling group of 2 (11591 chars, ~2897 tokens)
+  API error: Connection error., retrying in 2s...
+  API error: Connection error., retrying in 2s...
+    [step 1/2] best reward=-1.200, train fail -> retry
+    [step 2/2] Sampling group of 2 (11739 chars, ~2934 tokens)
+  API error: Connection error., retrying in 2s...
+  API error: Connection error., retrying in 2s...
+    [step 2/2] best reward=-1.200, train fail -> retry
+  FAILED (0/1 test cases, 260.7s) | Running: 13/22 solved (59%)
+
+[23/100] Task: 0a2355a6 (4 train, 1 test)
+  Test case 1/1
+    [step 1/2] Sampling group of 2 (5456 chars, ~1364 tokens)
+  API error: Connection error., retrying in 2s...
+  API error: Connection error., retrying in 2s...
+    [step 1/2] best reward=-1.200, train fail -> retry
+    [step 2/2] Sampling group of 2 (5604 chars, ~1401 tokens)
+  API error: Connection error., retrying in 2s...
+  API call finished in 72.81s
+  API call finished in 54.31s
+    [step 2/2] best reward=0.606, train fail -> retry
+  FAILED (0/1 test cases, 291.1s) | Running: 13/23 solved (57%)
+
+[24/100] Task: 0a938d79 (4 train, 1 test)
+  Test case 1/1
+    [step 1/2] Sampling group of 2 (6452 chars, ~1613 tokens)
+  API call finished in 39.97s
+  API call finished in 44.81s
+    [step 1/2] SOLVED (best reward=1.000)
+  SOLVED (1/1 test cases, 85.2s) | Running: 14/24 solved (58%)
+
+[25/100] Task: 0b148d64 (3 train, 1 test)
+  Test case 1/1
+    [step 1/2] Sampling group of 2 (5424 chars, ~1356 tokens)
+  API call finished in 45.52s
+  API call finished in 135.06s
+    [step 1/2] FAIL: test execution error
+    [step 2/2] Sampling group of 2 (7071 chars, ~1767 tokens)
+  API call finished in 39.54s
+  API call finished in 34.59s
+    [step 2/2] FAIL: wrong output (cell acc: 0.0%)
+  FAILED (0/1 test cases, 255.5s) | Running: 14/25 solved (56%)
+
+[26/100] Task: 0b17323b (2 train, 1 test)
+  Test case 1/1
+    [step 1/2] Sampling group of 2 (4014 chars, ~1003 tokens)
+  API call finished in 27.84s
+  API call finished in 29.54s
+    [step 1/2] SOLVED (best reward=1.000)
+  SOLVED (1/1 test cases, 57.8s) | Running: 15/26 solved (58%)
+
+[27/100] Task: 0bb8deee (3 train, 1 test)
+  Test case 1/1
+    [step 1/2] Sampling group of 2 (3165 chars, ~791 tokens)
+  API call finished in 70.13s
+  API call finished in 74.03s
+    [step 1/2] best reward=-0.500, train fail -> retry
+    [step 2/2] Sampling group of 2 (4542 chars, ~1135 tokens)
+  API call finished in 125.98s
+  API call finished in 49.96s
+    [step 2/2] best reward=-0.500, train fail -> retry
+  FAILED (0/1 test cases, 320.3s) | Running: 15/27 solved (56%)
+
+[28/100] Task: 0becf7df (3 train, 1 test)
+  Test case 1/1
+    [step 1/2] Sampling group of 2 (2761 chars, ~690 tokens)
+  API call finished in 39.62s
+  API call finished in 43.94s
+    [step 1/2] SOLVED (best reward=1.000)
+  SOLVED (1/1 test cases, 84.0s) | Running: 16/28 solved (57%)
+
+[29/100] Task: 0c786b71 (3 train, 1 test)
+  Test case 1/1
+    [step 1/2] Sampling group of 2 (1197 chars, ~299 tokens)
+  API call finished in 22.36s
+  API call finished in 27.25s
+    [step 1/2] SOLVED (best reward=1.000)
+  SOLVED (1/1 test cases, 50.1s) | Running: 17/29 solved (59%)
+
+[30/100] Task: 0c9aba6e (4 train, 1 test)
+  Test case 1/1
+    [step 1/2] Sampling group of 2 (1775 chars, ~443 tokens)
+  API call finished in 77.24s
+  API call finished in 28.11s
+    [step 1/2] SOLVED (best reward=1.000)
+  SOLVED (1/1 test cases, 106.0s) | Running: 18/30 solved (60%)
+
+[31/100] Task: 0ca9ddb6 (3 train, 1 test)
+  Test case 1/1
+    [step 1/2] Sampling group of 2 (2355 chars, ~588 tokens)
+  API call finished in 125.18s
+  API call finished in 36.67s
+    [step 1/2] SOLVED (best reward=1.000)
+  SOLVED (1/1 test cases, 162.3s) | Running: 19/31 solved (61%)
+
+[32/100] Task: 0d3d703e (4 train, 1 test)
+  Test case 1/1
+    [step 1/2] Sampling group of 2 (888 chars, ~222 tokens)
+  API call finished in 23.89s
+  API call finished in 16.64s
+    [step 1/2] SOLVED (best reward=1.000)
+  SOLVED (1/1 test cases, 41.1s) | Running: 20/32 solved (62%)
+
+[33/100] Task: 0d87d2a6 (3 train, 1 test)
+  Test case 1/1
+    [step 1/2] Sampling group of 2 (7117 chars, ~1779 tokens)
+  API call finished in 50.23s
+  API call finished in 39.31s
+    [step 1/2] best reward=0.720, train fail -> retry
+    [step 2/2] Sampling group of 2 (9413 chars, ~2353 tokens)
+  API call finished in 84.29s
+  API call finished in 51.09s
+    [step 2/2] best reward=-0.500, train fail -> retry
+  FAILED (0/1 test cases, 225.0s) | Running: 20/33 solved (61%)
+
+[34/100] Task: 0e206a2e (3 train, 1 test)
+  Test case 1/1
+    [step 1/2] Sampling group of 2 (6187 chars, ~1546 tokens)
+  API call finished in 83.02s
+  API call finished in 64.49s
+    [step 1/2] best reward=-0.500, train fail -> retry
+    [step 2/2] Sampling group of 2 (7894 chars, ~1973 tokens)
+  API call finished in 89.31s
+  API call finished in 78.84s
+    [step 2/2] best reward=-0.500, train fail -> retry
+  FAILED (0/1 test cases, 315.8s) | Running: 20/34 solved (59%)
+
+[35/100] Task: 0e671a1a (4 train, 1 test)
+  Test case 1/1
+    [step 1/2] Sampling group of 2 (5298 chars, ~1324 tokens)
+  API call finished in 181.68s
+  API call finished in 178.21s
+    [step 1/2] best reward=0.735, train fail -> retry
+    [step 2/2] Sampling group of 2 (7550 chars, ~1887 tokens)
+  API call finished in 169.70s
+  API call finished in 167.47s
+    [step 2/2] SOLVED (best reward=1.000)
+  SOLVED (1/1 test cases, 697.5s) | Running: 21/35 solved (60%)
+
+[36/100] Task: 0f63c0b9 (4 train, 1 test)
+  Test case 1/1
+    [step 1/2] Sampling group of 2 (6828 chars, ~1707 tokens)
+  API call finished in 82.04s
+  API call finished in 227.97s
+    [step 1/2] best reward=0.667, train fail -> retry
+    [step 2/2] Sampling group of 2 (9547 chars, ~2386 tokens)
+  API call finished in 68.95s
+  API call finished in 38.34s
+    [step 2/2] best reward=0.782, train fail -> retry
+  FAILED (0/1 test cases, 417.6s) | Running: 21/36 solved (58%)
+
+[37/100] Task: 103eff5b (2 train, 1 test)
+  Test case 1/1
+    [step 1/2] Sampling group of 2 (5376 chars, ~1344 tokens)
+  API error: Connection error., retrying in 2s...
+  API call finished in 85.26s
+  API call finished in 258.13s
+    [step 1/2] best reward=-0.500, train fail -> retry
+    [step 2/2] Sampling group of 2 (6985 chars, ~1746 tokens)
+  API call finished in 54.36s
+  API call finished in 58.10s
+    [step 2/2] best reward=-0.500, train fail -> retry
+  FAILED (0/1 test cases, 735.4s) | Running: 21/37 solved (57%)
+
+[38/100] Task: 10fcaaa3 (4 train, 1 test)
+  Test case 1/1
+    [step 1/2] Sampling group of 2 (1521 chars, ~380 tokens)
+  API call finished in 260.15s
+  API call finished in 78.27s
+    [step 1/2] best reward=0.733, train fail -> retry
+    [step 2/2] Sampling group of 2 (2996 chars, ~749 tokens)
+  API call finished in 66.90s
+  API call finished in 77.65s
+    [step 2/2] SOLVED (best reward=1.000)
+  SOLVED (1/1 test cases, 483.5s) | Running: 22/38 solved (58%)
+
+[39/100] Task: 11852cab (3 train, 1 test)
+  Test case 1/1
+    [step 1/2] Sampling group of 2 (2761 chars, ~690 tokens)
+  API call finished in 41.16s
+  API call finished in 48.28s
+    [step 1/2] FAIL: wrong output (cell acc: 98.0%)
+  FAILED (0/1 test cases, 90.0s) | Running: 22/39 solved (56%)
+
+[40/100] Task: 1190bc91 (3 train, 1 test)
+  Test case 1/1
+    [step 1/2] Sampling group of 2 (2135 chars, ~533 tokens)
+  API error: Connection error., retrying in 2s...
+  API error: Connection error., retrying in 2s...
+    [step 1/2] best reward=-1.200, train fail -> retry
+    [step 2/2] Sampling group of 2 (2283 chars, ~570 tokens)
+  API error: Connection error., retrying in 2s...
+  API call finished in 167.90s
+  API call finished in 165.01s
+    [step 2/2] best reward=0.480, train fail -> retry
+  FAILED (0/1 test cases, 1727.1s) | Running: 22/40 solved (55%)
+
+[41/100] Task: 1190e5a7 (3 train, 1 test)
+  Test case 1/1
+    [step 1/2] Sampling group of 2 (5486 chars, ~1371 tokens)
+  API call finished in 36.18s
+  API call finished in 33.29s
+    [step 1/2] SOLVED (best reward=1.000)
+  SOLVED (1/1 test cases, 70.0s) | Running: 23/41 solved (56%)
+
+[42/100] Task: 11dc524f (3 train, 1 test)
+  Test case 1/1
+    [step 1/2] Sampling group of 2 (4231 chars, ~1057 tokens)
+  API call finished in 78.03s
+  API call finished in 75.77s
+    [step 1/2] best reward=-0.500, train fail -> retry
+    [step 2/2] Sampling group of 2 (5852 chars, ~1463 tokens)
+  API call finished in 56.38s
+  API call finished in 83.79s
+    [step 2/2] best reward=-0.500, train fail -> retry
+  FAILED (0/1 test cases, 294.1s) | Running: 23/42 solved (55%)
+
+[43/100] Task: 11e1fe23 (2 train, 1 test)
+  Test case 1/1
+    [step 1/2] Sampling group of 2 (2636 chars, ~659 tokens)
+  API call finished in 145.13s
+  API call finished in 237.98s
+    [step 1/2] FAIL: wrong output (cell acc: 96.4%)
+  FAILED (0/1 test cases, 383.4s) | Running: 23/43 solved (53%)
+
+[44/100] Task: 12422b43 (5 train, 1 test)
+  Test case 1/1
+    [step 1/2] Sampling group of 2 (2533 chars, ~633 tokens)
+  API call finished in 72.34s
+  API call finished in 44.44s
+    [step 1/2] SOLVED (best reward=1.000)
+  SOLVED (1/1 test cases, 117.3s) | Running: 24/44 solved (55%)
+
+[45/100] Task: 12997ef3 (4 train, 2 test)
+  Test case 1/2
+    [step 1/2] Sampling group of 2 (2711 chars, ~677 tokens)
+  API call finished in 15.25s
+  API call finished in 44.99s
+    [step 1/2] best reward=-0.500, train fail -> retry
+    [step 2/2] Sampling group of 2 (4501 chars, ~1125 tokens)
+  API call finished in 33.68s
+  API call finished in 27.36s
+    [step 2/2] SOLVED (best reward=1.000)
+  Test case 2/2
+    [step 1/2] Sampling group of 2 (2779 chars, ~694 tokens)
+  API call finished in 32.61s
+  API call finished in 33.37s
+    [step 1/2] SOLVED (best reward=1.000)
+  SOLVED (2/2 test cases, 188.3s) | Running: 25/45 solved (56%)
+
+[46/100] Task: 12eac192 (4 train, 1 test)
+  Test case 1/1
+    [step 1/2] Sampling group of 2 (1928 chars, ~482 tokens)
+  API call finished in 47.69s
+  API call finished in 41.05s
+    [step 1/2] SOLVED (best reward=1.000)
+  SOLVED (1/1 test cases, 89.4s) | Running: 26/46 solved (57%)
+
+[47/100] Task: 13713586 (3 train, 1 test)
+  Test case 1/1
+    [step 1/2] Sampling group of 2 (6540 chars, ~1635 tokens)
+  API call finished in 79.73s
+  API call finished in 255.74s
+    [step 1/2] best reward=-0.500, train fail -> retry
+    [step 2/2] Sampling group of 2 (8483 chars, ~2120 tokens)
+  API call finished in 42.35s
+  API call finished in 50.10s
+    [step 2/2] best reward=-0.500, train fail -> retry
+  FAILED (0/1 test cases, 428.0s) | Running: 26/47 solved (55%)
+
+[48/100] Task: 137eaa0f (3 train, 1 test)
+  Test case 1/1
+    [step 1/2] Sampling group of 2 (2177 chars, ~544 tokens)
+  API call finished in 251.39s
+  API call finished in 170.33s
+    [step 1/2] best reward=0.022, train fail -> retry
+    [step 2/2] Sampling group of 2 (3140 chars, ~785 tokens)
+  API call finished in 70.99s
+  API call finished in 66.00s
+    [step 2/2] best reward=0.244, train fail -> retry
+  FAILED (0/1 test cases, 559.0s) | Running: 26/48 solved (54%)
+
+[49/100] Task: 137f0df0 (3 train, 1 test)
+  Test case 1/1
+    [step 1/2] Sampling group of 2 (2761 chars, ~690 tokens)
+  API call finished in 58.27s
+  API call finished in 55.52s
+    [step 1/2] best reward=-0.500, train fail -> retry
+    [step 2/2] Sampling group of 2 (4483 chars, ~1120 tokens)
+  API call finished in 49.34s
+  API call finished in 42.61s
+    [step 2/2] SOLVED (best reward=1.000)
+  SOLVED (1/1 test cases, 206.1s) | Running: 27/49 solved (55%)
+
+[50/100] Task: 13f06aa5 (3 train, 1 test)
+  Test case 1/1
+    [step 1/2] Sampling group of 2 (4393 chars, ~1098 tokens)
+  API call finished in 67.80s
+  API call finished in 274.73s
+    [step 1/2] best reward=-0.500, train fail -> retry
+    [step 2/2] Sampling group of 2 (6030 chars, ~1507 tokens)
+  API call finished in 52.30s
+  API call finished in 56.21s
+    [step 2/2] best reward=-0.500, train fail -> retry
+  FAILED (0/1 test cases, 451.2s) | Running: 27/50 solved (54%)
+
+[51/100] Task: 140c817e (3 train, 1 test)
+  Test case 1/1
+    [step 1/2] Sampling group of 2 (3485 chars, ~871 tokens)
+  API call finished in 39.66s
+  API call finished in 49.85s
+    [step 1/2] SOLVED (best reward=1.000)
+  SOLVED (1/1 test cases, 90.0s) | Running: 28/51 solved (55%)
+
+[52/100] Task: 14754a24 (4 train, 1 test)
+  Test case 1/1
+    [step 1/2] Sampling group of 2 (8148 chars, ~2037 tokens)
+  API call finished in 67.70s
+  API error: Connection error., retrying in 2s...
+  API call finished in 83.09s
+    [step 1/2] best reward=0.748, train fail -> retry
+    [step 2/2] Sampling group of 2 (10205 chars, ~2551 tokens)
+  API call finished in 82.34s
+  API call finished in 53.69s
+    [step 2/2] best reward=0.743, train fail -> retry
+  FAILED (0/1 test cases, 566.0s) | Running: 28/52 solved (54%)
+
+[53/100] Task: 1478ab18 (3 train, 1 test)
+  Test case 1/1
+    [step 1/2] Sampling group of 2 (1991 chars, ~497 tokens)
+  API call finished in 67.09s
+  API error: Connection error., retrying in 2s...
+    [step 1/2] best reward=-0.500, train fail -> retry
+    [step 2/2] Sampling group of 2 (3496 chars, ~874 tokens)
+  API call finished in 81.35s
+  API call finished in 56.08s
+    [step 2/2] best reward=-0.500, train fail -> retry
+  FAILED (0/1 test cases, 758.7s) | Running: 28/53 solved (53%)
+
+[54/100] Task: 14b8e18c (3 train, 1 test)
+  Test case 1/1
+    [step 1/2] Sampling group of 2 (2761 chars, ~690 tokens)
+  API call finished in 148.97s
+  API call finished in 63.26s
+    [step 1/2] best reward=-0.500, train fail -> retry
+    [step 2/2] Sampling group of 2 (4424 chars, ~1106 tokens)
+  API call finished in 125.14s
+  API call finished in 24.67s
+    [step 2/2] best reward=-0.500, train fail -> retry
+  FAILED (0/1 test cases, 362.2s) | Running: 28/54 solved (52%)
+
+[55/100] Task: 150deff5 (3 train, 1 test)
+  Test case 1/1
+    [step 1/2] Sampling group of 2 (2419 chars, ~604 tokens)
+  API call finished in 88.13s
+  API call finished in 82.38s
+    [step 1/2] best reward=0.750, train fail -> retry
+    [step 2/2] Sampling group of 2 (4287 chars, ~1071 tokens)
+  API call finished in 30.42s
+  API call finished in 83.15s
+    [step 2/2] best reward=0.700, train fail -> retry
+  FAILED (0/1 test cases, 284.4s) | Running: 28/55 solved (51%)
+
+[56/100] Task: 15113be4 (3 train, 1 test)
+  Test case 1/1
+    [step 1/2] Sampling group of 2 (11861 chars, ~2965 tokens)
+  API error: Connection error., retrying in 2s...
+  API call finished in 88.31s
+  API call finished in 76.63s
+    [step 1/2] best reward=0.777, train fail -> retry
+    [step 2/2] Sampling group of 2 (15176 chars, ~3794 tokens)
+  API call finished in 52.41s
+  API call finished in 70.66s
+    [step 2/2] best reward=0.777, train fail -> retry
+  FAILED (0/1 test cases, 597.9s) | Running: 28/56 solved (50%)
+
+[57/100] Task: 15660dd6 (2 train, 1 test)
+  Test case 1/1
+    [step 1/2] Sampling group of 2 (6254 chars, ~1563 tokens)
+  API call finished in 83.78s
+  API call finished in 82.62s
+    [step 1/2] best reward=-0.500, train fail -> retry
+    [step 2/2] Sampling group of 2 (7810 chars, ~1952 tokens)
+  API call finished in 82.62s
+  API call finished in 76.49s
+    [step 2/2] best reward=-0.500, train fail -> retry
+  FAILED (0/1 test cases, 325.6s) | Running: 28/57 solved (49%)
+
+[58/100] Task: 15663ba9 (3 train, 1 test)
+  Test case 1/1
+    [step 1/2] Sampling group of 2 (4842 chars, ~1210 tokens)
+  API call finished in 90.60s
+  API call finished in 83.77s
+    [step 1/2] best reward=-0.500, train fail -> retry
+    [step 2/2] Sampling group of 2 (6615 chars, ~1653 tokens)
+  API call finished in 59.93s
+  API call finished in 151.84s
+    [step 2/2] best reward=0.594, train fail -> retry
+  FAILED (0/1 test cases, 386.4s) | Running: 28/58 solved (48%)
+
+[59/100] Task: 15696249 (4 train, 1 test)
+  Test case 1/1
+    [step 1/2] Sampling group of 2 (1776 chars, ~444 tokens)
+  API call finished in 39.76s
+  API call finished in 38.03s
+    [step 1/2] SOLVED (best reward=1.000)
+  SOLVED (1/1 test cases, 78.4s) | Running: 29/59 solved (49%)
+
+[60/100] Task: 17829a00 (2 train, 1 test)
+  Test case 1/1
+    [step 1/2] Sampling group of 2 (4484 chars, ~1121 tokens)
+  API call finished in 58.04s
+  API call finished in 166.84s
+    [step 1/2] best reward=0.722, train fail -> retry
+    [step 2/2] Sampling group of 2 (7253 chars, ~1813 tokens)
+  API call finished in 61.67s
+  API call finished in 65.26s
+    [step 2/2] best reward=0.722, train fail -> retry
+  FAILED (0/1 test cases, 352.1s) | Running: 29/60 solved (48%)
+
+[61/100] Task: 178fcbfb (3 train, 1 test)
+  Test case 1/1
+    [step 1/2] Sampling group of 2 (2683 chars, ~670 tokens)
+  API call finished in 43.65s
+  API call finished in 25.84s
+    [step 1/2] SOLVED (best reward=1.000)
+  SOLVED (1/1 test cases, 70.0s) | Running: 30/61 solved (49%)
+
+[62/100] Task: 17b80ad2 (4 train, 1 test)
+  Test case 1/1
+    [step 1/2] Sampling group of 2 (5506 chars, ~1376 tokens)
+  API call finished in 175.52s
+  API call finished in 67.76s
+    [step 1/2] best reward=0.766, train fail -> retry
+    [step 2/2] Sampling group of 2 (6599 chars, ~1649 tokens)
+  API call finished in 54.72s
+  API call finished in 62.95s
+    [step 2/2] best reward=0.765, train fail -> retry
+  FAILED (0/1 test cases, 361.8s) | Running: 30/62 solved (48%)
+
+[63/100] Task: 17b866bd (2 train, 2 test)
+  Test case 1/2
+    [step 1/2] Sampling group of 2 (5209 chars, ~1302 tokens)
+  API call finished in 148.65s
+  API call finished in 78.07s
+    [step 1/2] SOLVED (best reward=1.000)
+  Test case 2/2
+    [step 1/2] Sampling group of 2 (4964 chars, ~1241 tokens)
+  API call finished in 42.64s
+  API call finished in 146.96s
+    [step 1/2] best reward=0.761, train fail -> retry
+    [step 2/2] Sampling group of 2 (7649 chars, ~1912 tokens)
+  API call finished in 50.81s
+  API call finished in 35.78s
+    [step 2/2] best reward=0.758, train fail -> retry
+  FAILED (1/2 test cases, 503.4s) | Running: 30/63 solved (48%)
+
+[64/100] Task: 17cae0c1 (4 train, 1 test)
+  Test case 1/1
+    [step 1/2] Sampling group of 2 (1374 chars, ~343 tokens)
+  API call finished in 40.57s
+  API call finished in 122.16s
+    [step 1/2] SOLVED (best reward=1.000)
+  SOLVED (1/1 test cases, 163.2s) | Running: 31/64 solved (48%)
+
+[65/100] Task: 18286ef8 (3 train, 1 test)
+  Test case 1/1
+    [step 1/2] Sampling group of 2 (4361 chars, ~1090 tokens)
+  API call finished in 81.76s
+  API call finished in 56.78s
+    [step 1/2] SOLVED (best reward=1.000)
+  SOLVED (1/1 test cases, 139.0s) | Running: 32/65 solved (49%)
+
+[66/100] Task: 182e5d0f (3 train, 1 test)
+  Test case 1/1
+    [step 1/2] Sampling group of 2 (3625 chars, ~906 tokens)
+  API call finished in 82.83s
+  API call finished in 269.55s
+    [step 1/2] best reward=0.724, train fail -> retry
+    [step 2/2] Sampling group of 2 (6086 chars, ~1521 tokens)
+  API call finished in 53.66s
+  API call finished in 162.09s
+    [step 2/2] best reward=-0.500, train fail -> retry
+  FAILED (0/1 test cases, 568.2s) | Running: 32/66 solved (48%)
+
+[67/100] Task: 18419cfa (3 train, 1 test)
+  Test case 1/1
+    [step 1/2] Sampling group of 2 (9171 chars, ~2292 tokens)
+  API call finished in 144.11s
+  API call finished in 49.10s
+    [step 1/2] best reward=-0.500, train fail -> retry
+    [step 2/2] Sampling group of 2 (10804 chars, ~2701 tokens)
+  API call finished in 54.69s
+  API call finished in 41.77s
+    [step 2/2] best reward=-0.500, train fail -> retry
+  FAILED (0/1 test cases, 289.8s) | Running: 32/67 solved (48%)
+
+[68/100] Task: 18447a8d (3 train, 1 test)
+  Test case 1/1
+    [step 1/2] Sampling group of 2 (3821 chars, ~955 tokens)
+  API error: Connection error., retrying in 2s...
+  API call finished in 91.29s
+  API call finished in 171.67s
+    [step 1/2] best reward=0.485, train fail -> retry
+    [step 2/2] Sampling group of 2 (6143 chars, ~1535 tokens)
+  API call finished in 179.43s
+  API call finished in 45.47s
+    [step 2/2] best reward=0.485, train fail -> retry
+  FAILED (0/1 test cases, 766.4s) | Running: 32/68 solved (47%)
+
+[69/100] Task: 184a9768 (3 train, 1 test)
+  Test case 1/1
+    [step 1/2] Sampling group of 2 (10626 chars, ~2656 tokens)
+  API call finished in 84.58s
+  API call finished in 73.16s
+    [step 1/2] best reward=-0.500, train fail -> retry
+    [step 2/2] Sampling group of 2 (12452 chars, ~3113 tokens)
+  API call finished in 52.93s
+  API call finished in 62.25s
+    [step 2/2] best reward=-0.500, train fail -> retry
+  FAILED (0/1 test cases, 273.0s) | Running: 32/69 solved (46%)
+
+[70/100] Task: 195ba7dc (4 train, 1 test)
+  Test case 1/1
+    [step 1/2] Sampling group of 2 (1998 chars, ~499 tokens)
+  API call finished in 85.70s
+  API call finished in 24.02s
+    [step 1/2] SOLVED (best reward=1.000)
+  SOLVED (1/1 test cases, 110.3s) | Running: 33/70 solved (47%)
+
+[71/100] Task: 1990f7a8 (3 train, 1 test)
+  Test case 1/1
+    [step 1/2] Sampling group of 2 (5366 chars, ~1341 tokens)
+  API call finished in 53.69s
+  API call finished in 55.70s
+    [step 1/2] best reward=-0.500, train fail -> retry
+    [step 2/2] Sampling group of 2 (7009 chars, ~1752 tokens)
+  API call finished in 62.25s
+  API call finished in 41.16s
+    [step 2/2] best reward=-0.500, train fail -> retry
+  FAILED (0/1 test cases, 212.8s) | Running: 33/71 solved (46%)
+
+[72/100] Task: 19bb5feb (3 train, 1 test)
+  Test case 1/1
+    [step 1/2] Sampling group of 2 (3297 chars, ~824 tokens)
+  API call finished in 29.79s
+  API call finished in 32.05s
+    [step 1/2] SOLVED (best reward=1.000)
+  SOLVED (1/1 test cases, 62.2s) | Running: 34/72 solved (47%)
+
+[73/100] Task: 1a07d186 (3 train, 1 test)
+  Test case 1/1
+    [step 1/2] Sampling group of 2 (6940 chars, ~1735 tokens)
+  API call finished in 35.70s
+  API call finished in 49.50s
+    [step 1/2] best reward=0.667, train fail -> retry
+    [step 2/2] Sampling group of 2 (9615 chars, ~2403 tokens)
+  API call finished in 41.51s
+  API call finished in 35.20s
+    [step 2/2] SOLVED (best reward=1.000)
+  SOLVED (1/1 test cases, 162.4s) | Running: 35/73 solved (48%)
+
+[74/100] Task: 1a244afd (3 train, 1 test)
+  Test case 1/1
+    [step 1/2] Sampling group of 2 (3963 chars, ~990 tokens)
+  API call finished in 61.27s
+  API call finished in 41.65s
+    [step 1/2] SOLVED (best reward=1.000)
+  SOLVED (1/1 test cases, 103.4s) | Running: 36/74 solved (49%)
+
+[75/100] Task: 1a2e2828 (5 train, 1 test)
+  Test case 1/1
+    [step 1/2] Sampling group of 2 (2518 chars, ~629 tokens)
+  API call finished in 20.72s
+  API call finished in 58.88s
+    [step 1/2] SOLVED (best reward=1.000)
+  SOLVED (1/1 test cases, 80.1s) | Running: 37/75 solved (49%)
+
+[76/100] Task: 1a6449f1 (3 train, 1 test)
+  Test case 1/1
+    [step 1/2] Sampling group of 2 (6725 chars, ~1681 tokens)
+  API call finished in 46.55s
+  API call finished in 39.67s
+    [step 1/2] SOLVED (best reward=1.000)
+  SOLVED (1/1 test cases, 86.8s) | Running: 38/76 solved (50%)
+
+[77/100] Task: 1acc24af (4 train, 1 test)
+  Test case 1/1
+    [step 1/2] Sampling group of 2 (4614 chars, ~1153 tokens)
+  API call finished in 86.01s
+  API call finished in 151.44s
+    [step 1/2] best reward=0.724, train fail -> retry
+    [step 2/2] Sampling group of 2 (6949 chars, ~1737 tokens)
+  API call finished in 54.02s
+  API call finished in 76.71s
+    [step 2/2] best reward=0.696, train fail -> retry
+  FAILED (0/1 test cases, 368.4s) | Running: 38/77 solved (49%)
+
+[78/100] Task: 1b2d62fb (5 train, 1 test)
+  Test case 1/1
+    [step 1/2] Sampling group of 2 (1555 chars, ~388 tokens)
+  API call finished in 16.42s
+  API call finished in 88.61s
+    [step 1/2] SOLVED (best reward=1.000)
+  SOLVED (1/1 test cases, 105.8s) | Running: 39/78 solved (50%)
+
+[79/100] Task: 1b59e163 (2 train, 1 test)
+  Test case 1/1
+    [step 1/2] Sampling group of 2 (5514 chars, ~1378 tokens)
+  API call finished in 64.43s
+  API call finished in 90.11s
+    [step 1/2] best reward=-0.500, train fail -> retry
+    [step 2/2] Sampling group of 2 (7165 chars, ~1791 tokens)
+  API call finished in 75.51s
+  API call finished in 54.86s
+    [step 2/2] best reward=-0.500, train fail -> retry
+  FAILED (0/1 test cases, 285.0s) | Running: 39/79 solved (49%)
+
+[80/100] Task: 1b60fb0c (3 train, 1 test)
+  Test case 1/1
+    [step 1/2] Sampling group of 2 (2761 chars, ~690 tokens)
+  API call finished in 275.28s
+  API error: Connection error., retrying in 2s...
+  API call finished in 70.50s
+    [step 1/2] best reward=0.795, train fail -> retry
+    [step 2/2] Sampling group of 2 (4340 chars, ~1085 tokens)
+  API call finished in 74.96s
+  API call finished in 67.72s
+    [step 2/2] best reward=0.780, train fail -> retry
+  FAILED (0/1 test cases, 766.2s) | Running: 39/80 solved (49%)
+
+[81/100] Task: 1b8318e3 (3 train, 1 test)
+  Test case 1/1
+    [step 1/2] Sampling group of 2 (4661 chars, ~1165 tokens)
+  API call finished in 60.43s
+  API call finished in 72.48s
+    [step 1/2] best reward=-0.500, train fail -> retry
+    [step 2/2] Sampling group of 2 (6311 chars, ~1577 tokens)
+  API call finished in 73.10s
+  API call finished in 63.62s
+    [step 2/2] best reward=-0.500, train fail -> retry
+  FAILED (0/1 test cases, 269.7s) | Running: 39/81 solved (48%)
+
+[82/100] Task: 1be83260 (2 train, 2 test)
+  Test case 1/2
+    [step 1/2] Sampling group of 2 (5164 chars, ~1291 tokens)
+  API call finished in 77.08s
+  API call finished in 77.93s
+    [step 1/2] best reward=-0.500, train fail -> retry
+    [step 2/2] Sampling group of 2 (6904 chars, ~1726 tokens)
+  API call finished in 85.69s
+  API call finished in 51.21s
+    [step 2/2] best reward=-0.500, train fail -> retry
+  Test case 2/2
+    [step 1/2] Sampling group of 2 (6162 chars, ~1540 tokens)
+  API call finished in 86.38s
+  API call finished in 80.10s
+    [step 1/2] best reward=-0.500, train fail -> retry
+    [step 2/2] Sampling group of 2 (8124 chars, ~2031 tokens)
+  API call finished in 80.10s
+  API call finished in 163.79s
+    [step 2/2] best reward=-0.500, train fail -> retry
+  FAILED (0/2 test cases, 702.6s) | Running: 39/82 solved (48%)
+
+[83/100] Task: 1bfc4729 (2 train, 1 test)
+  Test case 1/1
+    [step 1/2] Sampling group of 2 (2114 chars, ~528 tokens)
+  API call finished in 137.19s
+  API call finished in 31.31s
+    [step 1/2] SOLVED (best reward=1.000)
+  SOLVED (1/1 test cases, 168.8s) | Running: 40/83 solved (48%)
+
+[84/100] Task: 1c02dbbe (3 train, 1 test)
+  Test case 1/1
+    [step 1/2] Sampling group of 2 (5421 chars, ~1355 tokens)
+  API call finished in 62.17s
+  API call finished in 73.01s
+    [step 1/2] best reward=-0.500, train fail -> retry
+    [step 2/2] Sampling group of 2 (7097 chars, ~1774 tokens)
+  API call finished in 47.70s
+  API call finished in 60.61s
+    [step 2/2] best reward=-0.500, train fail -> retry
+  FAILED (0/1 test cases, 243.6s) | Running: 40/84 solved (48%)
+
+[85/100] Task: 1c0d0a4b (3 train, 1 test)
+  Test case 1/1
+    [step 1/2] Sampling group of 2 (2735 chars, ~683 tokens)
+  API call finished in 50.82s
+  API call finished in 146.16s
+    [step 1/2] best reward=0.304, train fail -> retry
+    [step 2/2] Sampling group of 2 (4357 chars, ~1089 tokens)
+  API call finished in 75.85s
+  API call finished in 81.15s
+    [step 2/2] best reward=0.544, train fail -> retry
+  FAILED (0/1 test cases, 354.2s) | Running: 40/85 solved (47%)
+
+[86/100] Task: 1c56ad9f (4 train, 1 test)
+  Test case 1/1
+    [step 1/2] Sampling group of 2 (6476 chars, ~1619 tokens)
+  API call finished in 61.47s
+  API call finished in 70.94s
+    [step 1/2] best reward=0.752, train fail -> retry
+    [step 2/2] Sampling group of 2 (8728 chars, ~2182 tokens)
+  API call finished in 35.35s
+  API call finished in 49.92s
+    [step 2/2] FAIL: wrong output (cell acc: 84.0%)
+  FAILED (0/1 test cases, 218.3s) | Running: 40/86 solved (47%)
+
+[87/100] Task: 1c786137 (3 train, 1 test)
+  Test case 1/1
+    [step 1/2] Sampling group of 2 (4916 chars, ~1229 tokens)
+  API call finished in 147.01s
+  API call finished in 41.89s
+    [step 1/2] SOLVED (best reward=1.000)
+  SOLVED (1/1 test cases, 189.4s) | Running: 41/87 solved (47%)
+
+[88/100] Task: 1caeab9d (3 train, 1 test)
+  Test case 1/1
+    [step 1/2] Sampling group of 2 (2141 chars, ~535 tokens)
+  API call finished in 42.09s
+  API call finished in 46.38s
+    [step 1/2] SOLVED (best reward=1.000)
+  SOLVED (1/1 test cases, 88.8s) | Running: 42/88 solved (48%)
+
+[89/100] Task: 1cf80156 (3 train, 1 test)
+  Test case 1/1
+    [step 1/2] Sampling group of 2 (2406 chars, ~601 tokens)
+  API call finished in 18.76s
+  API call finished in 19.78s
+    [step 1/2] SOLVED (best reward=1.000)
+  SOLVED (1/1 test cases, 39.0s) | Running: 43/89 solved (48%)
+
+[90/100] Task: 1d0a4b61 (3 train, 1 test)
+  Test case 1/1
+    [step 1/2] Sampling group of 2 (13891 chars, ~3472 tokens)
+  API call finished in 48.24s
+  API call finished in 46.48s
+    [step 1/2] SOLVED (best reward=1.000)
+  SOLVED (1/1 test cases, 95.2s) | Running: 44/90 solved (49%)
+
+[91/100] Task: 1d398264 (3 train, 2 test)
+  Test case 1/2
+    [step 1/2] Sampling group of 2 (5815 chars, ~1453 tokens)
+  API call finished in 46.80s
+  API call finished in 52.13s
+    [step 1/2] SOLVED (best reward=1.000)
+  Test case 2/2
+    [step 1/2] Sampling group of 2 (5475 chars, ~1368 tokens)
+  API call finished in 37.81s
+  API call finished in 144.08s
+    [step 1/2] SOLVED (best reward=1.000)
+  SOLVED (2/2 test cases, 401.5s) | Running: 45/91 solved (49%)
+
+[92/100] Task: 1d61978c (2 train, 1 test)
+  Test case 1/1
+    [step 1/2] Sampling group of 2 (4484 chars, ~1121 tokens)
+  API call finished in 50.08s
+  API call finished in 77.27s
+    [step 1/2] best reward=0.743, train fail -> retry
+    [step 2/2] Sampling group of 2 (7812 chars, ~1953 tokens)
+  API call finished in 56.92s
+  API call finished in 76.45s
+    [step 2/2] best reward=0.743, train fail -> retry
+  FAILED (0/1 test cases, 261.1s) | Running: 45/92 solved (49%)
+
+[93/100] Task: 1da012fc (2 train, 1 test)
+  Test case 1/1
+    [step 1/2] Sampling group of 2 (6262 chars, ~1565 tokens)
+  API call finished in 42.83s
+  API call finished in 64.40s
+    [step 1/2] best reward=-0.500, train fail -> retry
+    [step 2/2] Sampling group of 2 (7982 chars, ~1995 tokens)
+  API call finished in 35.93s
+  API call finished in 26.00s
+    [step 2/2] best reward=-0.500, train fail -> retry
+  FAILED (0/1 test cases, 169.2s) | Running: 45/93 solved (48%)
+
+[94/100] Task: 1e0a9b12 (3 train, 1 test)
+  Test case 1/1
+    [step 1/2] Sampling group of 2 (1163 chars, ~290 tokens)
+  API call finished in 20.05s
+  API call finished in 25.20s
+    [step 1/2] SOLVED (best reward=1.000)
+  SOLVED (1/1 test cases, 45.7s) | Running: 46/94 solved (49%)
+
+[95/100] Task: 1e32b0e9 (3 train, 1 test)
+  Test case 1/1
+    [step 1/2] Sampling group of 2 (6779 chars, ~1694 tokens)
+  API call finished in 47.04s
+  API call finished in 84.72s
+    [step 1/2] best reward=0.537, train fail -> retry
+    [step 2/2] Sampling group of 2 (9996 chars, ~2499 tokens)
+  API call finished in 64.20s
+  API call finished in 61.94s
+    [step 2/2] best reward=-0.500, train fail -> retry
+  FAILED (0/1 test cases, 258.1s) | Running: 46/95 solved (48%)
+
+[96/100] Task: 1e5d6875 (2 train, 1 test)
+  Test case 1/1
+    [step 1/2] Sampling group of 2 (2148 chars, ~537 tokens)
+  API call finished in 159.21s
+  API call finished in 62.42s
+    [step 1/2] best reward=0.722, train fail -> retry
+    [step 2/2] Sampling group of 2 (3552 chars, ~888 tokens)
+  API call finished in 71.99s
+  API call finished in 82.63s
+    [step 2/2] best reward=-0.500, train fail -> retry
+  FAILED (0/1 test cases, 376.5s) | Running: 46/96 solved (48%)
+
+[97/100] Task: 1e81d6f9 (3 train, 1 test)
+  Test case 1/1
+    [step 1/2] Sampling group of 2 (5421 chars, ~1355 tokens)
+  API call finished in 34.95s
+  API call finished in 136.33s
+    [step 1/2] SOLVED (best reward=1.000)
+  SOLVED (1/1 test cases, 171.7s) | Running: 47/97 solved (48%)
+
+[98/100] Task: 1efba499 (3 train, 1 test)
+  Test case 1/1
+    [step 1/2] Sampling group of 2 (3915 chars, ~978 tokens)
+  API call finished in 72.22s
+  API call finished in 172.67s
+    [step 1/2] best reward=-0.500, train fail -> retry
+    [step 2/2] Sampling group of 2 (5750 chars, ~1437 tokens)
+  API call finished in 64.73s
+  API call finished in 79.59s
+    [step 2/2] best reward=-0.500, train fail -> retry
+  FAILED (0/1 test cases, 389.3s) | Running: 47/98 solved (48%)
+
+[99/100] Task: 1f0c79e5 (4 train, 1 test)
+  Test case 1/1
+    [step 1/2] Sampling group of 2 (2886 chars, ~721 tokens)
+  API call finished in 147.96s
+  API error: Connection error., retrying in 2s...
+  API call finished in 76.11s
+    [step 1/2] best reward=0.775, train fail -> retry
+    [step 2/2] Sampling group of 2 (4781 chars, ~1195 tokens)
+  API call finished in 69.06s
+  API call finished in 65.73s
+    [step 2/2] best reward=-0.500, train fail -> retry
+  FAILED (0/1 test cases, 636.1s) | Running: 47/99 solved (47%)
+
+[100/100] Task: 1f642eb9 (3 train, 1 test)
+  Test case 1/1
+    [step 1/2] Sampling group of 2 (2761 chars, ~690 tokens)
+  API call finished in 42.30s
+  API call finished in 43.64s
+    [step 1/2] SOLVED (best reward=1.000)
+  SOLVED (1/1 test cases, 86.4s) | Running: 48/100 solved (48%)
+
+=== Summary ===
+Tasks evaluated: 100
+Tasks solved:    48 (48.0%)
+Test cases:      51/104
+Results DB:      /home/zikaiz/src/ARC-RL/results/arc2_train_100/results.db
+Summary JSON:    /home/zikaiz/src/ARC-RL/results/arc2_train_100/summary.json
+Poster report: results/arc2_train_100/poster/poster_report.md
+Metrics CSV:   results/arc2_train_100/poster/poster_metrics.csv
+Outcomes CSV:  results/arc2_train_100/poster/poster_outcomes.csv
+Step CSV:      results/arc2_train_100/poster/poster_step_rewards.csv

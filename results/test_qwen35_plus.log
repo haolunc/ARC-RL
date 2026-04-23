@@ -1,0 +1,14 @@
+=== ARC GPRO Evaluation ===
+Dataset:      arc1 / training
+Model:        qwen3.5-plus
+Total tasks:  1
+Group size:   3
+GPRO steps:   2
+Temperature:  0.7
+Timeout:      120s
+Results DB:   /home/zikaiz/src/ARC-RL/results/test_qwen35_plus/results.db
+Samples JSONL:/home/zikaiz/src/ARC-RL/results/test_qwen35_plus/gpro_samples.jsonl
+
+[1/1] Task: 007bbfb7 (5 train, 1 test)
+  Test case 1/1
+    [step 1/2] Sampling group of 3 (2085 chars, ~521 tokens)

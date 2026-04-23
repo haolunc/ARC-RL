@@ -1,0 +1,2 @@
+step,num_samples,avg_reward,max_reward,train_pass_count
+1,1,-1.2,-1.2,0

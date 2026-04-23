@@ -1,0 +1,6 @@
+outcome,count
+success,107
+train_fail,96
+api_error,10
+wrong_output,4
+test_exec_error,1

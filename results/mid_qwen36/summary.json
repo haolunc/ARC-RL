@@ -1,0 +1,16 @@
+{
+  "run_id": "mid_qwen36",
+  "dataset": "arc1",
+  "split": "training",
+  "model": "qwen3.6-35b-a3b",
+  "group_size": 4,
+  "gpro_steps": 5,
+  "temperature": 0.8,
+  "summary": {
+    "tasks_evaluated": 20,
+    "tasks_solved": 15,
+    "solve_rate": 0.75,
+    "total_test_cases": 20,
+    "test_cases_passed": 15
+  }
+}

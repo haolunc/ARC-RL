@@ -1,0 +1,16 @@
+{
+  "run_id": "arc2_train_100",
+  "dataset": "arc2",
+  "split": "training",
+  "model": "qwen3.6-35b-a3b",
+  "group_size": 2,
+  "gpro_steps": 2,
+  "temperature": 0.7,
+  "summary": {
+    "tasks_evaluated": 100,
+    "tasks_solved": 48,
+    "solve_rate": 0.48,
+    "total_test_cases": 104,
+    "test_cases_passed": 51
+  }
+}

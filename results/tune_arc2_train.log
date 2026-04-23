@@ -1,0 +1,12 @@
+Error: Data directory not found: /home/zikaiz/src/ARC-RL/ARC-AGI-2/data/training
+Run:
+  git clone --depth 1 https://github.com/fchollet/ARC-AGI.git
+  git clone --depth 1 https://github.com/arcprize/ARC-AGI-2.git
+Traceback (most recent call last):
+  File "/home/zikaiz/src/ARC-RL/results/poster_analysis.py", line 202, in <module>
+    main()
+  File "/home/zikaiz/src/ARC-RL/results/poster_analysis.py", line 198, in main
+    analyze_run(run_dir, out_dir)
+  File "/home/zikaiz/src/ARC-RL/results/poster_analysis.py", line 39, in analyze_run
+    raise FileNotFoundError(f"Missing results DB: {db_path}")
+FileNotFoundError: Missing results DB: results/tune_arc2_train/results.db

@@ -2,12 +2,15 @@
 
 import os
 
-API_BASE_URL = "http://promaxgb10-d668.eecs.umich.edu:8000/v1"
+API_BASE_URL = os.getenv(
+    "ARC_API_BASE_URL",
+    "https://dashscope-intl.aliyuncs.com/compatible-mode/v1",
+)
 
 # Read key from environment variable instead of hardcoding
-API_KEY = os.getenv("ARC_API_KEY")
+API_KEY = os.getenv("ARC_API_KEY") or os.getenv("DASHSCOPE_API_KEY")
 
-MODEL = "Qwen/Qwen3-VL-30B-A3B-Instruct"
+MODEL = os.getenv("ARC_MODEL", "qwen3.5-plus")
 
 # Use system python on Great Lakes
 PYTHON_PATH = "python"
@@ -26,6 +29,11 @@ DATASET_PATHS = {
 DEFAULT_MAX_RETRIES = 2
 DEFAULT_TIMEOUT = 120
 DEFAULT_TEMPERATURE = 0.0
+
+# GPRO defaults
+DEFAULT_GPRO_GROUP_SIZE = 4
+DEFAULT_GPRO_STEPS = 3
+DEFAULT_GPRO_TEMPERATURE = 0.7
 
 # Output generation budget
 DEFAULT_MAX_TOKENS = 400

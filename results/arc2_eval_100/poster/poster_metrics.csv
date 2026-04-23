@@ -1,0 +1,12 @@
+metric,value
+tasks_evaluated,50
+tasks_solved,2
+solve_rate,0.04
+test_cases_passed,3
+total_test_cases,75
+total_attempts,153
+avg_task_time_seconds,639.23
+p50_task_time_seconds,591.45
+max_task_time_seconds,1941.72
+num_gpro_samples,298
+avg_gpro_reward,-0.2839

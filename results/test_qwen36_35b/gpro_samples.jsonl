@@ -1,0 +1,1 @@
+{"run_id": "test_qwen36_35b", "task_id": "007bbfb7", "test_index": 0, "step": 1, "sample_index": 1, "group_size": 1, "prompt_chars": 2085, "prompt_tokens": 521, "llm_seconds": 34.796, "response_chars": 439, "reward": 1.0, "train_pass": true, "avg_train_cell_accuracy": 1.0, "error_type": null, "error_msg": null}

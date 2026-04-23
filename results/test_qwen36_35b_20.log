@@ -1,0 +1,162 @@
+=== ARC GPRO Evaluation ===
+Dataset:      arc1 / training
+Model:        qwen3.6-35b-a3b
+Total tasks:  20
+Group size:   1
+GPRO steps:   1
+Temperature:  0.7
+Timeout:      120s
+Results DB:   /home/zikaiz/src/ARC-RL/results/test_qwen36_35b_20/results.db
+Samples JSONL:/home/zikaiz/src/ARC-RL/results/test_qwen36_35b_20/gpro_samples.jsonl
+
+[1/20] Task: 007bbfb7 (5 train, 1 test)
+  Test case 1/1
+    [step 1/1] Sampling group of 1 (2085 chars, ~521 tokens)
+  API call finished in 34.42s
+    [step 1/1] SOLVED (best reward=1.000)
+  SOLVED (1/1 test cases, 34.9s) | Running: 1/1 solved (100%)
+
+[2/20] Task: 00d62c1b (5 train, 1 test)
+  Test case 1/1
+    [step 1/1] Sampling group of 1 (6393 chars, ~1598 tokens)
+  API call finished in 43.59s
+    [step 1/1] SOLVED (best reward=1.000)
+  SOLVED (1/1 test cases, 44.1s) | Running: 2/2 solved (100%)
+
+[3/20] Task: 017c7c7b (3 train, 1 test)
+  Test case 1/1
+    [step 1/1] Sampling group of 1 (1101 chars, ~275 tokens)
+  API call finished in 21.53s
+    [step 1/1] best reward=0.726, train fail -> retry
+  FAILED (0/1 test cases, 21.6s) | Running: 2/3 solved (67%)
+
+[4/20] Task: 025d127b (2 train, 1 test)
+  Test case 1/1
+    [step 1/1] Sampling group of 1 (2106 chars, ~526 tokens)
+  API call finished in 78.32s
+    [step 1/1] SOLVED (best reward=1.000)
+  SOLVED (1/1 test cases, 78.6s) | Running: 3/4 solved (75%)
+
+[5/20] Task: 045e512c (3 train, 1 test)
+  Test case 1/1
+    [step 1/1] Sampling group of 1 (9999 chars, ~2499 tokens)
+  API error: Connection error., retrying in 2s...
+  API call finished in 84.42s
+    [step 1/1] best reward=-0.500, train fail -> retry
+  FAILED (0/1 test cases, 363.7s) | Running: 3/5 solved (60%)
+
+[6/20] Task: 0520fde7 (3 train, 1 test)
+  Test case 1/1
+    [step 1/1] Sampling group of 1 (945 chars, ~236 tokens)
+  API call finished in 21.29s
+    [step 1/1] SOLVED (best reward=1.000)
+  SOLVED (1/1 test cases, 21.6s) | Running: 4/6 solved (67%)
+
+[7/20] Task: 05269061 (3 train, 1 test)
+  Test case 1/1
+    [step 1/1] Sampling group of 1 (1669 chars, ~417 tokens)
+  API call finished in 117.06s
+    [step 1/1] SOLVED (best reward=1.000)
+  SOLVED (1/1 test cases, 117.3s) | Running: 5/7 solved (71%)
+
+[8/20] Task: 05f2a901 (3 train, 1 test)
+  Test case 1/1
+    [step 1/1] Sampling group of 1 (2956 chars, ~739 tokens)
+  API call finished in 27.84s
+    [step 1/1] SOLVED (best reward=1.000)
+  SOLVED (1/1 test cases, 28.1s) | Running: 6/8 solved (75%)
+
+[9/20] Task: 06df4c85 (3 train, 1 test)
+  Test case 1/1
+    [step 1/1] Sampling group of 1 (11525 chars, ~2881 tokens)
+  API call finished in 63.66s
+    [step 1/1] best reward=0.410, train fail -> retry
+  FAILED (0/1 test cases, 63.7s) | Running: 6/9 solved (67%)
+
+[10/20] Task: 08ed6ac7 (2 train, 1 test)
+  Test case 1/1
+    [step 1/1] Sampling group of 1 (1824 chars, ~456 tokens)
+  API call finished in 24.49s
+    [step 1/1] SOLVED (best reward=1.000)
+  SOLVED (1/1 test cases, 24.7s) | Running: 7/10 solved (70%)
+
+[11/20] Task: 09629e4f (4 train, 1 test)
+  Test case 1/1
+    [step 1/1] Sampling group of 1 (3984 chars, ~996 tokens)
+  API call finished in 59.49s
+    [step 1/1] best reward=-0.500, train fail -> retry
+  FAILED (0/1 test cases, 59.6s) | Running: 7/11 solved (64%)
+
+[12/20] Task: 0962bcdd (2 train, 1 test)
+  Test case 1/1
+    [step 1/1] Sampling group of 1 (2784 chars, ~696 tokens)
+  API call finished in 57.56s
+    [step 1/1] SOLVED (best reward=1.000)
+  SOLVED (1/1 test cases, 57.8s) | Running: 8/12 solved (67%)
+
+[13/20] Task: 0a938d79 (4 train, 1 test)
+  Test case 1/1
+    [step 1/1] Sampling group of 1 (6452 chars, ~1613 tokens)
+  API call finished in 47.81s
+    [step 1/1] best reward=0.720, train fail -> retry
+  FAILED (0/1 test cases, 47.9s) | Running: 8/13 solved (62%)
+
+[14/20] Task: 0b148d64 (3 train, 1 test)
+  Test case 1/1
+    [step 1/1] Sampling group of 1 (5424 chars, ~1356 tokens)
+  API call finished in 79.36s
+    [step 1/1] best reward=-0.500, train fail -> retry
+  FAILED (0/1 test cases, 79.4s) | Running: 8/14 solved (57%)
+
+[15/20] Task: 0ca9ddb6 (3 train, 1 test)
+  Test case 1/1
+    [step 1/1] Sampling group of 1 (2355 chars, ~588 tokens)
+  API call finished in 23.43s
+    [step 1/1] SOLVED (best reward=1.000)
+  SOLVED (1/1 test cases, 23.7s) | Running: 9/15 solved (60%)
+
+[16/20] Task: 0d3d703e (4 train, 1 test)
+  Test case 1/1
+    [step 1/1] Sampling group of 1 (888 chars, ~222 tokens)
+  API call finished in 71.31s
+    [step 1/1] SOLVED (best reward=1.000)
+  SOLVED (1/1 test cases, 71.7s) | Running: 10/16 solved (62%)
+
+[17/20] Task: 0dfd9992 (3 train, 1 test)
+  Test case 1/1
+    [step 1/1] Sampling group of 1 (9999 chars, ~2499 tokens)
+  API call finished in 48.80s
+    [step 1/1] best reward=-0.500, train fail -> retry
+  FAILED (0/1 test cases, 48.8s) | Running: 10/17 solved (59%)
+
+[18/20] Task: 0e206a2e (3 train, 1 test)
+  Test case 1/1
+    [step 1/1] Sampling group of 1 (6187 chars, ~1546 tokens)
+  API call finished in 261.92s
+    [step 1/1] best reward=-0.500, train fail -> retry
+  FAILED (0/1 test cases, 262.0s) | Running: 10/18 solved (56%)
+
+[19/20] Task: 10fcaaa3 (4 train, 1 test)
+  Test case 1/1
+    [step 1/1] Sampling group of 1 (1521 chars, ~380 tokens)
+  API call finished in 79.68s
+    [step 1/1] best reward=-0.500, train fail -> retry
+  FAILED (0/1 test cases, 79.8s) | Running: 10/19 solved (53%)
+
+[20/20] Task: 11852cab (3 train, 1 test)
+  Test case 1/1
+    [step 1/1] Sampling group of 1 (2761 chars, ~690 tokens)
+  API call finished in 40.69s
+    [step 1/1] FAIL: wrong output (cell acc: 98.0%)
+  FAILED (0/1 test cases, 41.0s) | Running: 10/20 solved (50%)
+
+=== Summary ===
+Tasks evaluated: 20
+Tasks solved:    10 (50.0%)
+Test cases:      10/20
+Results DB:      /home/zikaiz/src/ARC-RL/results/test_qwen36_35b_20/results.db
+Summary JSON:    /home/zikaiz/src/ARC-RL/results/test_qwen36_35b_20/summary.json
+Poster report: results/test_qwen36_35b_20/poster/poster_report.md
+Metrics CSV:   results/test_qwen36_35b_20/poster/poster_metrics.csv
+Outcomes CSV:  results/test_qwen36_35b_20/poster/poster_outcomes.csv
+Step CSV:      results/test_qwen36_35b_20/poster/poster_step_rewards.csv

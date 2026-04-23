@@ -1,0 +1,57 @@
+=== ARC GPRO Evaluation ===
+Dataset:      arc1 / training
+Model:        qwen3.5-flash
+Total tasks:  5
+Group size:   1
+GPRO steps:   1
+Temperature:  0.7
+Timeout:      120s
+Results DB:   /home/zikaiz/src/ARC-RL/results/test_qwen35_flash_5/results.db
+Samples JSONL:/home/zikaiz/src/ARC-RL/results/test_qwen35_flash_5/gpro_samples.jsonl
+
+[1/5] Task: 007bbfb7 (5 train, 1 test)
+  Test case 1/1
+    [step 1/1] Sampling group of 1 (2085 chars, ~521 tokens)
+  API error: Connection error., retrying in 2s...
+  API call finished in 65.13s
+    [step 1/1] SOLVED (best reward=1.000)
+  SOLVED (1/1 test cases, 345.6s) | Running: 1/1 solved (100%)
+
+[2/5] Task: 00d62c1b (5 train, 1 test)
+  Test case 1/1
+    [step 1/1] Sampling group of 1 (6393 chars, ~1598 tokens)
+  API error: Connection error., retrying in 2s...
+    [step 1/1] best reward=-1.200, train fail -> retry
+  FAILED (0/1 test cases, 553.8s) | Running: 1/2 solved (50%)
+
+[3/5] Task: 017c7c7b (3 train, 1 test)
+  Test case 1/1
+    [step 1/1] Sampling group of 1 (1101 chars, ~275 tokens)
+  API call finished in 138.23s
+    [step 1/1] best reward=0.726, train fail -> retry
+  FAILED (0/1 test cases, 138.3s) | Running: 1/3 solved (33%)
+
+[4/5] Task: 025d127b (2 train, 1 test)
+  Test case 1/1
+    [step 1/1] Sampling group of 1 (2106 chars, ~526 tokens)
+  API call finished in 12.20s
+    [step 1/1] best reward=0.578, train fail -> retry
+  FAILED (0/1 test cases, 12.3s) | Running: 1/4 solved (25%)
+
+[5/5] Task: 045e512c (3 train, 1 test)
+  Test case 1/1
+    [step 1/1] Sampling group of 1 (9999 chars, ~2499 tokens)
+  API error: Connection error., retrying in 2s...
+    [step 1/1] best reward=-1.200, train fail -> retry
+  FAILED (0/1 test cases, 555.3s) | Running: 1/5 solved (20%)
+
+=== Summary ===
+Tasks evaluated: 5
+Tasks solved:    1 (20.0%)
+Test cases:      1/5
+Results DB:      /home/zikaiz/src/ARC-RL/results/test_qwen35_flash_5/results.db
+Summary JSON:    /home/zikaiz/src/ARC-RL/results/test_qwen35_flash_5/summary.json
+Poster report: results/test_qwen35_flash_5/poster/poster_report.md
+Metrics CSV:   results/test_qwen35_flash_5/poster/poster_metrics.csv
+Outcomes CSV:  results/test_qwen35_flash_5/poster/poster_outcomes.csv
+Step CSV:      results/test_qwen35_flash_5/poster/poster_step_rewards.csv

@@ -1,0 +1,4 @@
+outcome,count
+success,32
+train_fail,23
+wrong_output,2

@@ -363,6 +363,13 @@ def main():
     project_root = Path(__file__).resolve().parent.parent
     data_dir = project_root / DATASET_PATHS[args.dataset][args.split]
 
+    # Some ARC-AGI-2 local copies store training JSONs under evaluation/training.
+    if args.dataset == "arc2" and args.split == "training" and not data_dir.exists():
+        alt_data_dir = project_root / "ARC-AGI-2/data/evaluation/training"
+        if alt_data_dir.exists():
+            print(f"Warning: default training path not found. Using fallback: {alt_data_dir}")
+            data_dir = alt_data_dir
+
     if not data_dir.exists():
         print(f"Error: Data directory not found: {data_dir}")
         print("Run:")
