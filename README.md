@@ -14,6 +14,7 @@ per-task refinement.
 - `arc_eval/evaluate.py`: grid comparison and training-example verification.
 - `arc_eval/safe_exec.py`: subprocess-based execution sandbox for generated code.
 - `arc_eval/db.py`: SQLite result logging.
+- `arc_eval/export_grpo_data.py`: export logged rollouts for later GRPO/SFT work.
 - `results/poster_analysis.py`: CSV and Markdown summaries for a run.
 - `results/plot_results.py`: plot generation from run artifacts.
 
@@ -65,6 +66,57 @@ Key files:
 - `gpro_samples.jsonl`: every sampled candidate and reward.
 - `summary.json`: aggregate run summary.
 - `poster/`: generated CSV summaries and plots.
+
+## No-GPRO Ablation
+
+Use this when you want the control condition without grouped sampling:
+
+```bash
+RUN_NAME=ablation_arc1_20 \
+DATASET=arc1 \
+SPLIT=training \
+MAX_TASKS=20 \
+MAX_RETRIES=1 \
+TEMPERATURE=0.7 \
+ARC_MODEL=qwen3.6-35b-a3b \
+./run_ablation.sh
+```
+
+This uses `arc_eval.run`, not `arc_eval.gpro`. It now accepts the same model
+configuration and writes `summary.json`, `results.db`, logs, poster CSVs, and
+plots under `results/<run_name>/`.
+
+For the cleanest ablation, compare:
+
+- No GPRO: `run_ablation.sh` with `MAX_RETRIES=1`.
+- Single-sample GPRO-style path: `run_gpro.sh` with `GROUP_SIZE=1` and `GPRO_STEPS=1`.
+- Full GPRO inference: `run_gpro.sh` with larger `GROUP_SIZE` and `GPRO_STEPS`.
+
+## GRPO Rollout Collection
+
+The current repository does not yet perform true online GRPO weight updates.
+It can now collect prompt/response/reward rollouts needed for later GRPO or SFT:
+
+```bash
+RUN_NAME=grpo_rollout_arc1_20 \
+DATASET=arc1 \
+SPLIT=training \
+MAX_TASKS=20 \
+GROUP_SIZE=4 \
+GPRO_STEPS=3 \
+TEMPERATURE=0.8 \
+LOG_SAMPLE_TEXT=1 \
+./run_gpro.sh
+```
+
+Then export training data:
+
+```bash
+python -m arc_eval.export_grpo_data results/grpo_rollout_arc1_20
+```
+
+See `GRPO_TRAINING.md` for the recommended separation between no-GPRO
+ablation, GPRO inference, and an eventual GRPO-trained checkpoint.
 
 ## Direct Commands
 

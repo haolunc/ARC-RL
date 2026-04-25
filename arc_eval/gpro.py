@@ -105,6 +105,7 @@ def evaluate_task_gpro(
     gpro_steps: int,
     max_api_retries: int,
     max_tokens: int,
+    log_sample_text: bool,
     db: ResultDB,
     run_id: str,
     samples_fp,
@@ -219,7 +220,16 @@ def evaluate_task_gpro(
                         "avg_train_cell_accuracy": avg_train_acc,
                         "error_type": error_type,
                         "error_msg": error_msg,
-                    },
+                    }
+                    | (
+                        {
+                            "messages": messages,
+                            "response": response,
+                            "extracted_code": code,
+                        }
+                        if log_sample_text
+                        else {}
+                    ),
                 )
 
             best = max(candidates, key=lambda x: x.reward)
@@ -362,6 +372,14 @@ def main():
     parser.add_argument("--max-tokens", type=int, default=DEFAULT_MAX_TOKENS)
     parser.add_argument("--model", type=str, default=MODEL)
     parser.add_argument(
+        "--log-sample-text",
+        action="store_true",
+        help=(
+            "Include prompt messages, raw responses, and extracted code in "
+            "gpro_samples.jsonl for later GRPO/offline training data export."
+        ),
+    )
+    parser.add_argument(
         "--run-name",
         type=str,
         default=None,
@@ -433,6 +451,7 @@ def main():
     print(f"Group size:   {args.group_size}", flush=True)
     print(f"GPRO steps:   {args.gpro_steps}", flush=True)
     print(f"Temperature:  {args.temperature}", flush=True)
+    print(f"Log text:     {args.log_sample_text}", flush=True)
     print(f"Timeout:      {args.timeout}s", flush=True)
     print(f"Results DB:   {db_path}", flush=True)
     print(f"Samples JSONL:{samples_path}", flush=True)
@@ -462,6 +481,7 @@ def main():
                     gpro_steps=args.gpro_steps,
                     max_api_retries=args.max_api_retries,
                     max_tokens=args.max_tokens,
+                    log_sample_text=args.log_sample_text,
                     db=db,
                     run_id=run_name,
                     samples_fp=samples_fp,
@@ -491,6 +511,7 @@ def main():
         "model": args.model,
         "group_size": args.group_size,
         "gpro_steps": args.gpro_steps,
+        "log_sample_text": args.log_sample_text,
         "temperature": args.temperature,
         "summary": summary,
     }

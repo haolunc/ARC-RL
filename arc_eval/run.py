@@ -1,6 +1,7 @@
 """CLI entry point for ARC evaluation pipeline."""
 
 import argparse
+import json
 import time
 from datetime import datetime
 from pathlib import Path
@@ -8,8 +9,10 @@ from pathlib import Path
 from .config import (
     DATASET_PATHS,
     DEFAULT_MAX_RETRIES,
+    DEFAULT_MAX_TOKENS,
     DEFAULT_TEMPERATURE,
     DEFAULT_TIMEOUT,
+    MODEL,
     SAFE_MAX_INPUT_TOKENS,
     CHARS_PER_TOKEN_ESTIMATE,
 )
@@ -78,6 +81,9 @@ def evaluate_task(
     max_retries: int,
     timeout: int,
     temperature: float,
+    model: str,
+    max_api_retries: int,
+    max_tokens: int,
     db: ResultDB,
     run_id: str,
 ) -> dict:
@@ -124,7 +130,13 @@ def evaluate_task(
 
             t0 = time.time()
             try:
-                response = call_llm(messages, temperature=temperature)
+                response = call_llm(
+                    messages,
+                    temperature=temperature,
+                    model=model,
+                    max_api_retries=max_api_retries,
+                    max_tokens=max_tokens,
+                )
             except RuntimeError as e:
                 db.insert_attempt(
                     run_id=run_id,
@@ -353,6 +365,24 @@ def main():
         help=f"LLM temperature (default: {DEFAULT_TEMPERATURE})",
     )
     parser.add_argument(
+        "--model",
+        type=str,
+        default=MODEL,
+        help=f"Model name (default: {MODEL})",
+    )
+    parser.add_argument(
+        "--max-api-retries",
+        type=int,
+        default=2,
+        help="Max retries for each API call (default: 2)",
+    )
+    parser.add_argument(
+        "--max-tokens",
+        type=int,
+        default=DEFAULT_MAX_TOKENS,
+        help=f"Max completion tokens per API call (default: {DEFAULT_MAX_TOKENS})",
+    )
+    parser.add_argument(
         "--run-name",
         type=str,
         default=None,
@@ -408,10 +438,12 @@ def main():
 
     print("=== ARC-AGI Evaluation ===")
     print(f"Dataset:     {args.dataset} / {args.split}")
+    print(f"Model:       {args.model}")
     print(f"Total tasks: {len(tasks)}")
     if done:
         print(f"Resuming:    {len(done)} already done, {len(remaining)} remaining")
     print(f"Max retries: {args.max_retries}")
+    print(f"Max tokens:  {args.max_tokens}")
     print(f"Timeout:     {args.timeout}s")
     print(f"Temperature: {args.temperature}")
     print(f"Results DB:  {db_path}")
@@ -432,6 +464,9 @@ def main():
                 max_retries=args.max_retries,
                 timeout=args.timeout,
                 temperature=args.temperature,
+                model=args.model,
+                max_api_retries=args.max_api_retries,
+                max_tokens=args.max_tokens,
                 db=db,
                 run_id=run_name,
             )
@@ -452,11 +487,29 @@ def main():
         )
 
     summary = db.get_summary(run_name)
+    summary_payload = {
+        "run_id": run_name,
+        "mode": "baseline",
+        "dataset": args.dataset,
+        "split": args.split,
+        "model": args.model,
+        "max_retries": args.max_retries,
+        "max_api_retries": args.max_api_retries,
+        "max_tokens": args.max_tokens,
+        "temperature": args.temperature,
+        "summary": summary,
+    }
+
+    summary_path = results_dir / "summary.json"
+    with open(summary_path, "w", encoding="utf-8") as f:
+        json.dump(summary_payload, f, indent=2)
+
     print("=== Summary ===")
     print(f"Tasks evaluated: {summary['tasks_evaluated']}")
     print(f"Tasks solved:    {summary['tasks_solved']} ({summary['solve_rate']:.1%})")
     print(f"Test cases:      {summary['test_cases_passed']}/{summary['total_test_cases']}")
     print(f"Results DB:      {db_path}")
+    print(f"Summary JSON:    {summary_path}")
 
     db.close()
 

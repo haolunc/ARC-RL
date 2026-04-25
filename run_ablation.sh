@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Run ARC with Qwen3.5 + GPRO-style group sampling.
+# Run the no-GPRO baseline ablation with the same result layout as GPRO runs.
 
 set -euo pipefail
 
@@ -8,59 +8,58 @@ cd "$(dirname "$0")"
 
 export PYTHONUNBUFFERED=1
 
-RUN_NAME=${RUN_NAME:-gpro_qwen35_$(date +%Y%m%d_%H%M%S)}
+RUN_NAME=${RUN_NAME:-ablation_no_gpro_$(date +%Y%m%d_%H%M%S)}
 DATASET=${DATASET:-arc1}
 SPLIT=${SPLIT:-training}
-MODEL=${MODEL:-${ARC_MODEL:-qwen3.5-plus}}
-GROUP_SIZE=${GROUP_SIZE:-4}
-GPRO_STEPS=${GPRO_STEPS:-3}
+MODEL=${MODEL:-${ARC_MODEL:-qwen3.6-35b-a3b}}
+MAX_RETRIES=${MAX_RETRIES:-1}
 TEMPERATURE=${TEMPERATURE:-0.7}
 TIMEOUT=${TIMEOUT:-120}
+MAX_TOKENS=${MAX_TOKENS:-400}
 MAX_TASKS=${MAX_TASKS:-}
-LOG_SAMPLE_TEXT=${LOG_SAMPLE_TEXT:-0}
 
 mkdir -p results
 
 CMD=(
-  "$PYTHON" -m arc_eval.gpro
+  "$PYTHON" -m arc_eval.run
   --dataset "$DATASET"
   --split "$SPLIT"
   --run-name "$RUN_NAME"
   --model "$MODEL"
-  --group-size "$GROUP_SIZE"
-  --gpro-steps "$GPRO_STEPS"
+  --max-retries "$MAX_RETRIES"
   --temperature "$TEMPERATURE"
   --timeout "$TIMEOUT"
+  --max-tokens "$MAX_TOKENS"
 )
 
 if [[ -n "$MAX_TASKS" ]]; then
   CMD+=(--max-tasks "$MAX_TASKS")
 fi
 
-if [[ "$LOG_SAMPLE_TEXT" == "1" ]]; then
-  CMD+=(--log-sample-text)
-fi
-
-echo "=== ARC GPRO Run ==="
+echo "=== ARC No-GPRO Ablation ==="
 echo "Run name:     $RUN_NAME"
 echo "Dataset:      $DATASET/$SPLIT"
 echo "Model:        $MODEL"
-echo "Group size:   $GROUP_SIZE"
-echo "GPRO steps:   $GPRO_STEPS"
+echo "Max retries:  $MAX_RETRIES"
 echo "Temperature:  $TEMPERATURE"
 echo "Timeout:      ${TIMEOUT}s"
-echo "Log text:     $LOG_SAMPLE_TEXT"
+echo "Max tokens:   $MAX_TOKENS"
 
 if "${CMD[@]}" 2>&1 | tee -a "results/${RUN_NAME}.log"; then
   echo ""
-  echo "=== Building poster analysis files ==="
+  echo "=== Building analysis files ==="
   "$PYTHON" results/poster_analysis.py "results/${RUN_NAME}" \
+    2>&1 | tee -a "results/${RUN_NAME}.log"
+
+  echo ""
+  echo "=== Building plots ==="
+  "$PYTHON" results/plot_results.py "results/${RUN_NAME}" \
     2>&1 | tee -a "results/${RUN_NAME}.log"
 
   echo ""
   echo "Done. See results/${RUN_NAME}/poster"
 else
   echo ""
-  echo "Run failed before results DB generation. Skipping poster analysis."
+  echo "Run failed before results DB generation. Skipping analysis."
   exit 1
 fi
