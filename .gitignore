@@ -1,1 +1,17 @@
 LLM.md
+
+# Python generated files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Local environments
+.venv/
+venv/
+.env
+.env.*
+
+# OS/editor noise
+.DS_Store
+.idea/
+.vscode/
