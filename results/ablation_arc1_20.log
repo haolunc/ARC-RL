@@ -1,0 +1,316 @@
+Traceback (most recent call last):
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "/Users/danqihu/umich/eecs545/ARC-RL/arc_eval/run.py", line 20, in <module>
+    from .llm_client import call_llm
+  File "/Users/danqihu/umich/eecs545/ARC-RL/arc_eval/llm_client.py", line 14, in <module>
+    client = OpenAI(
+        base_url=API_BASE_URL,
+        api_key=API_KEY,
+        timeout=120.0,   # more realistic for 30B
+    )
+  File "/opt/miniconda3/lib/python3.13/site-packages/openai/_client.py", line 188, in __init__
+    super().__init__(
+    ~~~~~~~~~~~~~~~~^
+        version=__version__,
+        ^^^^^^^^^^^^^^^^^^^^
+    ...<6 lines>...
+        _strict_response_validation=_strict_response_validation,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/opt/miniconda3/lib/python3.13/site-packages/openai/_base_client.py", line 882, in __init__
+    super().__init__(
+    ~~~~~~~~~~~~~~~~^
+        version=version,
+        ^^^^^^^^^^^^^^^^
+    ...<6 lines>...
+        _strict_response_validation=_strict_response_validation,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/opt/miniconda3/lib/python3.13/site-packages/openai/_base_client.py", line 388, in __init__
+    self._base_url = self._enforce_trailing_slash(URL(base_url))
+                                                  ~~~^^^^^^^^^^
+  File "/opt/miniconda3/lib/python3.13/site-packages/httpx/_urls.py", line 117, in __init__
+    self._uri_reference = urlparse(url, **kwargs)
+                          ~~~~~~~~^^^^^^^^^^^^^^^
+  File "/opt/miniconda3/lib/python3.13/site-packages/httpx/_urlparse.py", line 229, in urlparse
+    raise InvalidURL(error)
+httpx.InvalidURL: Invalid non-printable ASCII character in URL, '\n' at position 52.
+Traceback (most recent call last):
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "/Users/danqihu/umich/eecs545/ARC-RL/arc_eval/run.py", line 20, in <module>
+    from .llm_client import call_llm
+  File "/Users/danqihu/umich/eecs545/ARC-RL/arc_eval/llm_client.py", line 14, in <module>
+    client = OpenAI(
+        base_url=API_BASE_URL,
+        api_key=API_KEY,
+        timeout=120.0,   # more realistic for 30B
+    )
+  File "/opt/miniconda3/lib/python3.13/site-packages/openai/_client.py", line 188, in __init__
+    super().__init__(
+    ~~~~~~~~~~~~~~~~^
+        version=__version__,
+        ^^^^^^^^^^^^^^^^^^^^
+    ...<6 lines>...
+        _strict_response_validation=_strict_response_validation,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/opt/miniconda3/lib/python3.13/site-packages/openai/_base_client.py", line 882, in __init__
+    super().__init__(
+    ~~~~~~~~~~~~~~~~^
+        version=version,
+        ^^^^^^^^^^^^^^^^
+    ...<6 lines>...
+        _strict_response_validation=_strict_response_validation,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/opt/miniconda3/lib/python3.13/site-packages/openai/_base_client.py", line 388, in __init__
+    self._base_url = self._enforce_trailing_slash(URL(base_url))
+                                                  ~~~^^^^^^^^^^
+  File "/opt/miniconda3/lib/python3.13/site-packages/httpx/_urls.py", line 117, in __init__
+    self._uri_reference = urlparse(url, **kwargs)
+                          ~~~~~~~~^^^^^^^^^^^^^^^
+  File "/opt/miniconda3/lib/python3.13/site-packages/httpx/_urlparse.py", line 229, in urlparse
+    raise InvalidURL(error)
+httpx.InvalidURL: Invalid non-printable ASCII character in URL, '\n' at position 52.
+Traceback (most recent call last):
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "/Users/danqihu/umich/eecs545/ARC-RL/arc_eval/run.py", line 20, in <module>
+    from .llm_client import call_llm
+  File "/Users/danqihu/umich/eecs545/ARC-RL/arc_eval/llm_client.py", line 14, in <module>
+    client = OpenAI(
+        base_url=API_BASE_URL,
+        api_key=API_KEY,
+        timeout=120.0,   # more realistic for 30B
+    )
+  File "/opt/miniconda3/lib/python3.13/site-packages/openai/_client.py", line 188, in __init__
+    super().__init__(
+    ~~~~~~~~~~~~~~~~^
+        version=__version__,
+        ^^^^^^^^^^^^^^^^^^^^
+    ...<6 lines>...
+        _strict_response_validation=_strict_response_validation,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/opt/miniconda3/lib/python3.13/site-packages/openai/_base_client.py", line 882, in __init__
+    super().__init__(
+    ~~~~~~~~~~~~~~~~^
+        version=version,
+        ^^^^^^^^^^^^^^^^
+    ...<6 lines>...
+        _strict_response_validation=_strict_response_validation,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/opt/miniconda3/lib/python3.13/site-packages/openai/_base_client.py", line 388, in __init__
+    self._base_url = self._enforce_trailing_slash(URL(base_url))
+                                                  ~~~^^^^^^^^^^
+  File "/opt/miniconda3/lib/python3.13/site-packages/httpx/_urls.py", line 117, in __init__
+    self._uri_reference = urlparse(url, **kwargs)
+                          ~~~~~~~~^^^^^^^^^^^^^^^
+  File "/opt/miniconda3/lib/python3.13/site-packages/httpx/_urlparse.py", line 229, in urlparse
+    raise InvalidURL(error)
+httpx.InvalidURL: Invalid non-printable ASCII character in URL, '\n' at position 52.
+=== ARC-AGI Evaluation ===
+Dataset:     arc1 / training
+Model:       qwen3.6-35b-a3b
+Total tasks: 20
+Max retries: 1
+Max tokens:  400
+Timeout:     120s
+Temperature: 0.7
+Results DB:  /Users/danqihu/umich/eecs545/ARC-RL/results/ablation_arc1_20/results.db
+
+[1/20] Task: 007bbfb7 (5 train, 1 test)
+  Test case 1/1
+    [1/1] Calling LLM (1 messages, 2085 chars, ~521 tokens in context)...
+  API call finished in 34.11s
+    [1/1] LLM responded (34s, 357 chars)
+    [1/1] SOLVED!
+  SOLVED (1/1 test cases, 34.4s) | Running: 1/1 solved (100%)
+
+[2/20] Task: 00d62c1b (5 train, 1 test)
+  Test case 1/1
+    [1/1] Calling LLM (1 messages, 6393 chars, ~1598 tokens in context)...
+  API call finished in 52.36s
+    [1/1] LLM responded (52s, 1010 chars)
+    [1/1] SOLVED!
+  SOLVED (1/1 test cases, 52.7s) | Running: 2/2 solved (100%)
+
+[3/20] Task: 017c7c7b (3 train, 1 test)
+  Test case 1/1
+    [1/1] Calling LLM (1 messages, 1101 chars, ~275 tokens in context)...
+  API call finished in 133.92s
+    [1/1] LLM responded (134s, 245 chars)
+    [1/1] FAIL: train verification failed
+  FAILED (0/1 test cases, 134.0s) | Running: 2/3 solved (67%)
+
+[4/20] Task: 025d127b (2 train, 1 test)
+  Test case 1/1
+    [1/1] Calling LLM (1 messages, 2106 chars, ~526 tokens in context)...
+  API call finished in 51.40s
+    [1/1] LLM responded (51s, 1487 chars)
+    [1/1] FAIL: train verification failed
+  FAILED (0/1 test cases, 51.5s) | Running: 2/4 solved (50%)
+
+[5/20] Task: 045e512c (3 train, 1 test)
+  Test case 1/1
+    [1/1] Calling LLM (1 messages, 9999 chars, ~2499 tokens in context)...
+  API error: Connection error., retrying in 2s...
+=== ARC-AGI Evaluation ===
+Dataset:     arc1 / training
+Model:       qwen3.6-35b-a3b
+Total tasks: 20
+Resuming:    4 already done, 16 remaining
+Max retries: 1
+Max tokens:  400
+Timeout:     120s
+Temperature: 0.7
+Results DB:  /Users/danqihu/umich/eecs545/ARC-RL/results/ablation_arc1_20/results.db
+
+[1/16] Task: 045e512c (3 train, 1 test)
+  Test case 1/1
+    [1/1] Calling LLM (1 messages, 9999 chars, ~2499 tokens in context)...
+  API error: Connection error., retrying in 2s...
+    [1/1] API error (552s): LLM API failed after 2 attempts: Connection error.
+  FAILED (0/1 test cases, 552.2s) | Running: 0/1 solved (0%)
+
+[2/16] Task: 0520fde7 (3 train, 1 test)
+  Test case 1/1
+    [1/1] Calling LLM (1 messages, 945 chars, ~236 tokens in context)...
+  API call finished in 53.25s
+    [1/1] LLM responded (53s, 697 chars)
+    [1/1] SOLVED!
+  SOLVED (1/1 test cases, 53.5s) | Running: 1/2 solved (50%)
+
+[3/16] Task: 05269061 (3 train, 1 test)
+  Test case 1/1
+    [1/1] Calling LLM (1 messages, 1669 chars, ~417 tokens in context)...
+  API call finished in 131.13s
+    [1/1] LLM responded (131s, 394 chars)
+    [1/1] SOLVED!
+  SOLVED (1/1 test cases, 131.4s) | Running: 2/3 solved (67%)
+
+[4/16] Task: 05f2a901 (3 train, 1 test)
+  Test case 1/1
+    [1/1] Calling LLM (1 messages, 2956 chars, ~739 tokens in context)...
+  API call finished in 73.16s
+    [1/1] LLM responded (73s, 729 chars)
+    [1/1] FAIL: train verification failed
+  FAILED (0/1 test cases, 73.3s) | Running: 2/4 solved (50%)
+
+[5/16] Task: 06df4c85 (3 train, 1 test)
+  Test case 1/1
+    [1/1] Calling LLM (1 messages, 11525 chars, ~2881 tokens in context)...
+  API call finished in 171.37s
+    [1/1] LLM responded (171s, 1153 chars)
+    [1/1] FAIL: train verification failed
+  FAILED (0/1 test cases, 171.6s) | Running: 2/5 solved (40%)
+
+[6/16] Task: 08ed6ac7 (2 train, 1 test)
+  Test case 1/1
+    [1/1] Calling LLM (1 messages, 1824 chars, ~456 tokens in context)...
+  API call finished in 42.77s
+    [1/1] LLM responded (43s, 667 chars)
+    [1/1] SOLVED!
+  SOLVED (1/1 test cases, 43.0s) | Running: 3/6 solved (50%)
+
+[7/16] Task: 09629e4f (4 train, 1 test)
+  Test case 1/1
+    [1/1] Calling LLM (1 messages, 3984 chars, ~996 tokens in context)...
+  API error: Connection error., retrying in 2s...
+    [1/1] API error (551s): LLM API failed after 2 attempts: Connection error.
+  FAILED (0/1 test cases, 550.8s) | Running: 3/7 solved (43%)
+
+[8/16] Task: 0962bcdd (2 train, 1 test)
+  Test case 1/1
+    [1/1] Calling LLM (1 messages, 2784 chars, ~696 tokens in context)...
+  API call finished in 247.75s
+    [1/1] LLM responded (248s, 1204 chars)
+    [1/1] FAIL: train verification failed
+  FAILED (0/1 test cases, 247.9s) | Running: 3/8 solved (38%)
+
+[9/16] Task: 0a938d79 (4 train, 1 test)
+  Test case 1/1
+    [1/1] Calling LLM (1 messages, 6452 chars, ~1613 tokens in context)...
+  API call finished in 70.62s
+    [1/1] LLM responded (71s, 995 chars)
+    [1/1] FAIL: train verification failed
+  FAILED (0/1 test cases, 70.7s) | Running: 3/9 solved (33%)
+
+[10/16] Task: 0b148d64 (3 train, 1 test)
+  Test case 1/1
+    [1/1] Calling LLM (1 messages, 5424 chars, ~1356 tokens in context)...
+  API call finished in 83.03s
+    [1/1] LLM responded (83s, 1155 chars)
+    [1/1] FAIL: train verification failed
+  FAILED (0/1 test cases, 83.1s) | Running: 3/10 solved (30%)
+
+[11/16] Task: 0ca9ddb6 (3 train, 1 test)
+  Test case 1/1
+    [1/1] Calling LLM (1 messages, 2355 chars, ~588 tokens in context)...
+  API call finished in 67.15s
+    [1/1] LLM responded (67s, 979 chars)
+    [1/1] FAIL: train verification failed
+  FAILED (0/1 test cases, 67.2s) | Running: 3/11 solved (27%)
+
+[12/16] Task: 0d3d703e (4 train, 1 test)
+  Test case 1/1
+    [1/1] Calling LLM (1 messages, 888 chars, ~222 tokens in context)...
+  API call finished in 26.23s
+    [1/1] LLM responded (26s, 213 chars)
+    [1/1] SOLVED!
+  SOLVED (1/1 test cases, 26.5s) | Running: 4/12 solved (33%)
+
+[13/16] Task: 0dfd9992 (3 train, 1 test)
+  Test case 1/1
+    [1/1] Calling LLM (1 messages, 9999 chars, ~2499 tokens in context)...
+  API call finished in 78.10s
+    [1/1] LLM responded (78s, 1104 chars)
+    [1/1] SOLVED!
+  SOLVED (1/1 test cases, 78.3s) | Running: 5/13 solved (38%)
+
+[14/16] Task: 0e206a2e (3 train, 1 test)
+  Test case 1/1
+    [1/1] Calling LLM (1 messages, 6187 chars, ~1546 tokens in context)...
+  API error: Connection error., retrying in 2s...
+    [1/1] API error (551s): LLM API failed after 2 attempts: Connection error.
+  FAILED (0/1 test cases, 550.7s) | Running: 5/14 solved (36%)
+
+[15/16] Task: 10fcaaa3 (4 train, 1 test)
+  Test case 1/1
+    [1/1] Calling LLM (1 messages, 1521 chars, ~380 tokens in context)...
+  API error: Connection error., retrying in 2s...
+    [1/1] API error (552s): LLM API failed after 2 attempts: Connection error.
+  FAILED (0/1 test cases, 552.3s) | Running: 5/15 solved (33%)
+
+[16/16] Task: 11852cab (3 train, 1 test)
+  Test case 1/1
+    [1/1] Calling LLM (1 messages, 2761 chars, ~690 tokens in context)...
+  API call finished in 54.99s
+    [1/1] LLM responded (55s, 938 chars)
+    [1/1] FAIL: wrong output (cell acc: 98.0%)
+  FAILED (0/1 test cases, 55.2s) | Running: 5/16 solved (31%)
+
+=== Summary ===
+Tasks evaluated: 20
+Tasks solved:    7 (35.0%)
+Test cases:      7/20
+Results DB:      /Users/danqihu/umich/eecs545/ARC-RL/results/ablation_arc1_20/results.db
+Summary JSON:    /Users/danqihu/umich/eecs545/ARC-RL/results/ablation_arc1_20/summary.json
+Poster report: results/ablation_arc1_20/poster/poster_report.md
+Metrics CSV:   results/ablation_arc1_20/poster/poster_metrics.csv
+Outcomes CSV:  results/ablation_arc1_20/poster/poster_outcomes.csv
+Step CSV:      results/ablation_arc1_20/poster/poster_step_rewards.csv
+results/ablation_arc1_20/poster/plot_task_outcomes.png
+results/ablation_arc1_20/poster/plot_attempt_outcomes.png
+results/ablation_arc1_20/poster/plot_success_by_step.png
+results/ablation_arc1_20/poster/plot_task_runtime_hist.png
+results/ablation_arc1_20/poster/plot_tokens_vs_accuracy.png

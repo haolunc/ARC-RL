@@ -1,7 +1,7 @@
 """LLM API client using OpenAI SDK."""
 
 import time
-from openai import OpenAI, APIError, APITimeoutError, RateLimitError
+from openai import APIConnectionError, APIError, APITimeoutError, OpenAI, RateLimitError
 
 from .config import (
     API_BASE_URL,
@@ -9,12 +9,13 @@ from .config import (
     MODEL,
     DEFAULT_TEMPERATURE,
     DEFAULT_MAX_TOKENS,
+    DEFAULT_API_TIMEOUT,
 )
 
 client = OpenAI(
     base_url=API_BASE_URL,
     api_key=API_KEY,
-    timeout=120.0,   # more realistic for 30B
+    timeout=float(DEFAULT_API_TIMEOUT),
 )
 
 
@@ -59,6 +60,16 @@ def call_llm(
             else:
                 raise RuntimeError(
                     f"LLM API timed out after {max_api_retries} attempts: {e}"
+                ) from e
+
+        except APIConnectionError as e:
+            if attempt < max_api_retries - 1:
+                wait = 2 ** (attempt + 1)
+                print(f"  API connection error: {e}, retrying in {wait}s...", flush=True)
+                time.sleep(wait)
+            else:
+                raise RuntimeError(
+                    f"LLM API connection failed after {max_api_retries} attempts: {e}"
                 ) from e
 
         except APIError as e:

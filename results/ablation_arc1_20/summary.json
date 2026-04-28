@@ -1,0 +1,18 @@
+{
+  "run_id": "ablation_arc1_20",
+  "mode": "baseline",
+  "dataset": "arc1",
+  "split": "training",
+  "model": "qwen3.6-35b-a3b",
+  "max_retries": 1,
+  "max_api_retries": 2,
+  "max_tokens": 400,
+  "temperature": 0.7,
+  "summary": {
+    "tasks_evaluated": 20,
+    "tasks_solved": 7,
+    "solve_rate": 0.35,
+    "total_test_cases": 20,
+    "test_cases_passed": 7
+  }
+}

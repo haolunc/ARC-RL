@@ -1,16 +1,22 @@
 """Configuration constants for ARC evaluation pipeline."""
 
 import os
+import re
 
-API_BASE_URL = os.getenv(
-    "ARC_API_BASE_URL",
-    "https://dashscope-intl.aliyuncs.com/compatible-mode/v1",
+
+def clean_env_value(value: str | None, default: str = "") -> str:
+    """Remove accidental whitespace/newlines from copied shell env values."""
+    return re.sub(r"\s+", "", value or default)
+
+API_BASE_URL = clean_env_value(
+    os.getenv("ARC_API_BASE_URL"),
+    "https://dashscope-us.aliyuncs.com/compatible-mode/v1",
 )
 
 # Read key from environment variable instead of hardcoding
-API_KEY = os.getenv("ARC_API_KEY") or os.getenv("DASHSCOPE_API_KEY")
+API_KEY = clean_env_value(os.getenv("ARC_API_KEY") or os.getenv("DASHSCOPE_API_KEY"))
 
-MODEL = os.getenv("ARC_MODEL", "qwen3.5-plus")
+MODEL = clean_env_value(os.getenv("ARC_MODEL"), "qwen3.5-plus")
 
 # Use system python on Great Lakes
 PYTHON_PATH = "python"
@@ -37,6 +43,10 @@ DEFAULT_GPRO_TEMPERATURE = 0.7
 
 # Output generation budget
 DEFAULT_MAX_TOKENS = 400
+
+# LLM API call timeout. This is separate from DEFAULT_TIMEOUT, which controls
+# generated-code execution time.
+DEFAULT_API_TIMEOUT = int(clean_env_value(os.getenv("ARC_API_TIMEOUT"), "300"))
 
 # Context budgeting
 MAX_CONTEXT_TOKENS = 16000

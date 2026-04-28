@@ -1,0 +1,186 @@
+=== ARC GPRO Evaluation ===
+Dataset:      arc1 / training
+Model:        qwen3.6-35b-a3b
+Total tasks:  20
+Group size:   1
+GPRO steps:   1
+Temperature:  0.7
+Log text:     False
+Timeout:      120s
+Results DB:   /Users/danqihu/umich/eecs545/ARC-RL/results/run20_fast/results.db
+Samples JSONL:/Users/danqihu/umich/eecs545/ARC-RL/results/run20_fast/gpro_samples.jsonl
+
+[1/20] Task: 007bbfb7 (5 train, 1 test)
+  Test case 1/1
+    [step 1/1] Sampling group of 1 (2085 chars, ~521 tokens)
+  API call finished in 141.09s
+    [step 1/1] SOLVED (best reward=1.000)
+  SOLVED (1/1 test cases, 141.4s) | Running: 1/1 solved (100%)
+
+[2/20] Task: 00d62c1b (5 train, 1 test)
+  Test case 1/1
+    [step 1/1] Sampling group of 1 (6393 chars, ~1598 tokens)
+  API call finished in 39.96s
+    [step 1/1] SOLVED (best reward=1.000)
+  SOLVED (1/1 test cases, 40.3s) | Running: 2/2 solved (100%)
+
+[3/20] Task: 017c7c7b (3 train, 1 test)
+  Test case 1/1
+    [step 1/1] Sampling group of 1 (1101 chars, ~275 tokens)
+  API call finished in 54.22s
+    [step 1/1] SOLVED (best reward=1.000)
+  SOLVED (1/1 test cases, 54.4s) | Running: 3/3 solved (100%)
+
+[4/20] Task: 025d127b (2 train, 1 test)
+  Test case 1/1
+    [step 1/1] Sampling group of 1 (2106 chars, ~526 tokens)
+  API error: Connection error., retrying in 2s...
+    [step 1/1] best reward=-1.200, train fail -> retry
+  FAILED (0/1 test cases, 551.1s) | Running: 3/4 solved (75%)
+
+[5/20] Task: 045e512c (3 train, 1 test)
+  Test case 1/1
+    [step 1/1] Sampling group of 1 (9999 chars, ~2499 tokens)
+  API error: Connection error., retrying in 2s...
+    [step 1/1] best reward=-1.200, train fail -> retry
+  FAILED (0/1 test cases, 551.7s) | Running: 3/5 solved (60%)
+
+[6/20] Task: 0520fde7 (3 train, 1 test)
+  Test case 1/1
+    [step 1/1] Sampling group of 1 (945 chars, ~236 tokens)
+  API call finished in 19.48s
+    [step 1/1] SOLVED (best reward=1.000)
+  SOLVED (1/1 test cases, 19.7s) | Running: 4/6 solved (67%)
+
+[7/20] Task: 05269061 (3 train, 1 test)
+  Test case 1/1
+    [step 1/1] Sampling group of 1 (1669 chars, ~417 tokens)
+  API call finished in 54.81s
+    [step 1/1] SOLVED (best reward=1.000)
+  SOLVED (1/1 test cases, 55.0s) | Running: 5/7 solved (71%)
+
+[8/20] Task: 05f2a901 (3 train, 1 test)
+  Test case 1/1
+    [step 1/1] Sampling group of 1 (2956 chars, ~739 tokens)
+  API call finished in 73.78s
+    [step 1/1] best reward=-0.500, train fail -> retry
+  FAILED (0/1 test cases, 73.9s) | Running: 5/8 solved (62%)
+
+[9/20] Task: 06df4c85 (3 train, 1 test)
+  Test case 1/1
+    [step 1/1] Sampling group of 1 (11525 chars, ~2881 tokens)
+  API call finished in 85.05s
+    [step 1/1] best reward=-0.500, train fail -> retry
+  FAILED (0/1 test cases, 85.1s) | Running: 5/9 solved (56%)
+
+[10/20] Task: 08ed6ac7 (2 train, 1 test)
+  Test case 1/1
+    [step 1/1] Sampling group of 1 (1824 chars, ~456 tokens)
+  API call finished in 61.55s
+    [step 1/1] SOLVED (best reward=1.000)
+  SOLVED (1/1 test cases, 61.7s) | Running: 6/10 solved (60%)
+
+[11/20] Task: 09629e4f (4 train, 1 test)
+  Test case 1/1
+    [step 1/1] Sampling group of 1 (3984 chars, ~996 tokens)
+  API error: Connection error., retrying in 2s...
+    [step 1/1] best reward=-1.200, train fail -> retry
+  FAILED (0/1 test cases, 549.3s) | Running: 6/11 solved (55%)
+
+[12/20] Task: 0962bcdd (2 train, 1 test)
+  Test case 1/1
+    [step 1/1] Sampling group of 1 (2784 chars, ~696 tokens)
+  API error: Connection error., retrying in 2s...
+  API call finished in 59.08s
+    [step 1/1] best reward=-0.500, train fail -> retry
+  FAILED (0/1 test cases, 336.1s) | Running: 6/12 solved (50%)
+
+[13/20] Task: 0a938d79 (4 train, 1 test)
+  Test case 1/1
+    [step 1/1] Sampling group of 1 (6452 chars, ~1613 tokens)
+  API call finished in 150.60s
+    [step 1/1] best reward=0.720, train fail -> retry
+  FAILED (0/1 test cases, 150.7s) | Running: 6/13 solved (46%)
+
+[14/20] Task: 0b148d64 (3 train, 1 test)
+  Test case 1/1
+    [step 1/1] Sampling group of 1 (5424 chars, ~1356 tokens)
+  API call finished in 177.10s
+    [step 1/1] best reward=-0.500, train fail -> retry
+  FAILED (0/1 test cases, 177.1s) | Running: 6/14 solved (43%)
+
+[15/20] Task: 0ca9ddb6 (3 train, 1 test)
+  Test case 1/1
+    [step 1/1] Sampling group of 1 (2355 chars, ~588 tokens)
+  API call finished in 67.11s
+    [step 1/1] SOLVED (best reward=1.000)
+  SOLVED (1/1 test cases, 67.3s) | Running: 7/15 solved (47%)
+
+[16/20] Task: 0d3d703e (4 train, 1 test)
+  Test case 1/1
+    [step 1/1] Sampling group of 1 (888 chars, ~222 tokens)
+  API call finished in 36.84s
+    [step 1/1] SOLVED (best reward=1.000)
+  SOLVED (1/1 test cases, 37.1s) | Running: 8/16 solved (50%)
+
+[17/20] Task: 0dfd9992 (3 train, 1 test)
+  Test case 1/1
+    [step 1/1] Sampling group of 1 (9999 chars, ~2499 tokens)
+  API call finished in 156.64s
+    [step 1/1] SOLVED (best reward=1.000)
+  SOLVED (1/1 test cases, 156.9s) | Running: 9/17 solved (53%)
+
+[18/20] Task: 0e206a2e (3 train, 1 test)
+  Test case 1/1
+    [step 1/1] Sampling group of 1 (6187 chars, ~1546 tokens)
+  API error: Connection error., retrying in 2s...
+    [step 1/1] best reward=-1.200, train fail -> retry
+  FAILED (0/1 test cases, 550.7s) | Running: 9/18 solved (50%)
+
+[19/20] Task: 10fcaaa3 (4 train, 1 test)
+  Test case 1/1
+    [step 1/1] Sampling group of 1 (1521 chars, ~380 tokens)
+  API error: Connection error., retrying in 2s...
+    [step 1/1] best reward=-1.200, train fail -> retry
+  FAILED (0/1 test cases, 551.6s) | Running: 9/19 solved (47%)
+
+[20/20] Task: 11852cab (3 train, 1 test)
+  Test case 1/1
+    [step 1/1] Sampling group of 1 (2761 chars, ~690 tokens)
+  API call finished in 41.47s
+    [step 1/1] FAIL: wrong output (cell acc: 98.0%)
+  FAILED (0/1 test cases, 41.7s) | Running: 9/20 solved (45%)
+
+=== Summary ===
+Tasks evaluated: 20
+Tasks solved:    9 (45.0%)
+Test cases:      9/20
+Results DB:      /Users/danqihu/umich/eecs545/ARC-RL/results/run20_fast/results.db
+Summary JSON:    /Users/danqihu/umich/eecs545/ARC-RL/results/run20_fast/summary.json
+Poster report: results/run20_fast/poster/poster_report.md
+Metrics CSV:   results/run20_fast/poster/poster_metrics.csv
+Outcomes CSV:  results/run20_fast/poster/poster_outcomes.csv
+Step CSV:      results/run20_fast/poster/poster_step_rewards.csv
+=== ARC GPRO Evaluation ===
+Dataset:      arc1 / training
+Model:        qwen3.6-35b-a3b
+Total tasks:  20
+Resuming:     20 already done, 0 remaining
+Group size:   4
+GPRO steps:   5
+Temperature:  0.7
+Log text:     False
+Timeout:      120s
+Results DB:   /Users/danqihu/umich/eecs545/ARC-RL/results/run20_fast/results.db
+Samples JSONL:/Users/danqihu/umich/eecs545/ARC-RL/results/run20_fast/gpro_samples.jsonl
+
+=== Summary ===
+Tasks evaluated: 20
+Tasks solved:    9 (45.0%)
+Test cases:      9/20
+Results DB:      /Users/danqihu/umich/eecs545/ARC-RL/results/run20_fast/results.db
+Summary JSON:    /Users/danqihu/umich/eecs545/ARC-RL/results/run20_fast/summary.json
+Poster report: results/run20_fast/poster/poster_report.md
+Metrics CSV:   results/run20_fast/poster/poster_metrics.csv
+Outcomes CSV:  results/run20_fast/poster/poster_outcomes.csv
+Step CSV:      results/run20_fast/poster/poster_step_rewards.csv

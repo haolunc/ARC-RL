@@ -1,0 +1,413 @@
+=== ARC GPRO Evaluation ===
+Dataset:      arc1 / training
+Model:        qwen3.6-35b-a3b
+Total tasks:  400
+Group size:   4
+GPRO steps:   3
+Temperature:  0.8
+Log text:     True
+Timeout:      120s
+Results DB:   /Users/danqihu/umich/eecs545/ARC-RL/results/arc1_training_qwen36_grpo_full/results.db
+Samples JSONL:/Users/danqihu/umich/eecs545/ARC-RL/results/arc1_training_qwen36_grpo_full/gpro_samples.jsonl
+
+[1/400] Task: 007bbfb7 (5 train, 1 test)
+  Test case 1/1
+    [step 1/3] Sampling group of 4 (2085 chars, ~521 tokens)
+  API error: Error code: 401 - {'error': {'message': 'Incorrect API key provided. For details, see: https://www.alibabacloud.com/help/en/model-studio/error-code#apikey-error', 'type': 'invalid_request_error', 'param': None, 'code': 'invalid_api_key'}, 'request_id': '8ed552b1-0f06-9267-a20e-209d4a69998b'}, retrying in 2s...
+  API error: Error code: 401 - {'error': {'message': 'Incorrect API key provided. For details, see: https://www.alibabacloud.com/help/en/model-studio/error-code#apikey-error', 'type': 'invalid_request_error', 'param': None, 'code': 'invalid_api_key'}, 'request_id': 'bc5dd2b5-b217-9a75-bebd-09bcb69fa6dc'}, retrying in 2s...
+=== ARC GPRO Evaluation ===
+Dataset:      arc1 / training
+Model:        qwen3.6-35b-a3b
+Total tasks:  400
+Group size:   4
+GPRO steps:   3
+Temperature:  0.8
+Log text:     True
+Timeout:      120s
+Results DB:   /Users/danqihu/umich/eecs545/ARC-RL/results/arc1_training_qwen36_grpo_full/results.db
+Samples JSONL:/Users/danqihu/umich/eecs545/ARC-RL/results/arc1_training_qwen36_grpo_full/gpro_samples.jsonl
+
+[1/400] Task: 007bbfb7 (5 train, 1 test)
+  Test case 1/1
+    [step 1/3] Sampling group of 4 (2085 chars, ~521 tokens)
+  API error: Error code: 401 - {'error': {'message': 'Incorrect API key provided. For details, see: https://www.alibabacloud.com/help/en/model-studio/error-code#apikey-error', 'type': 'invalid_request_error', 'param': None, 'code': 'invalid_api_key'}, 'request_id': 'da243f28-e7e3-91ee-adf8-bc57d0e9bae9'}, retrying in 2s...
+=== ARC GPRO Evaluation ===
+Dataset:      arc1 / training
+Model:        qwen3.6-35b-a3b
+Total tasks:  400
+Group size:   4
+GPRO steps:   3
+Temperature:  0.8
+Log text:     True
+Timeout:      120s
+Results DB:   /Users/danqihu/umich/eecs545/ARC-RL/results/arc1_training_qwen36_grpo_full/results.db
+Samples JSONL:/Users/danqihu/umich/eecs545/ARC-RL/results/arc1_training_qwen36_grpo_full/gpro_samples.jsonl
+
+[1/400] Task: 007bbfb7 (5 train, 1 test)
+  Test case 1/1
+    [step 1/3] Sampling group of 4 (2085 chars, ~521 tokens)
+  API error: Error code: 401 - {'error': {'message': 'Incorrect API key provided. For details, see: https://www.alibabacloud.com/help/en/model-studio/error-code#apikey-error', 'type': 'invalid_request_error', 'param': None, 'code': 'invalid_api_key'}, 'request_id': 'bf458fe0-3aa5-9e35-b4f6-5d3df7dfb720'}, retrying in 2s...
+  API error: Error code: 401 - {'error': {'message': 'Incorrect API key provided. For details, see: https://www.alibabacloud.com/help/en/model-studio/error-code#apikey-error', 'type': 'invalid_request_error', 'param': None, 'code': 'invalid_api_key'}, 'request_id': '70bd8428-4fd3-959c-a80d-cae9944be7cf'}, retrying in 2s...
+  API error: Error code: 401 - {'error': {'message': 'Incorrect API key provided. For details, see: https://www.alibabacloud.com/help/en/model-studio/error-code#apikey-error', 'type': 'invalid_request_error', 'param': None, 'code': 'invalid_api_key'}, 'request_id': 'f0519067-55b7-9559-82fc-71bbebf20b05'}, retrying in 2s...
+  API error: Error code: 401 - {'error': {'message': 'Incorrect API key provided. For details, see: https://www.alibabacloud.com/help/en/model-studio/error-code#apikey-error', 'type': 'invalid_request_error', 'param': None, 'code': 'invalid_api_key'}, 'request_id': '8a786421-e2fe-9b5a-b5da-18d21437292b'}, retrying in 2s...
+    [step 1/3] best reward=-1.200, train fail -> retry
+    [step 2/3] Sampling group of 4 (2508 chars, ~627 tokens)
+  API error: Error code: 401 - {'error': {'message': 'Incorrect API key provided. For details, see: https://www.alibabacloud.com/help/en/model-studio/error-code#apikey-error', 'type': 'invalid_request_error', 'param': None, 'code': 'invalid_api_key'}, 'request_id': 'dcc8f9fb-2b03-9825-b230-474d480307a3'}, retrying in 2s...
+  API error: Error code: 401 - {'error': {'message': 'Incorrect API key provided. For details, see: https://www.alibabacloud.com/help/en/model-studio/error-code#apikey-error', 'type': 'invalid_request_error', 'param': None, 'code': 'invalid_api_key'}, 'request_id': 'e2a85dec-bca6-9579-9b14-7c4cc7f3a0a0'}, retrying in 2s...
+=== ARC GPRO Evaluation ===
+Dataset:      arc1 / training
+Model:        qwen3.6-35b-a3b
+Total tasks:  400
+Group size:   4
+GPRO steps:   3
+Temperature:  0.8
+Log text:     True
+Timeout:      120s
+Results DB:   /Users/danqihu/umich/eecs545/ARC-RL/results/arc1_training_qwen36_grpo_full/results.db
+Samples JSONL:/Users/danqihu/umich/eecs545/ARC-RL/results/arc1_training_qwen36_grpo_full/gpro_samples.jsonl
+
+[1/400] Task: 007bbfb7 (5 train, 1 test)
+  Test case 1/1
+    [step 1/3] Sampling group of 4 (2085 chars, ~521 tokens)
+  API error: Error code: 401 - {'error': {'message': 'Incorrect API key provided. For details, see: https://www.alibabacloud.com/help/en/model-studio/error-code#apikey-error', 'type': 'invalid_request_error', 'param': None, 'code': 'invalid_api_key'}, 'request_id': '94866157-e06c-95ea-9569-133906a9a7e6'}, retrying in 2s...
+  API error: Error code: 401 - {'error': {'message': 'Incorrect API key provided. For details, see: https://www.alibabacloud.com/help/en/model-studio/error-code#apikey-error', 'type': 'invalid_request_error', 'param': None, 'code': 'invalid_api_key'}, 'request_id': 'f0fbfba1-6b93-9b43-8d94-188247fe42a7'}, retrying in 2s...
+  API error: Error code: 401 - {'error': {'message': 'Incorrect API key provided. For details, see: https://www.alibabacloud.com/help/en/model-studio/error-code#apikey-error', 'type': 'invalid_request_error', 'param': None, 'code': 'invalid_api_key'}, 'request_id': 'cf2c2768-64c1-9349-b088-923af6f3801c'}, retrying in 2s...
+  API error: Error code: 401 - {'error': {'message': 'Incorrect API key provided. For details, see: https://www.alibabacloud.com/help/en/model-studio/error-code#apikey-error', 'type': 'invalid_request_error', 'param': None, 'code': 'invalid_api_key'}, 'request_id': 'cde8c79d-e1a5-98b9-9900-693a73bb2e4b'}, retrying in 2s...
+    [step 1/3] best reward=-1.200, train fail -> retry
+    [step 2/3] Sampling group of 4 (2508 chars, ~627 tokens)
+  API error: Error code: 401 - {'error': {'message': 'Incorrect API key provided. For details, see: https://www.alibabacloud.com/help/en/model-studio/error-code#apikey-error', 'type': 'invalid_request_error', 'param': None, 'code': 'invalid_api_key'}, 'request_id': '2d765ff9-b6fc-934f-9d7e-3097b083d415'}, retrying in 2s...
+  API error: Error code: 401 - {'error': {'message': 'Incorrect API key provided. For details, see: https://www.alibabacloud.com/help/en/model-studio/error-code#apikey-error', 'type': 'invalid_request_error', 'param': None, 'code': 'invalid_api_key'}, 'request_id': 'c6fdd72c-d691-9070-b8d2-b3875801a819'}, retrying in 2s...
+=== ARC GPRO Evaluation ===
+Dataset:      arc1 / training
+Model:        qwen3.6-35b-a3b
+Total tasks:  400
+Group size:   4
+GPRO steps:   3
+Temperature:  0.8
+Log text:     True
+Timeout:      120s
+Results DB:   /Users/danqihu/umich/eecs545/ARC-RL/results/arc1_training_qwen36_grpo_full/results.db
+Samples JSONL:/Users/danqihu/umich/eecs545/ARC-RL/results/arc1_training_qwen36_grpo_full/gpro_samples.jsonl
+
+[1/400] Task: 007bbfb7 (5 train, 1 test)
+  Test case 1/1
+    [step 1/3] Sampling group of 4 (2085 chars, ~521 tokens)
+  API error: Error code: 401 - {'error': {'message': 'Incorrect API key provided. For details, see: https://www.alibabacloud.com/help/en/model-studio/error-code#apikey-error', 'type': 'invalid_request_error', 'param': None, 'code': 'invalid_api_key'}, 'request_id': '883bc3a4-d89b-996e-bfac-6ed2c557cde9'}, retrying in 2s...
+  API error: Error code: 401 - {'error': {'message': 'Incorrect API key provided. For details, see: https://www.alibabacloud.com/help/en/model-studio/error-code#apikey-error', 'type': 'invalid_request_error', 'param': None, 'code': 'invalid_api_key'}, 'request_id': '6a6629fe-aab6-909f-95e6-37fac08dc8c5'}, retrying in 2s...
+  API error: Error code: 401 - {'error': {'message': 'Incorrect API key provided. For details, see: https://www.alibabacloud.com/help/en/model-studio/error-code#apikey-error', 'type': 'invalid_request_error', 'param': None, 'code': 'invalid_api_key'}, 'request_id': '20407d58-f4a3-9d57-8787-fd7824043a8f'}, retrying in 2s...
+  API error: Error code: 401 - {'error': {'message': 'Incorrect API key provided. For details, see: https://www.alibabacloud.com/help/en/model-studio/error-code#apikey-error', 'type': 'invalid_request_error', 'param': None, 'code': 'invalid_api_key'}, 'request_id': 'ae2c40b3-2a7b-9ad9-869c-411d9df1b8d2'}, retrying in 2s...
+=== ARC GPRO Evaluation ===
+Dataset:      arc1 / training
+Model:        qwen3.6-35b-a3b
+Total tasks:  400
+Group size:   4
+GPRO steps:   3
+Temperature:  0.8
+Log text:     True
+Timeout:      120s
+Results DB:   /Users/danqihu/umich/eecs545/ARC-RL/results/arc1_training_qwen36_grpo_full/results.db
+Samples JSONL:/Users/danqihu/umich/eecs545/ARC-RL/results/arc1_training_qwen36_grpo_full/gpro_samples.jsonl
+
+[1/400] Task: 007bbfb7 (5 train, 1 test)
+  Test case 1/1
+    [step 1/3] Sampling group of 4 (2085 chars, ~521 tokens)
+  API call finished in 54.79s
+  API call finished in 42.18s
+  API call finished in 44.18s
+  API call finished in 81.97s
+    [step 1/3] SOLVED (best reward=1.000)
+  SOLVED (1/1 test cases, 224.1s) | Running: 1/1 solved (100%)
+
+[2/400] Task: 00d62c1b (5 train, 1 test)
+  Test case 1/1
+    [step 1/3] Sampling group of 4 (6393 chars, ~1598 tokens)
+  API call finished in 63.56s
+  API call finished in 46.44s
+  API call finished in 66.09s
+  API call finished in 60.13s
+    [step 1/3] SOLVED (best reward=1.000)
+  SOLVED (1/1 test cases, 237.1s) | Running: 2/2 solved (100%)
+
+[3/400] Task: 017c7c7b (3 train, 1 test)
+  Test case 1/1
+    [step 1/3] Sampling group of 4 (1101 chars, ~275 tokens)
+  API call finished in 81.10s
+  API call finished in 53.96s
+  API call finished in 138.44s
+  API call finished in 102.62s
+    [step 1/3] SOLVED (best reward=1.000)
+  SOLVED (1/1 test cases, 376.7s) | Running: 3/3 solved (100%)
+
+[4/400] Task: 025d127b (2 train, 1 test)
+  Test case 1/1
+    [step 1/3] Sampling group of 4 (2106 chars, ~526 tokens)
+  API call finished in 178.28s
+  API error: Connection error., retrying in 2s...
+  API call finished in 143.44s
+  API call finished in 180.62s
+    [step 1/3] best reward=0.784, train fail -> retry
+    [step 2/3] Sampling group of 4 (4252 chars, ~1063 tokens)
+  API call finished in 118.10s
+  API call finished in 61.74s
+  API call finished in 54.47s
+  API call finished in 40.57s
+    [step 2/3] best reward=0.784, train fail -> retry
+    [step 3/3] Sampling group of 4 (4233 chars, ~1058 tokens)
+  API error: Connection error., retrying in 2s...
+  API call finished in 73.46s
+  API call finished in 81.47s
+  API error: Connection error., retrying in 2s...
+  API call finished in 83.97s
+    [step 3/3] SOLVED (best reward=1.000)
+  SOLVED (1/1 test cases, 2394.1s) | Running: 4/4 solved (100%)
+
+[5/400] Task: 045e512c (3 train, 1 test)
+  Test case 1/1
+    [step 1/3] Sampling group of 4 (9999 chars, ~2499 tokens)
+  API error: Connection error., retrying in 2s...
+  API error: Connection error., retrying in 2s...
+  API error: Connection error., retrying in 2s...
+=== ARC GPRO Evaluation ===
+Dataset:      arc1 / training
+Model:        qwen3.6-35b-a3b
+Total tasks:  400
+Resuming:     4 already done, 396 remaining
+Group size:   2
+GPRO steps:   2
+Temperature:  0.7
+Log text:     True
+Timeout:      120s
+Results DB:   /Users/danqihu/umich/eecs545/ARC-RL/results/arc1_training_qwen36_grpo_full/results.db
+Samples JSONL:/Users/danqihu/umich/eecs545/ARC-RL/results/arc1_training_qwen36_grpo_full/gpro_samples.jsonl
+
+[1/396] Task: 045e512c (3 train, 1 test)
+  Test case 1/1
+    [step 1/2] Sampling group of 2 (9999 chars, ~2499 tokens)
+=== ARC GPRO Evaluation ===
+Dataset:      arc1 / training
+Model:        qwen3.6-35b-a3b
+Total tasks:  400
+Resuming:     4 already done, 396 remaining
+Group size:   4
+GPRO steps:   3
+Temperature:  0.7
+Log text:     True
+Timeout:      120s
+Results DB:   /Users/danqihu/umich/eecs545/ARC-RL/results/arc1_training_qwen36_grpo_full/results.db
+Samples JSONL:/Users/danqihu/umich/eecs545/ARC-RL/results/arc1_training_qwen36_grpo_full/gpro_samples.jsonl
+
+[1/396] Task: 045e512c (3 train, 1 test)
+  Test case 1/1
+    [step 1/3] Sampling group of 4 (9999 chars, ~2499 tokens)
+  API connection error: Connection error., retrying in 2s...
+=== ARC GPRO Evaluation ===
+Dataset:      arc1 / training
+Model:        qwen3.6-35b-a3b
+Total tasks:  400
+Resuming:     4 already done, 396 remaining
+Group size:   4
+GPRO steps:   3
+Temperature:  0.7
+Log text:     True
+Timeout:      120s
+Results DB:   /Users/danqihu/umich/eecs545/ARC-RL/results/arc1_training_qwen36_grpo_full/results.db
+Samples JSONL:/Users/danqihu/umich/eecs545/ARC-RL/results/arc1_training_qwen36_grpo_full/gpro_samples.jsonl
+
+[1/396] Task: 045e512c (3 train, 1 test)
+  Test case 1/1
+    [step 1/3] Sampling group of 4 (9999 chars, ~2499 tokens)
+  API connection error: Connection error., retrying in 2s...
+  API connection error: Connection error., retrying in 2s...
+  API connection error: Connection error., retrying in 2s...
+  API connection error: Connection error., retrying in 2s...
+    [step 1/3] best reward=-1.200, train fail -> retry
+    [step 2/3] Sampling group of 4 (10158 chars, ~2539 tokens)
+  API connection error: Connection error., retrying in 2s...
+  API call finished in 272.09s
+  API call finished in 89.26s
+  API call finished in 80.45s
+    [step 2/3] best reward=-0.500, train fail -> retry
+    [step 3/3] Sampling group of 4 (11779 chars, ~2944 tokens)
+  API call finished in 173.60s
+  API call finished in 254.95s
+  API call finished in 163.23s
+  API call finished in 84.14s
+    [step 3/3] best reward=-0.500, train fail -> retry
+  FAILED (0/1 test cases, 3867.6s) | Running: 0/1 solved (0%)
+
+[2/396] Task: 0520fde7 (3 train, 1 test)
+  Test case 1/1
+    [step 1/3] Sampling group of 4 (945 chars, ~236 tokens)
+  API call finished in 30.04s
+  API call finished in 13.61s
+  API call finished in 26.87s
+  API call finished in 11.32s
+    [step 1/3] SOLVED (best reward=1.000)
+  SOLVED (1/1 test cases, 82.4s) | Running: 1/2 solved (50%)
+
+[3/396] Task: 05269061 (3 train, 1 test)
+  Test case 1/1
+    [step 1/3] Sampling group of 4 (1669 chars, ~417 tokens)
+  API call finished in 47.39s
+  API call finished in 35.17s
+  API call finished in 125.08s
+  API call finished in 42.38s
+    [step 1/3] SOLVED (best reward=1.000)
+  SOLVED (1/1 test cases, 250.7s) | Running: 2/3 solved (67%)
+
+[4/396] Task: 05f2a901 (3 train, 1 test)
+  Test case 1/1
+    [step 1/3] Sampling group of 4 (2956 chars, ~739 tokens)
+  API call finished in 32.87s
+  API call finished in 56.67s
+  API call finished in 54.16s
+  API call finished in 54.64s
+    [step 1/3] best reward=-0.500, train fail -> retry
+    [step 2/3] Sampling group of 4 (4651 chars, ~1162 tokens)
+  API call finished in 38.62s
+  API call finished in 40.35s
+  API call finished in 42.91s
+  API call finished in 34.96s
+    [step 2/3] best reward=-0.500, train fail -> retry
+    [step 3/3] Sampling group of 4 (4491 chars, ~1122 tokens)
+  API call finished in 43.61s
+  API call finished in 32.62s
+  API call finished in 49.65s
+  API call finished in 49.91s
+    [step 3/3] best reward=-0.500, train fail -> retry
+  FAILED (0/1 test cases, 531.7s) | Running: 2/4 solved (50%)
+
+[5/396] Task: 06df4c85 (3 train, 1 test)
+  Test case 1/1
+    [step 1/3] Sampling group of 4 (11525 chars, ~2881 tokens)
+  API call finished in 72.78s
+  API call finished in 181.02s
+  API call finished in 58.21s
+  API call finished in 166.66s
+    [step 1/3] best reward=0.760, train fail -> retry
+    [step 2/3] Sampling group of 4 (15116 chars, ~3779 tokens)
+  API call finished in 90.22s
+  API call finished in 65.08s
+  API call finished in 63.66s
+  API call finished in 58.83s
+    [step 2/3] best reward=-0.500, train fail -> retry
+    [step 3/3] Sampling group of 4 (13173 chars, ~3293 tokens)
+  API call finished in 152.93s
+  API call finished in 58.10s
+  API call finished in 66.12s
+  API call finished in 88.82s
+    [step 3/3] best reward=-0.500, train fail -> retry
+  FAILED (0/1 test cases, 1123.4s) | Running: 2/5 solved (40%)
+
+[6/396] Task: 08ed6ac7 (2 train, 1 test)
+  Test case 1/1
+    [step 1/3] Sampling group of 4 (1824 chars, ~456 tokens)
+  API call finished in 27.89s
+  API call finished in 40.24s
+  API call finished in 39.03s
+  API call finished in 32.03s
+    [step 1/3] SOLVED (best reward=1.000)
+  SOLVED (1/1 test cases, 139.8s) | Running: 3/6 solved (50%)
+
+[7/396] Task: 09629e4f (4 train, 1 test)
+  Test case 1/1
+    [step 1/3] Sampling group of 4 (3984 chars, ~996 tokens)
+  API connection error: Connection error., retrying in 2s...
+  API call finished in 266.27s
+  API connection error: Connection error., retrying in 2s...
+  API call finished in 87.62s
+  API call finished in 81.91s
+    [step 1/3] best reward=0.453, train fail -> retry
+    [step 2/3] Sampling group of 4 (5909 chars, ~1477 tokens)
+  API call finished in 54.36s
+  API call finished in 60.04s
+  API call finished in 89.84s
+  API call finished in 81.76s
+    [step 2/3] best reward=0.453, train fail -> retry
+    [step 3/3] Sampling group of 4 (5835 chars, ~1458 tokens)
+  API call finished in 181.06s
+  API call finished in 84.48s
+  API connection error: Connection error., retrying in 2s...
+  API call finished in 88.56s
+  API call finished in 83.44s
+    [step 3/3] best reward=0.453, train fail -> retry
+  FAILED (0/1 test cases, 2259.3s) | Running: 3/7 solved (43%)
+
+[8/396] Task: 0962bcdd (2 train, 1 test)
+  Test case 1/1
+    [step 1/3] Sampling group of 4 (2784 chars, ~696 tokens)
+  API connection error: Connection error., retrying in 2s...
+  API call finished in 159.92s
+  API call finished in 90.09s
+  API call finished in 167.83s
+  API call finished in 66.23s
+    [step 1/3] SOLVED (best reward=1.000)
+  SOLVED (1/1 test cases, 759.8s) | Running: 4/8 solved (50%)
+
+[9/396] Task: 0a938d79 (4 train, 1 test)
+  Test case 1/1
+    [step 1/3] Sampling group of 4 (6452 chars, ~1613 tokens)
+  API connection error: Connection error., retrying in 2s...
+  API call finished in 75.98s
+  API call finished in 59.38s
+  API call finished in 71.20s
+  API call finished in 150.81s
+    [step 1/3] best reward=0.720, train fail -> retry
+    [step 2/3] Sampling group of 4 (9177 chars, ~2294 tokens)
+  API call finished in 65.70s
+  API call finished in 80.31s
+  API call finished in 67.95s
+  API call finished in 51.03s
+    [step 2/3] SOLVED (best reward=1.000)
+  SOLVED (1/1 test cases, 1524.7s) | Running: 5/9 solved (56%)
+
+[10/396] Task: 0b148d64 (3 train, 1 test)
+  Test case 1/1
+    [step 1/3] Sampling group of 4 (5424 chars, ~1356 tokens)
+  API call finished in 177.41s
+  API call finished in 54.38s
+  API call finished in 60.20s
+  API call finished in 72.38s
+    [step 1/3] SOLVED (best reward=1.000)
+  SOLVED (1/1 test cases, 365.0s) | Running: 6/10 solved (60%)
+
+[11/396] Task: 0ca9ddb6 (3 train, 1 test)
+  Test case 1/1
+    [step 1/3] Sampling group of 4 (2355 chars, ~588 tokens)
+  API call finished in 48.14s
+  API call finished in 67.30s
+  API call finished in 45.40s
+  API call finished in 137.94s
+    [step 1/3] SOLVED (best reward=1.000)
+  SOLVED (1/1 test cases, 299.6s) | Running: 7/11 solved (64%)
+
+[12/396] Task: 0d3d703e (4 train, 1 test)
+  Test case 1/1
+    [step 1/3] Sampling group of 4 (888 chars, ~222 tokens)
+  API call finished in 22.50s
+  API call finished in 57.96s
+  API call finished in 22.39s
+  API call finished in 36.21s
+    [step 1/3] SOLVED (best reward=1.000)
+  SOLVED (1/1 test cases, 140.0s) | Running: 8/12 solved (67%)
+
+[13/396] Task: 0dfd9992 (3 train, 1 test)
+  Test case 1/1
+    [step 1/3] Sampling group of 4 (9999 chars, ~2499 tokens)
+  API call finished in 271.00s
+  API call finished in 67.46s
+  API call finished in 85.70s
+  API call finished in 61.77s
+    [step 1/3] SOLVED (best reward=1.000)
+  SOLVED (1/1 test cases, 486.4s) | Running: 9/13 solved (69%)
+
+[14/396] Task: 0e206a2e (3 train, 1 test)
+  Test case 1/1
+    [step 1/3] Sampling group of 4 (6187 chars, ~1546 tokens)
+  API connection error: Connection error., retrying in 2s...
+  API connection error: Connection error., retrying in 2s...
+  API connection error: Connection error., retrying in 2s...
+  API connection error: Connection error., retrying in 2s...
+    [step 1/3] best reward=-1.200, train fail -> retry
+    [step 2/3] Sampling group of 4 (6346 chars, ~1586 tokens)
+  API connection error: Connection error., retrying in 2s...

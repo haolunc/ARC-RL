@@ -364,6 +364,18 @@ def main():
     )
     parser.add_argument("--task-id", type=str, default=None)
     parser.add_argument("--max-tasks", type=int, default=None)
+    parser.add_argument(
+        "--task-start",
+        type=int,
+        default=None,
+        help="1-based inclusive start index in sorted task order.",
+    )
+    parser.add_argument(
+        "--task-end",
+        type=int,
+        default=None,
+        help="1-based inclusive end index in sorted task order.",
+    )
     parser.add_argument("--timeout", type=int, default=DEFAULT_TIMEOUT)
     parser.add_argument("--temperature", type=float, default=DEFAULT_GPRO_TEMPERATURE)
     parser.add_argument("--group-size", type=int, default=DEFAULT_GPRO_GROUP_SIZE)
@@ -391,6 +403,16 @@ def main():
         raise ValueError("--group-size must be >= 1")
     if args.gpro_steps <= 0:
         raise ValueError("--gpro-steps must be >= 1")
+    if args.task_start is not None and args.task_start <= 0:
+        raise ValueError("--task-start must be >= 1")
+    if args.task_end is not None and args.task_end <= 0:
+        raise ValueError("--task-end must be >= 1")
+    if (
+        args.task_start is not None
+        and args.task_end is not None
+        and args.task_start > args.task_end
+    ):
+        raise ValueError("--task-start must be <= --task-end")
 
     project_root = Path(__file__).resolve().parent.parent
     data_dir = project_root / DATASET_PATHS[args.dataset][args.split]
@@ -418,6 +440,13 @@ def main():
             print(f"Error: Task '{args.task_id}' not found in {data_dir}")
             return
         tasks = {args.task_id: tasks[args.task_id]}
+
+    if not args.task_id and (args.task_start is not None or args.task_end is not None):
+        task_ids = list(tasks.keys())
+        start_index = (args.task_start or 1) - 1
+        end_index = args.task_end or len(task_ids)
+        selected_ids = task_ids[start_index:end_index]
+        tasks = {tid: tasks[tid] for tid in selected_ids}
 
     if args.max_tasks:
         task_ids = list(tasks.keys())[: args.max_tasks]
@@ -511,6 +540,8 @@ def main():
         "model": args.model,
         "group_size": args.group_size,
         "gpro_steps": args.gpro_steps,
+        "task_start": args.task_start,
+        "task_end": args.task_end,
         "log_sample_text": args.log_sample_text,
         "temperature": args.temperature,
         "summary": summary,
