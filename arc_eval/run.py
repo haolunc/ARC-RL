@@ -14,10 +14,10 @@ from .config import (
     CHARS_PER_TOKEN_ESTIMATE,
 )
 from .prompt import build_initial_messages, append_retry, format_grid
-from .llm_client import call_llm
+from .llm_client import call_llm, LLMCallError
 from .code_extract import extract_code
 from .safe_exec import execute_transform
-from .evaluate import compare_grids, verify_on_train
+from .evaluate import compare_grids, verify_on_train_threshold
 from .db import ResultDB
 
 
@@ -78,6 +78,9 @@ def evaluate_task(
     max_retries: int,
     timeout: int,
     temperature: float,
+    max_api_retries: int,
+    api_timeout: float,
+    train_pass_ratio: float,
     db: ResultDB,
     run_id: str,
 ) -> dict:
@@ -95,6 +98,7 @@ def evaluate_task(
     all_solved = True
     passed_count = 0
     last_code = None
+    had_api_failure = False
 
     for test_idx, test_case in enumerate(test_cases):
         test_input = test_case["input"]
@@ -124,8 +128,14 @@ def evaluate_task(
 
             t0 = time.time()
             try:
-                response = call_llm(messages, temperature=temperature)
-            except RuntimeError as e:
+                response = call_llm(
+                    messages,
+                    temperature=temperature,
+                    max_api_retries=max_api_retries,
+                    api_timeout=api_timeout,
+                )
+            except LLMCallError as e:
+                had_api_failure = True
                 db.insert_attempt(
                     run_id=run_id,
                     task_id=task_id,
@@ -138,11 +148,11 @@ def evaluate_task(
                     train_pass=None,
                     test_correct=None,
                     cell_accuracy=None,
-                    error_type="api_error",
+                    error_type=e.category,
                     error_msg=str(e),
                 )
                 print(
-                    f"    [{attempt}/{max_retries}] API error ({time.time() - t0:.0f}s): {e}"
+                    f"    [{attempt}/{max_retries}] API error [{e.category}] ({time.time() - t0:.0f}s): {e}"
                 )
                 break
 
@@ -182,8 +192,12 @@ def evaluate_task(
             last_code = code
 
             # Verify on training examples only
-            train_result = verify_on_train(
-                code, train_examples, execute_transform, timeout
+            train_result = verify_on_train_threshold(
+                code,
+                train_examples,
+                execute_transform,
+                timeout,
+                min_pass_ratio=train_pass_ratio,
             )
 
             if not train_result["passed"]:
@@ -305,6 +319,7 @@ def evaluate_task(
         "test_cases_passed": passed_count,
         "num_test_cases": len(test_cases),
         "total_time_seconds": round(elapsed, 2),
+        "had_api_failure": had_api_failure,
     }
 
 
@@ -358,7 +373,38 @@ def main():
         default=None,
         help="Name for this run (default: timestamp). Reusing a name resumes.",
     )
+    parser.add_argument(
+        "--max-api-retries",
+        type=int,
+        default=2,
+        help="Max API retries for each LLM call (default: 2)",
+    )
+    parser.add_argument(
+        "--api-timeout",
+        type=float,
+        default=120.0,
+        help="Timeout in seconds for each LLM API attempt (default: 120)",
+    )
+    parser.add_argument(
+        "--no-rerun-api-failures",
+        action="store_true",
+        help="Disable one extra rerun pass for tasks that failed due to API infrastructure errors",
+    )
+    parser.add_argument(
+        "--train-pass-ratio",
+        type=float,
+        default=1.0,
+        help=(
+            "Minimum fraction of training examples that must pass before testing "
+            "(0.0-1.0, default: 1.0)"
+        ),
+    )
     args = parser.parse_args()
+
+    if not (0.0 <= args.train_pass_ratio <= 1.0):
+        raise ValueError("--train-pass-ratio must be between 0.0 and 1.0")
+    if args.api_timeout <= 0:
+        raise ValueError("--api-timeout must be > 0")
 
     project_root = Path(__file__).resolve().parent.parent
     data_dir = project_root / DATASET_PATHS[args.dataset][args.split]
@@ -412,13 +458,17 @@ def main():
     if done:
         print(f"Resuming:    {len(done)} already done, {len(remaining)} remaining")
     print(f"Max retries: {args.max_retries}")
+    print(f"Max API retries: {args.max_api_retries}")
+    print(f"API timeout: {args.api_timeout}s")
     print(f"Timeout:     {args.timeout}s")
     print(f"Temperature: {args.temperature}")
+    print(f"Train pass ratio gate: {args.train_pass_ratio:.2f}")
     print(f"Results DB:  {db_path}")
     print()
 
     solved_so_far = 0
     total_so_far = 0
+    api_failed_tasks: list[str] = []
 
     for i, (task_id, task_data) in enumerate(remaining.items(), 1):
         n_test = len(task_data["test"])
@@ -432,6 +482,9 @@ def main():
                 max_retries=args.max_retries,
                 timeout=args.timeout,
                 temperature=args.temperature,
+                max_api_retries=args.max_api_retries,
+                api_timeout=args.api_timeout,
+                train_pass_ratio=args.train_pass_ratio,
                 db=db,
                 run_id=run_name,
             )
@@ -442,6 +495,8 @@ def main():
         total_so_far += 1
         if result["solved"]:
             solved_so_far += 1
+        if result.get("had_api_failure") and not result["solved"]:
+            api_failed_tasks.append(task_id)
 
         status = "SOLVED" if result["solved"] else "FAILED"
         running_rate = solved_so_far / total_so_far if total_so_far else 0.0
@@ -450,6 +505,47 @@ def main():
             f"test cases, {result['total_time_seconds']:.1f}s) "
             f"| Running: {solved_so_far}/{total_so_far} solved ({running_rate:.0%})\n"
         )
+
+    if api_failed_tasks and not args.no_rerun_api_failures:
+        unique_api_failed = list(dict.fromkeys(api_failed_tasks))
+        print(
+            f"=== Revisit API-failed tasks ({len(unique_api_failed)}) ==="
+        )
+
+        for i, task_id in enumerate(unique_api_failed, 1):
+            task_data = tasks.get(task_id)
+            if task_data is None:
+                continue
+
+            n_test = len(task_data["test"])
+            n_train = len(task_data["train"])
+            print(
+                f"[revisit {i}/{len(unique_api_failed)}] Task: {task_id} "
+                f"({n_train} train, {n_test} test)"
+            )
+
+            try:
+                result = evaluate_task(
+                    task_id=task_id,
+                    task_data=task_data,
+                    max_retries=args.max_retries,
+                    timeout=args.timeout,
+                    temperature=args.temperature,
+                    max_api_retries=args.max_api_retries,
+                    api_timeout=args.api_timeout,
+                    train_pass_ratio=args.train_pass_ratio,
+                    db=db,
+                    run_id=run_name,
+                )
+            except Exception as e:
+                print(f"  ERROR on revisit task {task_id}: {e}\n")
+                continue
+
+            status = "SOLVED" if result["solved"] else "FAILED"
+            print(
+                f"  Revisit {status} ({result['test_cases_passed']}/{result['num_test_cases']} "
+                f"test cases, {result['total_time_seconds']:.1f}s)\n"
+            )
 
     summary = db.get_summary(run_name)
     print("=== Summary ===")

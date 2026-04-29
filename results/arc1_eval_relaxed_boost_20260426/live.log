@@ -1,0 +1,65 @@
+=== ARC-AGI Evaluation ===
+Dataset:     arc1 / evaluation
+Total tasks: 400
+Resuming:    73 already done, 327 remaining
+Max retries: 4
+Max API retries: 4
+API timeout: 45.0s
+Timeout:     120s
+Temperature: 0.7
+Train pass ratio gate: 0.75
+Results DB:  /home/zikaiz/src/ARC-RL/results/arc1_eval_relaxed_boost_20260426/results.db
+
+[1/327] Task: 2c0b0aff (4 train, 1 test)
+  Test case 1/1
+    [1/4] Calling LLM (1 messages, 10236 chars, ~2559 tokens in context)...
+  API timeout: Request timed out., retrying in 2s...
+  API timeout: Request timed out., retrying in 4s...
+  API timeout: Request timed out., retrying in 8s...
+    [1/4] API error (573s): LLM API timed out after 4 attempts: Request timed out.
+  FAILED (0/1 test cases, 572.9s) | Running: 0/1 solved (0%)
+
+[2/327] Task: 2c737e39 (3 train, 1 test)
+  Test case 1/1
+    [1/4] Calling LLM (1 messages, 3873 chars, ~968 tokens in context)...
+=== ARC-AGI Evaluation ===
+Dataset:     arc1 / evaluation
+Total tasks: 400
+Resuming:    74 already done, 326 remaining
+Max retries: 4
+Max API retries: 3
+API timeout: 90.0s
+Timeout:     120s
+Temperature: 0.7
+Train pass ratio gate: 0.75
+Results DB:  /home/zikaiz/src/ARC-RL/results/arc1_eval_relaxed_boost_20260426/results.db
+
+[1/326] Task: 2c737e39 (3 train, 1 test)
+  Test case 1/1
+    [1/4] Calling LLM (1 messages, 3873 chars, ~968 tokens in context)...
+  API timeout: Request timed out., retrying in 2s...
+  API timeout: Request timed out., retrying in 4s...
+=== ARC-AGI Evaluation ===
+Dataset:     arc1 / evaluation
+Total tasks: 400
+Resuming:    74 already done, 326 remaining
+Max retries: 4
+Max API retries: 3
+API timeout: 90.0s
+Timeout:     120s
+Temperature: 0.7
+Train pass ratio gate: 0.75
+Results DB:  /home/zikaiz/src/ARC-RL/results/arc1_eval_relaxed_boost_20260426/results.db
+
+[1/326] Task: 2c737e39 (3 train, 1 test)
+  Test case 1/1
+    [1/4] Calling LLM (1 messages, 3873 chars, ~968 tokens in context)...
+  API timeout: Request timed out., retrying in 2s...
+  API timeout: Request timed out., retrying in 4s...
+    [1/4] API error (833s): LLM API timed out after 3 attempts: Request timed out.
+  FAILED (0/1 test cases, 833.1s) | Running: 0/1 solved (0%)
+
+[2/326] Task: 2f0c5170 (3 train, 1 test)
+  Test case 1/1
+    [1/4] Calling LLM (1 messages, 6804 chars, ~1701 tokens in context)...
+  API timeout: Request timed out., retrying in 2s...

@@ -1,0 +1,11 @@
+Traceback (most recent call last):
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "/home/zikaiz/src/ARC-RL/arc_eval/run.py", line 17, in <module>
+    from .llm_client import call_llm
+  File "/home/zikaiz/src/ARC-RL/arc_eval/llm_client.py", line 14, in <module>
+    client = OpenAI(
+             ^^^^^^^
+  File "/home/zikaiz/src/ARC-RL/.venv/lib/python3.12/site-packages/openai/_client.py", line 158, in __init__
+    raise OpenAIError(
+openai.OpenAIError: The api_key client option must be set either by passing api_key to the client or by setting the OPENAI_API_KEY environment variable

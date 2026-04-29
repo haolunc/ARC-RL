@@ -1,0 +1,18 @@
+=== ARC-AGI Evaluation ===
+Dataset:     arc1 / training
+Total tasks: 400
+Max retries: 1
+Timeout:     120s
+Temperature: 0.0
+Results DB:  /home/zikaiz/src/ARC-RL/results/arc1_training_full_noleak_20260424_v5/results.db
+
+[1/400] Task: 007bbfb7 (5 train, 1 test)
+  Test case 1/1
+    [1/1] Calling LLM (1 messages, 2085 chars, ~521 tokens in context)...
+  API error: Connection error., retrying in 2s...
+    [1/1] API error (556s): LLM API failed after 2 attempts: Connection error.
+  FAILED (0/1 test cases, 555.8s) | Running: 0/1 solved (0%)
+
+[2/400] Task: 00d62c1b (5 train, 1 test)
+  Test case 1/1
+    [1/1] Calling LLM (1 messages, 6393 chars, ~1598 tokens in context)...

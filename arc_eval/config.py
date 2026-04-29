@@ -10,7 +10,7 @@ API_BASE_URL = os.getenv(
 # Read key from environment variable instead of hardcoding
 API_KEY = os.getenv("ARC_API_KEY") or os.getenv("DASHSCOPE_API_KEY")
 
-MODEL = os.getenv("ARC_MODEL", "qwen3.5-plus")
+MODEL = os.getenv("ARC_MODEL", "qwen3.6-35b-a3b")
 
 # Use system python on Great Lakes
 PYTHON_PATH = "python"

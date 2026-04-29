@@ -1,0 +1,26 @@
+=== ARC-AGI Evaluation ===
+Dataset:     arc1 / training
+Total tasks: 400
+Max retries: 1
+Timeout:     120s
+Temperature: 0.0
+Results DB:  /home/zikaiz/src/ARC-RL/results/arc1_training_full_noleak_20260424_v4/results.db
+
+[1/400] Task: 007bbfb7 (5 train, 1 test)
+  Test case 1/1
+    [1/1] Calling LLM (1 messages, 2085 chars, ~521 tokens in context)...
+  API error: Error code: 401 - {'error': {'message': 'Incorrect API key provided. For details, see: https://www.alibabacloud.com/help/en/model-studio/error-code#apikey-error', 'type': 'invalid_request_error', 'param': None, 'code': 'invalid_api_key'}, 'request_id': '5aa0d3c3-800a-944e-ae7b-25768b8fddb2'}, retrying in 2s...
+    [1/1] API error (4s): LLM API failed after 2 attempts: Error code: 401 - {'error': {'message': 'Incorrect API key provided. For details, see: https://www.alibabacloud.com/help/en/model-studio/error-code#apikey-error', 'type': 'invalid_request_error', 'param': None, 'code': 'invalid_api_key'}, 'request_id': '74c6117f-94e8-9f55-b7f7-70ede128d505'}
+  FAILED (0/1 test cases, 3.6s) | Running: 0/1 solved (0%)
+
+[2/400] Task: 00d62c1b (5 train, 1 test)
+  Test case 1/1
+    [1/1] Calling LLM (1 messages, 6393 chars, ~1598 tokens in context)...
+  API error: Error code: 401 - {'error': {'message': 'Incorrect API key provided. For details, see: https://www.alibabacloud.com/help/en/model-studio/error-code#apikey-error', 'type': 'invalid_request_error', 'param': None, 'code': 'invalid_api_key'}, 'request_id': '1e03f999-ee0e-99b0-9fa2-246ec48f8ce2'}, retrying in 2s...
+    [1/1] API error (3s): LLM API failed after 2 attempts: Error code: 401 - {'error': {'message': 'Incorrect API key provided. For details, see: https://www.alibabacloud.com/help/en/model-studio/error-code#apikey-error', 'type': 'invalid_request_error', 'param': None, 'code': 'invalid_api_key'}, 'request_id': '38a85278-b13b-962c-a9a9-b972e931a8be'}
+  FAILED (0/1 test cases, 2.7s) | Running: 0/2 solved (0%)
+
+[3/400] Task: 017c7c7b (3 train, 1 test)
+  Test case 1/1
+    [1/1] Calling LLM (1 messages, 1101 chars, ~275 tokens in context)...
+  API error: Error code: 401 - {'error': {'message': 'Incorrect API key provided. For details, see: https://www.alibabacloud.com/help/en/model-studio/error-code#apikey-error', 'type': 'invalid_request_error', 'param': None, 'code': 'invalid_api_key'}, 'request_id': '622a0926-79b2-9075-afb6-e6869edd90a1'}, retrying in 2s...

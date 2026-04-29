@@ -12,6 +12,23 @@ Rules:
 - Output only one ```python code block.
 - Do not include explanations, test code, or print statements.
 - The output grid size may differ from the input.
+- Do not memorize training examples.
+- Infer a general transformation rule that works on unseen grids from the same task.
+- Prefer object-level reasoning: connected components, bounding boxes, symmetry,
+  repetition, translation, reflection, rotation, color remapping, and counting.
+
+Suggested helper patterns (you may define and use them in your code):
+- find_connected_components(grid)
+- bounding_box(component)
+- crop_object(grid, bbox)
+- replace_color(grid, old, new)
+- reflect / rotate / translate_object
+- count_colors(grid)
+
+Before coding, think in 3 stages internally:
+1) Describe the abstract rule.
+2) Implement the rule in Python.
+3) Verify mentally against all provided examples.
 """
 
 
@@ -23,6 +40,7 @@ def format_grid(grid: list[list[int]]) -> str:
 def build_initial_messages(
     train_examples: list[dict],
     test_input: list[list[int]],
+    target_label: str = "Test input",
 ) -> list[dict]:
     """Build the initial chat messages."""
     messages = [{"role": "system", "content": SYSTEM_PROMPT}]
@@ -33,9 +51,10 @@ def build_initial_messages(
         parts.append(f"Input:\n{format_grid(ex['input'])}")
         parts.append(f"Output:\n{format_grid(ex['output'])}\n")
 
-    parts.append("Infer the rule from the training examples.")
-    parts.append("Write a correct Python function `transform(input_grid)`.")
-    parts.append(f"Test input:\n{format_grid(test_input)}")
+    parts.append("Infer a general rule from the training examples.")
+    parts.append("Do not hard-code example-specific grids or dimensions.")
+    parts.append("Write a robust Python function `transform(input_grid)`.")
+    parts.append(f"{target_label}:\n{format_grid(test_input)}")
 
     messages.append({"role": "user", "content": "\n".join(parts)})
     return messages
@@ -70,6 +89,7 @@ def append_retry(
         "content": (
             "Your previous code was incorrect.\n\n"
             f"Feedback:\n{compact_error}\n\n"
+            "Revise your approach to be more general and avoid memorization.\n"
             "Write a corrected `transform(input_grid)` function."
         ),
     }
