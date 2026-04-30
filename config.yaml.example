@@ -1,0 +1,25 @@
+python_path: "/opt/homebrew/Caskroom/miniforge/base/envs/arc/bin/python"
+
+endpoint: qwen_official          # name from endpoint.yaml
+
+data:
+  split: training                # training or evaluation
+  task_ids: null                 # null = all tasks, or ["task_id_1", "task_id_2"]
+  max_tasks: null                # null = no limit
+
+eval:
+  mode: "sandbox_tools"          # sandbox_tools | direct | tree_search
+  max_workers: 4                 # parallel task evaluation (1 = sequential)
+  llm_timeout: 180               # LLM API request timeout (seconds)
+  run_name: null                 # null = auto timestamp, or "my_experiment"
+
+  # Required when mode is "tree_search".
+  tree_search:
+    max_nodes: 8                 # total solution attempts per task
+    max_depth: 3                 # max refinement depth
+    min_children: 3              # fresh attempts before refinement
+    exploration_weight: 1.4      # PUCT exploration constant
+    early_stop: true             # stop after perfect training score
+    max_output_tokens: 8192      # per-node LLM output cap
+    max_tool_rounds: 6           # per-node sandbox tool rounds
+    token_budget: 60000          # per-node input token budget
