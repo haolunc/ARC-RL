@@ -18,6 +18,19 @@
 
 Evaluation set 中多 test case 的比例明显更高（37.5% vs 6.9%）。
 
+### 多 Test Case 的 Task ID 示例
+
+**2 个 test case：**
+- Training: `12997ef3`, `17b866bd`, `1be83260`
+- Evaluation: `13e47133`, `142ca369`, `16de56c4`
+
+**3 个 test case：**
+- Training: `27a28665`, `3cd86f4f`, `5ecac7f7`
+- Evaluation: `1ae2feb7`, `d35bdbdc`
+
+**4 个 test case：**
+- Training: `8dab14c2`（唯一一个）
+
 ## 重叠统计
 
 | 类别 | 数量 |

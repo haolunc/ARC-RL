@@ -1,81 +1,99 @@
-# Configuration
 
-## Config Files
+**python_path**: config 中的 `python_path` 指定用于 subprocess 执行 LLM 生成代码的 Python 解释器路径（executor.py 用它来运行代码）。
 
-| File | Tracked | Purpose |
-|------|---------|---------|
-| `config.yaml.example` | Yes | Config template — copy and edit |
-| `endpoint.yaml.example` | Yes | Endpoint registry template — copy and edit |
-| `.env.example` | Yes | API key template |
+```python
+"""Configuration — loads config YAML + endpoint.yaml + .env."""
 
-```bash
-cp config.yaml.example config.yaml
-cp endpoint.yaml.example endpoint.yaml
-cp .env.example .env
-```
+import os
+import sys
+from pathlib import Path
 
-## Config YAML
+from dotenv import load_dotenv
+import yaml
 
-```yaml
-python_path: "/path/to/python"
+_ROOT = Path(__file__).resolve().parent.parent.parent
+_VALID_MODES = ("sandbox_tools", "direct", "tree_search")
 
-endpoint: qwen_official             # name from endpoint.yaml
+EXEC_TIMEOUT = 30
+MAX_TOOL_ROUNDS = 12
+WARN_THRESHOLD = 5
+TEMPERATURE = 0.7
+MAX_OUTPUT_TOKENS = 16384
+TOKEN_BUDGET = 120000
+_DATA_DIR_TEMPLATE = "ARC-AGI-2/data/{split}"
 
-data:
-  split: training                   # training or evaluation
-  task_ids: null                    # null = all tasks, or ["id1", "id2"]
-  max_tasks: null                   # null = no limit
+load_dotenv(_ROOT / ".env")
 
-eval:
-  mode: "native_tools"              # native_tools | sandbox_tools | direct
-  max_workers: 4                    # parallel task evaluation (1 = sequential)
-  llm_timeout: 180                  # LLM API request timeout (seconds)
-  run_name: null                    # null = auto timestamp, or "my_experiment"
-```
 
-## Config Fields
+def load_config(config_path: str) -> dict:
+    """Load and validate config YAML, resolving endpoint from endpoint.yaml.
 
-| Field | Type | Description |
-|-------|------|-------------|
-| `python_path` | string | Path to Python interpreter for code execution |
-| `endpoint` | string | Endpoint name from `endpoint.yaml` |
-| `data.split` | string | `training` or `evaluation` |
-| `data.task_ids` | list/null | Specific task IDs to evaluate, or null for all |
-| `data.max_tasks` | int/null | Limit number of tasks, or null for no limit |
-| `eval.mode` | string | `native_tools`, `sandbox_tools`, or `direct` |
-| `eval.max_workers` | int | Number of parallel task workers (default: 1) |
-| `eval.llm_timeout` | int | LLM API request timeout in seconds |
-| `eval.run_name` | string/null | Run name for results directory; null = auto timestamp |
+    Returns dict with keys: python_path, endpoint, data, eval.
+    The endpoint dict is fully resolved (name → details, api_key resolved).
+    """
+    path = Path(config_path)
+    if not path.is_absolute():
+        path = _ROOT / path
 
-## Hardcoded Defaults
+    if not path.exists():
+        print(f"Error: Config file not found: {path}")
+        sys.exit(1)
 
-These values are constants in `arc/eval/config.py`:
+    with open(path) as f:
+        cfg = yaml.safe_load(f)
 
-| Constant | Value | Description |
-|----------|-------|-------------|
-| `EXEC_TIMEOUT` | 30 | Code execution timeout (seconds) |
-| `MAX_TOOL_CALLS` | 10 | Max tool calls for sandbox_tools mode |
-| `TEMPERATURE` | 0.7 | LLM sampling temperature |
+    # Validate required sections
+    for section in ("python_path", "endpoint", "data", "eval"):
+        if section not in cfg:
+            print(f"Error: Missing '{section}' in {path}")
+            sys.exit(1)
 
-Data is always loaded from `ARC-AGI-2/data/{split}`.
+    # Resolve endpoint name from endpoint.yaml
+    endpoint_name = cfg["endpoint"]
+    endpoint_yaml = _ROOT / "endpoint.yaml"
+    if not endpoint_yaml.exists():
+        print(f"Error: endpoint.yaml not found at {endpoint_yaml}")
+        sys.exit(1)
 
-## API Key Management
+    with open(endpoint_yaml) as f:
+        endpoints = yaml.safe_load(f).get("endpoints", {})
 
-API keys are managed via `.env` (loaded by `python-dotenv`). The `api_key_env` field in `endpoint.yaml` specifies the environment variable name:
+    if endpoint_name not in endpoints:
+        available = ", ".join(endpoints.keys())
+        print(f"Error: Endpoint '{endpoint_name}' not found in endpoint.yaml. Available: {available}")
+        sys.exit(1)
 
-```yaml
-endpoints:
-  qwen_official:
-    base_url: "https://dashscope.aliyuncs.com/compatible-mode/v1"
-    model: qwen3.5-flash
-    api_key_env: QWEN_API_KEY    # .env should have QWEN_API_KEY=sk-...
-```
+    ep = endpoints[endpoint_name]
+    ep["name"] = endpoint_name
 
-## Resume a Run
+    # Resolve API key from environment variable
+    api_key_env = ep.get("api_key_env")
+    if api_key_env:
+        api_key = os.environ.get(api_key_env)
+        if not api_key:
+            print(f"Error: Environment variable '{api_key_env}' not set (check .env)")
+            sys.exit(1)
+        ep["api_key"] = api_key
+    else:
+        ep["api_key"] = "no-key"
 
-Set a fixed `run_name` and re-run. Completed tasks are automatically skipped:
+    cfg["endpoint"] = ep
 
-```yaml
-eval:
-  run_name: exp01
+    ev = cfg["eval"]
+    if ev["mode"] not in _VALID_MODES:
+        print(f"Error: eval.mode must be one of {_VALID_MODES}, got '{ev['mode']}'")
+        sys.exit(1)
+
+    if ev["mode"] == "tree_search":
+        ts = ev.get("tree_search")
+        if not ts:
+            print("Error: eval.mode='tree_search' requires eval.tree_search section")
+            sys.exit(1)
+        for key in ("max_nodes", "max_depth", "min_children", "exploration_weight"):
+            if key not in ts:
+                print(f"Error: tree_search.{key} is required")
+                sys.exit(1)
+
+    return cfg
+
 ```
