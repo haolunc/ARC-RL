@@ -1,0 +1,10 @@
+endpoints:
+  qwen_official:
+    base_url: "https://dashscope.aliyuncs.com/compatible-mode/v1"
+    model: qwen3.5-flash
+    api_key_env: QWEN_API_KEY
+
+  greatlakes_qwen35:
+    base_url: "http://localhost:8000/v1"
+    model: "Qwen/Qwen3.5-35B-A3B-GPTQ-Int4"
+    api_key_env: null
