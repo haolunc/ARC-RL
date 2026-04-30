@@ -1,66 +1,55 @@
-"""Shared fixtures for ARC eval tests."""
-
 import json
 from pathlib import Path
 
 import pytest
 
-ROOT = Path(__file__).resolve().parent.parent
-
-DATA_DIR = ROOT / "ARC-AGI-2" / "data" / "training"
-SOLUTIONS_DIR = ROOT / "reference_solutions" / "solutions"
-PYTHON_PATH = "/opt/homebrew/Caskroom/miniforge/base/envs/arc/bin/python"
+_ROOT = Path(__file__).parent.parent
+_PUZZLE_DIR = _ROOT / "ARC-AGI-2" / "data" / "training"
+_CONFIG_PATH = _ROOT / "configs" / "test_config.yaml"
 
 
-def pytest_addoption(parser):
-    parser.addoption(
-        "--endpoint-config",
-        action="store",
-        default=None,
-        help="Path to config YAML for LLM integration tests",
+def _load_cfg():
+    if not _CONFIG_PATH.exists():
+        pytest.skip("test_config.yaml not found — copy config.yaml.example to test_config.yaml and edit")
+    from arc.eval.config import load_config
+    return load_config(str(_CONFIG_PATH))
+
+
+@pytest.fixture(scope="session")
+def cfg():
+    return _load_cfg()
+
+
+@pytest.fixture(scope="session")
+def python_path(cfg):
+    return cfg["python_path"]
+
+
+@pytest.fixture(scope="session")
+def qwen_client(cfg):
+    from openai import OpenAI
+    ep = cfg["endpoint"]
+    ev = cfg["eval"]
+    return OpenAI(
+        base_url=ep["base_url"],
+        api_key=ep["api_key"],
+        timeout=float(ev.get("llm_timeout", 180)),
     )
 
 
-def load_task(task_id: str) -> dict:
-    """Load an ARC task JSON by ID."""
-    path = DATA_DIR / f"{task_id}.json"
-    return json.loads(path.read_text())
-
-
-def load_solution(task_id: str) -> str:
-    """Load a reference solution by task ID.
-
-    Reference solutions define `transform()`. An alias `test_transform = transform`
-    is appended so they work with the new driver template.
-    """
-    path = SOLUTIONS_DIR / f"{task_id}.py"
-    code = path.read_text()
-    return code + "\ntest_transform = transform\n"
+@pytest.fixture
+def puzzle_8d5021e8():
+    with open(_PUZZLE_DIR / "8d5021e8.json") as f:
+        return json.load(f)
 
 
 @pytest.fixture
-def python_path():
-    return PYTHON_PATH
+def puzzle_992798f6():
+    with open(_PUZZLE_DIR / "992798f6.json") as f:
+        return json.load(f)
 
 
 @pytest.fixture
-def sample_task():
-    """Load task 007bbfb7 (small 3x3 grids)."""
-    return load_task("007bbfb7")
-
-
-@pytest.fixture
-def sample_solution():
-    """Load reference solution for task 007bbfb7."""
-    return load_solution("007bbfb7")
-
-
-@pytest.fixture
-def task_context(sample_task, python_path):
-    """Build a task_context dict for tools.run_python_tool."""
-    return {
-        "train_examples": sample_task["train"],
-        "test_inputs": [tc["input"] for tc in sample_task["test"]],
-        "timeout": 30,
-        "python_path": python_path,
-    }
+def puzzle_8dab14c2():
+    with open(_PUZZLE_DIR / "8dab14c2.json") as f:
+        return json.load(f)

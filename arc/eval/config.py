@@ -8,11 +8,14 @@ from dotenv import load_dotenv
 import yaml
 
 _ROOT = Path(__file__).resolve().parent.parent.parent
-_VALID_MODES = ("native_tools", "sandbox_tools", "direct")
+_VALID_MODES = ("sandbox_tools", "direct", "tree_search")
 
 EXEC_TIMEOUT = 30
-MAX_TOOL_CALLS = 10
+MAX_TOOL_ROUNDS = 12
+WARN_THRESHOLD = 5
 TEMPERATURE = 0.7
+MAX_OUTPUT_TOKENS = 16384
+TOKEN_BUDGET = 120000
 _DATA_DIR_TEMPLATE = "ARC-AGI-2/data/{split}"
 
 load_dotenv(_ROOT / ".env")
@@ -22,7 +25,7 @@ def load_config(config_path: str) -> dict:
     """Load and validate config YAML, resolving endpoint from endpoint.yaml.
 
     Returns dict with keys: python_path, endpoint, data, eval.
-    The endpoint dict is fully resolved (name → details, api_key resolved).
+    The endpoint dict is fully resolved (name -> details, api_key resolved).
     """
     path = Path(config_path)
     if not path.is_absolute():
@@ -35,7 +38,6 @@ def load_config(config_path: str) -> dict:
     with open(path) as f:
         cfg = yaml.safe_load(f)
 
-    # Validate required sections
     for section in ("python_path", "endpoint", "data", "eval"):
         if section not in cfg:
             print(f"Error: Missing '{section}' in {path}")
@@ -53,7 +55,7 @@ def load_config(config_path: str) -> dict:
 
     if endpoint_name not in endpoints:
         available = ", ".join(endpoints.keys())
-        print(f"Error: Endpoint '{endpoint_name}' not found in endpoint.yaml. Available: {available}")
+        print(f"Error: Endpoint '{endpoint_name}' not found. Available: {available}")
         sys.exit(1)
 
     ep = endpoints[endpoint_name]
@@ -66,6 +68,7 @@ def load_config(config_path: str) -> dict:
         if not api_key:
             print(f"Error: Environment variable '{api_key_env}' not set (check .env)")
             sys.exit(1)
+        ep["api_key"] = api_key
     else:
         ep["api_key"] = "no-key"
 
@@ -75,5 +78,19 @@ def load_config(config_path: str) -> dict:
     if ev["mode"] not in _VALID_MODES:
         print(f"Error: eval.mode must be one of {_VALID_MODES}, got '{ev['mode']}'")
         sys.exit(1)
+
+    if ev["mode"] == "tree_search":
+        ts = ev.get("tree_search")
+        if not ts:
+            print("Error: eval.mode='tree_search' requires eval.tree_search section")
+            sys.exit(1)
+        for key in ("max_nodes", "max_depth", "min_children", "exploration_weight"):
+            if key not in ts:
+                print(f"Error: tree_search.{key} is required")
+                sys.exit(1)
+        ts.setdefault("early_stop", True)
+        ts.setdefault("max_output_tokens", 8192)
+        ts.setdefault("max_tool_rounds", 6)
+        ts.setdefault("token_budget", 60000)
 
     return cfg

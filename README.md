@@ -1,71 +1,16 @@
 # ARC-RL
 
-LLM evaluation pipeline for [ARC-AGI](https://github.com/fchollet/ARC-AGI) tasks using the Responses API. Three evaluation modes:
-
-| Mode | Thinking | Tool Calls | Description |
-|------|----------|------------|-------------|
-| `native_tools` | Yes | API code_interpreter | Single API call. Server runs code internally. |
-| `sandbox_tools` | Yes | Our tool loop | Multi-round loop: LLM calls `python` tool → code runs in subprocess → result fed back. |
-| `direct` | No | None | One-shot. LLM directly outputs `test_transform` function. |
-
-All modes produce a `def test_transform(input_grid)` function, which is executed on the test input and compared against the expected output.
+LLM evaluation pipeline for [ARC-AGI-2](https://github.com/arcprize/ARC-AGI-2) tasks.
 
 ## Setup
 
 ```bash
-conda create -n arc python=3.11
 conda activate arc
 pip install -e .
-```
-
-## Configuration
-
-Two config files:
-
-| File | Tracked | Purpose |
-|------|---------|---------|
-| `config.yaml.example` | Yes | Config template — copy and edit |
-| `endpoint.yaml.example` | Yes | Endpoint registry template — copy and edit |
-| `.env.example` | Yes | API key template |
-
-```bash
-cp config.yaml.example config.yaml       # edit with your settings
-cp endpoint.yaml.example endpoint.yaml   # edit with your endpoints
-cp .env.example .env                      # fill in API keys
-```
-
-**config.yaml** references an endpoint by name from `endpoint.yaml`:
-
-```yaml
-python_path: "/path/to/python"
-
-endpoint: qwen_official          # name from endpoint.yaml
-
-data:
-  split: training                # training or evaluation
-  task_ids: null                 # null = all, or ["id1", "id2"]
-  max_tasks: null
-
-eval:
-  mode: "native_tools"           # native_tools | sandbox_tools | direct
-  max_workers: 4                 # parallel task workers
-  llm_timeout: 180               # LLM API request timeout (seconds)
-  run_name: null                 # null = auto timestamp
-```
-
-**endpoint.yaml** defines all available endpoints (copy from `endpoint.yaml.example`):
-
-```yaml
-endpoints:
-  qwen_official:
-    base_url: "https://dashscope.aliyuncs.com/compatible-mode/v1"
-    model: qwen3.5-flash
-    api_key_env: QWEN_API_KEY
-
-  greatlakes_qwen35:
-    base_url: "http://localhost:8000/v1"
-    model: "Qwen/Qwen3.5-35B-A3B-GPTQ-Int4"
-    api_key_env: null
+cp config.yaml.example config.yaml
+cp endpoint.yaml.example endpoint.yaml
+cp .env.example .env
+# Edit each file with your settings
 ```
 
 ## Usage
@@ -74,73 +19,57 @@ endpoints:
 python -m arc.eval.run config.yaml
 ```
 
-### Resume a run
+## Evaluation Modes
 
-Set `run_name` in your config. Completed tasks are automatically skipped on re-run.
+| Mode | Description |
+|------|-------------|
+| `sandbox_tools` | Multi-round: LLM calls Python tool → code runs in subprocess → result fed back |
+| `direct` | One-shot: LLM directly outputs `test_transform` function |
+| `tree_search` | MCTS-style tree search over multiple solution attempts with PUCT selection and refinement (see [docs/tree_search.md](docs/tree_search.md)) |
 
-Results are stored in `results/<run_name>/results.db` (SQLite) with detailed token usage (reasoning_tokens, cached_tokens, x_tools).
+## Results
+
+Results are stored in `results/<run_name>/results.db` (SQLite). Set `run_name` in config to resume a previous run; completed tasks are automatically skipped.
+
+Two baseline result databases are tracked:
+
+| Run | Split | Tasks | Correct | Accuracy |
+|-----|-------|-------|---------|----------|
+| `results/train_sandbox_gl/results.db` | training | 300 | 114 | 38.0% |
+| `results/evaluation_sandbox_gl/results.db` | evaluation | 120 | 6 | 5.0% |
+
+See [docs/baseline_results.md](docs/baseline_results.md) for status and token summaries.
 
 ## Testing
 
+Tests read `python_path` and endpoint settings from `test_config.yaml`, so create one first:
+
 ```bash
-# Unit tests only (no API calls)
-pytest tests/ -m "not llm"
+cp config.yaml.example test_config.yaml
+# Edit test_config.yaml with your settings
+```
 
-# Integration tests with real LLM API
-pytest tests/test_llm_integration.py -m llm --endpoint-config config.yaml
+```bash
+# Run all unit tests (no API calls)
+python -m pytest tests/ -v -m "not api"
 
-# Specific mode
-pytest tests/test_llm_integration.py -k native_tools --endpoint-config config.yaml
+# Run API tests (calls live LLM endpoint from test_config.yaml)
+python -m pytest tests/ -v -m api
 ```
 
 ## Reference Solutions
 
-`reference_solutions/solutions/` contains 651 verified-correct `def transform` Python solutions downloaded from [Trelis/arc-agi-2-reasoning-5](https://huggingface.co/datasets/Trelis/arc-agi-2-reasoning-5) (Apache 2.0). Each file is named `{task_id}.py`.
+`reference_solutions/solutions/` contains verified `def transform` Python solutions used for comparison and analysis. These are not required by the LLM evaluation pipeline.
 
-| Subset               | Coverage          |
-|----------------------|-------------------|
-| ARC-AGI-1 training   | 323 / 400 (80.8%) |
-| ARC-AGI-1 evaluation | 243 / 400 (60.8%) |
-| ARC-AGI-2 training   | 648 / 1000 (64.8%)|
-
-```bash
-pip install datasets
-python reference_solutions/download.py
-```
-
-## File Structure
+## Project Structure
 
 ```
-.
-├── .env.example                # API key template
-├── config.yaml.example         # Config template
-├── endpoint.yaml.example       # Endpoint registry template
-├── endpoint.yaml               # Endpoint registry (gitignored)
-├── pyproject.toml
-├── README.md
-│
-├── arc/                        # Main package
-│   └── eval/                   # Evaluation pipeline
-│       ├── code_extract.py     # Extract test_transform() from LLM response
-│       ├── config.py           # Config + endpoint loading
-│       ├── db.py               # SQLite results storage
-│       ├── evaluate.py         # Grid comparison
-│       ├── llm_client.py       # Responses API client
-│       ├── prompt.py           # Prompt construction (3 modes)
-│       ├── run.py              # CLI entry point + evaluation loop
-│       ├── safe_exec.py        # Subprocess code execution
-│       └── tools.py            # Python tool for sandbox_tools mode
-│
-├── tests/
-│   ├── test_code_extract.py    # No API
-│   ├── test_evaluate.py        # No API
-│   ├── test_safe_exec.py       # No API
-│   ├── test_tools.py           # No API
-│   ├── test_db.py              # No API
-│   └── test_llm_integration.py # Real API (pytest -m llm)
-│
-├── reference_solutions/
-│   └── solutions/{task_id}.py
-│
-└── results/<run_name>/results.db
+arc/eval/
+├── run.py          # Entry point, data loading, ThreadPoolExecutor
+├── config.py       # Config loading
+├── prompt.py       # Prompt constants + message building
+├── llm.py          # LLM calling + subprocess code execution
+├── test.py         # Code extraction, grid comparison, test running
+├── tree.py         # MCTS tree search: TreeNode, PUCT, scoring
+└── db.py           # SQLite result storage
 ```
