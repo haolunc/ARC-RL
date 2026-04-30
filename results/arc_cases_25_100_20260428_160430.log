@@ -1,0 +1,28 @@
+=== ARC GPRO Evaluation ===
+Dataset:      arc2 / evaluation
+Model:        qwen3.6-35b-a3b
+Total tasks:  76
+Group size:   4
+GPRO steps:   3
+Temperature:  0.7
+Log text:     False
+Timeout:      120s
+Results DB:   /home/danqihu/danqihu/ARC-RL/results/arc_cases_25_100_20260428_160430/results.db
+Samples JSONL:/home/danqihu/danqihu/ARC-RL/results/arc_cases_25_100_20260428_160430/gpro_samples.jsonl
+
+[1/76] Task: 332f06d7 (4 train, 1 test)
+  Test case 1/1
+    [step 1/3] Sampling group of 4 (6118 chars, ~1529 tokens)
+  API call finished in 80.40s
+  API call finished in 74.73s
+  API call finished in 66.65s
+  API call finished in 69.34s
+    [step 1/3] best reward=0.780, train fail -> retry
+    [step 2/3] Sampling group of 4 (7690 chars, ~1922 tokens)
+  API call finished in 67.45s
+  API call finished in 68.29s
+  API call finished in 58.73s
+  API call finished in 69.49s
+    [step 2/3] best reward=0.780, train fail -> retry
+    [step 3/3] Sampling group of 4 (7690 chars, ~1922 tokens)
+  API call finished in 72.67s

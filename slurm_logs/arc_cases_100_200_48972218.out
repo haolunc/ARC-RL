@@ -1,0 +1,1090 @@
+=== Submitting ARC cases 100-200 ===
+Started:      Wed Apr 29 10:51:51 EDT 2026
+Host:         gl1023.arc-ts.umich.edu
+Workdir:      /home/danqihu/danqihu/ARC-RL
+Run name:     arc_cases_100_200_20260429_105151
+Dataset:      arc1/evaluation
+Model:        qwen3.6-35b-a3b
+Group size:   4
+GPRO steps:   3
+Temperature:  0.7
+Timeout:      120s
+Max tokens:   400
+=== ARC GPRO Run ===
+Run name:     arc_cases_100_200_20260429_105151
+Dataset:      arc1/evaluation
+Model:        qwen3.6-35b-a3b
+Group size:   4
+GPRO steps:   3
+Temperature:  0.7
+Timeout:      120s
+API retries:  0
+Max tokens:   400
+Task start:   100
+Task end:     200
+Log text:     0
+=== ARC GPRO Evaluation ===
+Dataset:      arc1 / evaluation
+Model:        qwen3.6-35b-a3b
+Total tasks:  101
+Group size:   4
+GPRO steps:   3
+Temperature:  0.7
+Log text:     False
+Timeout:      120s
+Results DB:   /home/danqihu/danqihu/ARC-RL/results/arc_cases_100_200_20260429_105151/results.db
+Samples JSONL:/home/danqihu/danqihu/ARC-RL/results/arc_cases_100_200_20260429_105151/gpro_samples.jsonl
+
+[1/101] Task: 423a55dc (5 train, 1 test)
+  Test case 1/1
+    [step 1/3] Sampling group of 4 (4433 chars, ~1108 tokens)
+    [step 1/3] best reward=-1.200, train fail -> retry
+    [step 2/3] Sampling group of 4 (4564 chars, ~1141 tokens)
+    [step 2/3] best reward=-1.200, train fail -> retry
+    [step 3/3] Sampling group of 4 (4564 chars, ~1141 tokens)
+    [step 3/3] best reward=-1.200, train fail -> retry
+  FAILED (0/1 test cases, 0.0s) | Running: 0/1 solved (0%)
+
+[2/101] Task: 42918530 (4 train, 1 test)
+  Test case 1/1
+    [step 1/3] Sampling group of 4 (11334 chars, ~2833 tokens)
+    [step 1/3] best reward=-1.200, train fail -> retry
+    [step 2/3] Sampling group of 4 (11465 chars, ~2866 tokens)
+    [step 2/3] best reward=-1.200, train fail -> retry
+    [step 3/3] Sampling group of 4 (11465 chars, ~2866 tokens)
+    [step 3/3] best reward=-1.200, train fail -> retry
+  FAILED (0/1 test cases, 0.0s) | Running: 0/2 solved (0%)
+
+[3/101] Task: 42a15761 (3 train, 1 test)
+  Test case 1/1
+    [step 1/3] Sampling group of 4 (3361 chars, ~840 tokens)
+    [step 1/3] best reward=-1.200, train fail -> retry
+    [step 2/3] Sampling group of 4 (3492 chars, ~873 tokens)
+    [step 2/3] best reward=-1.200, train fail -> retry
+    [step 3/3] Sampling group of 4 (3492 chars, ~873 tokens)
+    [step 3/3] best reward=-1.200, train fail -> retry
+  FAILED (0/1 test cases, 0.0s) | Running: 0/3 solved (0%)
+
+[4/101] Task: 4364c1c4 (3 train, 1 test)
+  Test case 1/1
+    [step 1/3] Sampling group of 4 (4183 chars, ~1045 tokens)
+    [step 1/3] best reward=-1.200, train fail -> retry
+    [step 2/3] Sampling group of 4 (4314 chars, ~1078 tokens)
+    [step 2/3] best reward=-1.200, train fail -> retry
+    [step 3/3] Sampling group of 4 (4314 chars, ~1078 tokens)
+    [step 3/3] best reward=-1.200, train fail -> retry
+  FAILED (0/1 test cases, 0.0s) | Running: 0/4 solved (0%)
+
+[5/101] Task: 456873bc (3 train, 1 test)
+  Test case 1/1
+    [step 1/3] Sampling group of 4 (5393 chars, ~1348 tokens)
+    [step 1/3] best reward=-1.200, train fail -> retry
+    [step 2/3] Sampling group of 4 (5524 chars, ~1381 tokens)
+    [step 2/3] best reward=-1.200, train fail -> retry
+    [step 3/3] Sampling group of 4 (5524 chars, ~1381 tokens)
+    [step 3/3] best reward=-1.200, train fail -> retry
+  FAILED (0/1 test cases, 0.0s) | Running: 0/5 solved (0%)
+
+[6/101] Task: 45737921 (3 train, 1 test)
+  Test case 1/1
+    [step 1/3] Sampling group of 4 (2817 chars, ~704 tokens)
+    [step 1/3] best reward=-1.200, train fail -> retry
+    [step 2/3] Sampling group of 4 (2948 chars, ~737 tokens)
+    [step 2/3] best reward=-1.200, train fail -> retry
+    [step 3/3] Sampling group of 4 (2948 chars, ~737 tokens)
+    [step 3/3] best reward=-1.200, train fail -> retry
+  FAILED (0/1 test cases, 0.0s) | Running: 0/6 solved (0%)
+
+[7/101] Task: 45bbe264 (3 train, 1 test)
+  Test case 1/1
+    [step 1/3] Sampling group of 4 (5093 chars, ~1273 tokens)
+    [step 1/3] best reward=-1.200, train fail -> retry
+    [step 2/3] Sampling group of 4 (5224 chars, ~1306 tokens)
+    [step 2/3] best reward=-1.200, train fail -> retry
+    [step 3/3] Sampling group of 4 (5224 chars, ~1306 tokens)
+    [step 3/3] best reward=-1.200, train fail -> retry
+  FAILED (0/1 test cases, 0.0s) | Running: 0/7 solved (0%)
+
+[8/101] Task: 477d2879 (3 train, 1 test)
+  Test case 1/1
+    [step 1/3] Sampling group of 4 (4231 chars, ~1057 tokens)
+    [step 1/3] best reward=-1.200, train fail -> retry
+    [step 2/3] Sampling group of 4 (4362 chars, ~1090 tokens)
+    [step 2/3] best reward=-1.200, train fail -> retry
+    [step 3/3] Sampling group of 4 (4362 chars, ~1090 tokens)
+    [step 3/3] best reward=-1.200, train fail -> retry
+  FAILED (0/1 test cases, 0.0s) | Running: 0/8 solved (0%)
+
+[9/101] Task: 47996f11 (4 train, 1 test)
+  Test case 1/1
+    [step 1/3] Sampling group of 4 (25188 chars, ~6297 tokens)
+    [step 1/3] best reward=-1.200, train fail -> retry
+    [step 2/3] Sampling group of 4 (25319 chars, ~6329 tokens)
+    [step 2/3] best reward=-1.200, train fail -> retry
+    [step 3/3] Sampling group of 4 (25319 chars, ~6329 tokens)
+    [step 3/3] best reward=-1.200, train fail -> retry
+  FAILED (0/1 test cases, 0.0s) | Running: 0/9 solved (0%)
+
+[10/101] Task: 48131b3c (3 train, 1 test)
+  Test case 1/1
+    [step 1/3] Sampling group of 4 (1105 chars, ~276 tokens)
+    [step 1/3] best reward=-1.200, train fail -> retry
+    [step 2/3] Sampling group of 4 (1236 chars, ~309 tokens)
+    [step 2/3] best reward=-1.200, train fail -> retry
+    [step 3/3] Sampling group of 4 (1236 chars, ~309 tokens)
+    [step 3/3] best reward=-1.200, train fail -> retry
+  FAILED (0/1 test cases, 0.0s) | Running: 0/10 solved (0%)
+
+[11/101] Task: 4852f2fa (5 train, 2 test)
+  Test case 1/2
+    [step 1/3] Sampling group of 4 (2523 chars, ~630 tokens)
+    [step 1/3] best reward=-1.200, train fail -> retry
+    [step 2/3] Sampling group of 4 (2654 chars, ~663 tokens)
+    [step 2/3] best reward=-1.200, train fail -> retry
+    [step 3/3] Sampling group of 4 (2654 chars, ~663 tokens)
+    [step 3/3] best reward=-1.200, train fail -> retry
+  Test case 2/2
+    [step 1/3] Sampling group of 4 (2523 chars, ~630 tokens)
+    [step 1/3] best reward=-1.200, train fail -> retry
+    [step 2/3] Sampling group of 4 (2654 chars, ~663 tokens)
+    [step 2/3] best reward=-1.200, train fail -> retry
+    [step 3/3] Sampling group of 4 (2654 chars, ~663 tokens)
+    [step 3/3] best reward=-1.200, train fail -> retry
+  FAILED (0/2 test cases, 0.1s) | Running: 0/11 solved (0%)
+
+[12/101] Task: 48f8583b (6 train, 1 test)
+  Test case 1/1
+    [step 1/3] Sampling group of 4 (2394 chars, ~598 tokens)
+    [step 1/3] best reward=-1.200, train fail -> retry
+    [step 2/3] Sampling group of 4 (2525 chars, ~631 tokens)
+    [step 2/3] best reward=-1.200, train fail -> retry
+    [step 3/3] Sampling group of 4 (2525 chars, ~631 tokens)
+    [step 3/3] best reward=-1.200, train fail -> retry
+  FAILED (0/1 test cases, 0.0s) | Running: 0/12 solved (0%)
+
+[13/101] Task: 4aab4007 (3 train, 1 test)
+  Test case 1/1
+    [step 1/3] Sampling group of 4 (17251 chars, ~4312 tokens)
+    [step 1/3] best reward=-1.200, train fail -> retry
+    [step 2/3] Sampling group of 4 (17382 chars, ~4345 tokens)
+    [step 2/3] best reward=-1.200, train fail -> retry
+    [step 3/3] Sampling group of 4 (17382 chars, ~4345 tokens)
+    [step 3/3] best reward=-1.200, train fail -> retry
+  FAILED (0/1 test cases, 0.0s) | Running: 0/13 solved (0%)
+
+[14/101] Task: 4acc7107 (4 train, 1 test)
+  Test case 1/1
+    [step 1/3] Sampling group of 4 (3408 chars, ~852 tokens)
+    [step 1/3] best reward=-1.200, train fail -> retry
+    [step 2/3] Sampling group of 4 (3539 chars, ~884 tokens)
+    [step 2/3] best reward=-1.200, train fail -> retry
+    [step 3/3] Sampling group of 4 (3539 chars, ~884 tokens)
+    [step 3/3] best reward=-1.200, train fail -> retry
+  FAILED (0/1 test cases, 0.0s) | Running: 0/14 solved (0%)
+
+[15/101] Task: 4b6b68e5 (3 train, 1 test)
+  Test case 1/1
+    [step 1/3] Sampling group of 4 (8643 chars, ~2160 tokens)
+    [step 1/3] best reward=-1.200, train fail -> retry
+    [step 2/3] Sampling group of 4 (8774 chars, ~2193 tokens)
+    [step 2/3] best reward=-1.200, train fail -> retry
+    [step 3/3] Sampling group of 4 (8774 chars, ~2193 tokens)
+    [step 3/3] best reward=-1.200, train fail -> retry
+  FAILED (0/1 test cases, 0.0s) | Running: 0/15 solved (0%)
+
+[16/101] Task: 4c177718 (4 train, 2 test)
+  Test case 1/2
+    [step 1/3] Sampling group of 4 (5724 chars, ~1431 tokens)
+    [step 1/3] best reward=-1.200, train fail -> retry
+    [step 2/3] Sampling group of 4 (5855 chars, ~1463 tokens)
+    [step 2/3] best reward=-1.200, train fail -> retry
+    [step 3/3] Sampling group of 4 (5855 chars, ~1463 tokens)
+    [step 3/3] best reward=-1.200, train fail -> retry
+  Test case 2/2
+    [step 1/3] Sampling group of 4 (5724 chars, ~1431 tokens)
+    [step 1/3] best reward=-1.200, train fail -> retry
+    [step 2/3] Sampling group of 4 (5855 chars, ~1463 tokens)
+    [step 2/3] best reward=-1.200, train fail -> retry
+    [step 3/3] Sampling group of 4 (5855 chars, ~1463 tokens)
+    [step 3/3] best reward=-1.200, train fail -> retry
+  FAILED (0/2 test cases, 0.1s) | Running: 0/16 solved (0%)
+
+[17/101] Task: 4cd1b7b2 (3 train, 1 test)
+  Test case 1/1
+    [step 1/3] Sampling group of 4 (955 chars, ~238 tokens)
+    [step 1/3] best reward=-1.200, train fail -> retry
+    [step 2/3] Sampling group of 4 (1086 chars, ~271 tokens)
+    [step 2/3] best reward=-1.200, train fail -> retry
+    [step 3/3] Sampling group of 4 (1086 chars, ~271 tokens)
+    [step 3/3] best reward=-1.200, train fail -> retry
+  FAILED (0/1 test cases, 0.0s) | Running: 0/17 solved (0%)
+
+[18/101] Task: 4e45f183 (3 train, 1 test)
+  Test case 1/1
+    [step 1/3] Sampling group of 4 (8305 chars, ~2076 tokens)
+    [step 1/3] best reward=-1.200, train fail -> retry
+    [step 2/3] Sampling group of 4 (8436 chars, ~2109 tokens)
+    [step 2/3] best reward=-1.200, train fail -> retry
+    [step 3/3] Sampling group of 4 (8436 chars, ~2109 tokens)
+    [step 3/3] best reward=-1.200, train fail -> retry
+  FAILED (0/1 test cases, 0.0s) | Running: 0/18 solved (0%)
+
+[19/101] Task: 4e469f39 (3 train, 1 test)
+  Test case 1/1
+    [step 1/3] Sampling group of 4 (2761 chars, ~690 tokens)
+    [step 1/3] best reward=-1.200, train fail -> retry
+    [step 2/3] Sampling group of 4 (2892 chars, ~723 tokens)
+    [step 2/3] best reward=-1.200, train fail -> retry
+    [step 3/3] Sampling group of 4 (2892 chars, ~723 tokens)
+    [step 3/3] best reward=-1.200, train fail -> retry
+  FAILED (0/1 test cases, 0.0s) | Running: 0/19 solved (0%)
+
+[20/101] Task: 4f537728 (2 train, 1 test)
+  Test case 1/1
+    [step 1/3] Sampling group of 4 (6664 chars, ~1666 tokens)
+    [step 1/3] best reward=-1.200, train fail -> retry
+    [step 2/3] Sampling group of 4 (6795 chars, ~1698 tokens)
+    [step 2/3] best reward=-1.200, train fail -> retry
+    [step 3/3] Sampling group of 4 (6795 chars, ~1698 tokens)
+    [step 3/3] best reward=-1.200, train fail -> retry
+  FAILED (0/1 test cases, 0.0s) | Running: 0/20 solved (0%)
+
+[21/101] Task: 4ff4c9da (3 train, 1 test)
+  Test case 1/1
+    [step 1/3] Sampling group of 4 (10481 chars, ~2620 tokens)
+    [step 1/3] best reward=-1.200, train fail -> retry
+    [step 2/3] Sampling group of 4 (10612 chars, ~2653 tokens)
+    [step 2/3] best reward=-1.200, train fail -> retry
+    [step 3/3] Sampling group of 4 (10612 chars, ~2653 tokens)
+    [step 3/3] best reward=-1.200, train fail -> retry
+  FAILED (0/1 test cases, 0.0s) | Running: 0/21 solved (0%)
+
+[22/101] Task: 505fff84 (5 train, 1 test)
+  Test case 1/1
+    [step 1/3] Sampling group of 4 (2535 chars, ~633 tokens)
+    [step 1/3] best reward=-1.200, train fail -> retry
+    [step 2/3] Sampling group of 4 (2666 chars, ~666 tokens)
+    [step 2/3] best reward=-1.200, train fail -> retry
+    [step 3/3] Sampling group of 4 (2666 chars, ~666 tokens)
+    [step 3/3] best reward=-1.200, train fail -> retry
+  FAILED (0/1 test cases, 0.0s) | Running: 0/22 solved (0%)
+
+[23/101] Task: 506d28a5 (4 train, 1 test)
+  Test case 1/1
+    [step 1/3] Sampling group of 4 (1594 chars, ~398 tokens)
+    [step 1/3] best reward=-1.200, train fail -> retry
+    [step 2/3] Sampling group of 4 (1725 chars, ~431 tokens)
+    [step 2/3] best reward=-1.200, train fail -> retry
+    [step 3/3] Sampling group of 4 (1725 chars, ~431 tokens)
+    [step 3/3] best reward=-1.200, train fail -> retry
+  FAILED (0/1 test cases, 0.0s) | Running: 0/23 solved (0%)
+
+[24/101] Task: 50a16a69 (3 train, 1 test)
+  Test case 1/1
+    [step 1/3] Sampling group of 4 (4049 chars, ~1012 tokens)
+    [step 1/3] best reward=-1.200, train fail -> retry
+    [step 2/3] Sampling group of 4 (4180 chars, ~1045 tokens)
+    [step 2/3] best reward=-1.200, train fail -> retry
+    [step 3/3] Sampling group of 4 (4180 chars, ~1045 tokens)
+    [step 3/3] best reward=-1.200, train fail -> retry
+  FAILED (0/1 test cases, 0.0s) | Running: 0/24 solved (0%)
+
+[25/101] Task: 50aad11f (3 train, 1 test)
+  Test case 1/1
+    [step 1/3] Sampling group of 4 (3175 chars, ~793 tokens)
+    [step 1/3] best reward=-1.200, train fail -> retry
+    [step 2/3] Sampling group of 4 (3306 chars, ~826 tokens)
+    [step 2/3] best reward=-1.200, train fail -> retry
+    [step 3/3] Sampling group of 4 (3306 chars, ~826 tokens)
+    [step 3/3] best reward=-1.200, train fail -> retry
+  FAILED (0/1 test cases, 0.0s) | Running: 0/25 solved (0%)
+
+[26/101] Task: 50f325b5 (4 train, 1 test)
+  Test case 1/1
+    [step 1/3] Sampling group of 4 (7638 chars, ~1909 tokens)
+    [step 1/3] best reward=-1.200, train fail -> retry
+    [step 2/3] Sampling group of 4 (7769 chars, ~1942 tokens)
+    [step 2/3] best reward=-1.200, train fail -> retry
+    [step 3/3] Sampling group of 4 (7769 chars, ~1942 tokens)
+    [step 3/3] best reward=-1.200, train fail -> retry
+  FAILED (0/1 test cases, 0.0s) | Running: 0/26 solved (0%)
+
+[27/101] Task: 516b51b7 (3 train, 1 test)
+  Test case 1/1
+    [step 1/3] Sampling group of 4 (4437 chars, ~1109 tokens)
+    [step 1/3] best reward=-1.200, train fail -> retry
+    [step 2/3] Sampling group of 4 (4568 chars, ~1142 tokens)
+    [step 2/3] best reward=-1.200, train fail -> retry
+    [step 3/3] Sampling group of 4 (4568 chars, ~1142 tokens)
+    [step 3/3] best reward=-1.200, train fail -> retry
+  FAILED (0/1 test cases, 0.0s) | Running: 0/27 solved (0%)
+
+[28/101] Task: 5207a7b5 (3 train, 1 test)
+  Test case 1/1
+    [step 1/3] Sampling group of 4 (2877 chars, ~719 tokens)
+    [step 1/3] best reward=-1.200, train fail -> retry
+    [step 2/3] Sampling group of 4 (3008 chars, ~752 tokens)
+    [step 2/3] best reward=-1.200, train fail -> retry
+    [step 3/3] Sampling group of 4 (3008 chars, ~752 tokens)
+    [step 3/3] best reward=-1.200, train fail -> retry
+  FAILED (0/1 test cases, 0.0s) | Running: 0/28 solved (0%)
+
+[29/101] Task: 5289ad53 (4 train, 1 test)
+  Test case 1/1
+    [step 1/3] Sampling group of 4 (3081 chars, ~770 tokens)
+    [step 1/3] best reward=-1.200, train fail -> retry
+    [step 2/3] Sampling group of 4 (3212 chars, ~803 tokens)
+    [step 2/3] best reward=-1.200, train fail -> retry
+    [step 3/3] Sampling group of 4 (3212 chars, ~803 tokens)
+    [step 3/3] best reward=-1.200, train fail -> retry
+  FAILED (0/1 test cases, 0.0s) | Running: 0/29 solved (0%)
+
+[30/101] Task: 52fd389e (3 train, 1 test)
+  Test case 1/1
+    [step 1/3] Sampling group of 4 (14543 chars, ~3635 tokens)
+    [step 1/3] best reward=-1.200, train fail -> retry
+    [step 2/3] Sampling group of 4 (14674 chars, ~3668 tokens)
+    [step 2/3] best reward=-1.200, train fail -> retry
+    [step 3/3] Sampling group of 4 (14674 chars, ~3668 tokens)
+    [step 3/3] best reward=-1.200, train fail -> retry
+  FAILED (0/1 test cases, 0.0s) | Running: 0/30 solved (0%)
+
+[31/101] Task: 54db823b (4 train, 1 test)
+  Test case 1/1
+    [step 1/3] Sampling group of 4 (6828 chars, ~1707 tokens)
+    [step 1/3] best reward=-1.200, train fail -> retry
+    [step 2/3] Sampling group of 4 (6959 chars, ~1739 tokens)
+    [step 2/3] best reward=-1.200, train fail -> retry
+    [step 3/3] Sampling group of 4 (6959 chars, ~1739 tokens)
+    [step 3/3] best reward=-1.200, train fail -> retry
+  FAILED (0/1 test cases, 0.0s) | Running: 0/31 solved (0%)
+
+[32/101] Task: 55059096 (3 train, 1 test)
+  Test case 1/1
+    [step 1/3] Sampling group of 4 (4471 chars, ~1117 tokens)
+    [step 1/3] best reward=-1.200, train fail -> retry
+    [step 2/3] Sampling group of 4 (4602 chars, ~1150 tokens)
+    [step 2/3] best reward=-1.200, train fail -> retry
+    [step 3/3] Sampling group of 4 (4602 chars, ~1150 tokens)
+    [step 3/3] best reward=-1.200, train fail -> retry
+  FAILED (0/1 test cases, 0.0s) | Running: 0/32 solved (0%)
+
+[33/101] Task: 551d5bf1 (2 train, 1 test)
+  Test case 1/1
+    [step 1/3] Sampling group of 4 (10346 chars, ~2586 tokens)
+    [step 1/3] best reward=-1.200, train fail -> retry
+    [step 2/3] Sampling group of 4 (10477 chars, ~2619 tokens)
+    [step 2/3] best reward=-1.200, train fail -> retry
+    [step 3/3] Sampling group of 4 (10477 chars, ~2619 tokens)
+    [step 3/3] best reward=-1.200, train fail -> retry
+  FAILED (0/1 test cases, 0.0s) | Running: 0/33 solved (0%)
+
+[34/101] Task: 55783887 (5 train, 1 test)
+  Test case 1/1
+    [step 1/3] Sampling group of 4 (5870 chars, ~1467 tokens)
+    [step 1/3] best reward=-1.200, train fail -> retry
+    [step 2/3] Sampling group of 4 (6001 chars, ~1500 tokens)
+    [step 2/3] best reward=-1.200, train fail -> retry
+    [step 3/3] Sampling group of 4 (6001 chars, ~1500 tokens)
+    [step 3/3] best reward=-1.200, train fail -> retry
+  FAILED (0/1 test cases, 0.0s) | Running: 0/34 solved (0%)
+
+[35/101] Task: 575b1a71 (3 train, 1 test)
+  Test case 1/1
+    [step 1/3] Sampling group of 4 (2761 chars, ~690 tokens)
+    [step 1/3] best reward=-1.200, train fail -> retry
+    [step 2/3] Sampling group of 4 (2892 chars, ~723 tokens)
+    [step 2/3] best reward=-1.200, train fail -> retry
+    [step 3/3] Sampling group of 4 (2892 chars, ~723 tokens)
+    [step 3/3] best reward=-1.200, train fail -> retry
+  FAILED (0/1 test cases, 0.0s) | Running: 0/35 solved (0%)
+
+[36/101] Task: 5783df64 (3 train, 1 test)
+  Test case 1/1
+    [step 1/3] Sampling group of 4 (1413 chars, ~353 tokens)
+    [step 1/3] best reward=-1.200, train fail -> retry
+    [step 2/3] Sampling group of 4 (1544 chars, ~386 tokens)
+    [step 2/3] best reward=-1.200, train fail -> retry
+    [step 3/3] Sampling group of 4 (1544 chars, ~386 tokens)
+    [step 3/3] best reward=-1.200, train fail -> retry
+  FAILED (0/1 test cases, 0.0s) | Running: 0/36 solved (0%)
+
+[37/101] Task: 5833af48 (3 train, 1 test)
+  Test case 1/1
+    [step 1/3] Sampling group of 4 (5628 chars, ~1407 tokens)
+    [step 1/3] best reward=-1.200, train fail -> retry
+    [step 2/3] Sampling group of 4 (5759 chars, ~1439 tokens)
+    [step 2/3] best reward=-1.200, train fail -> retry
+    [step 3/3] Sampling group of 4 (5759 chars, ~1439 tokens)
+    [step 3/3] best reward=-1.200, train fail -> retry
+  FAILED (0/1 test cases, 0.0s) | Running: 0/37 solved (0%)
+
+[38/101] Task: 58743b76 (2 train, 1 test)
+  Test case 1/1
+    [step 1/3] Sampling group of 4 (2674 chars, ~668 tokens)
+    [step 1/3] best reward=-1.200, train fail -> retry
+    [step 2/3] Sampling group of 4 (2805 chars, ~701 tokens)
+    [step 2/3] best reward=-1.200, train fail -> retry
+    [step 3/3] Sampling group of 4 (2805 chars, ~701 tokens)
+    [step 3/3] best reward=-1.200, train fail -> retry
+  FAILED (0/1 test cases, 0.0s) | Running: 0/38 solved (0%)
+
+[39/101] Task: 58e15b12 (3 train, 1 test)
+  Test case 1/1
+    [step 1/3] Sampling group of 4 (9651 chars, ~2412 tokens)
+    [step 1/3] best reward=-1.200, train fail -> retry
+    [step 2/3] Sampling group of 4 (9782 chars, ~2445 tokens)
+    [step 2/3] best reward=-1.200, train fail -> retry
+    [step 3/3] Sampling group of 4 (9782 chars, ~2445 tokens)
+    [step 3/3] best reward=-1.200, train fail -> retry
+  FAILED (0/1 test cases, 0.0s) | Running: 0/39 solved (0%)
+
+[40/101] Task: 59341089 (4 train, 1 test)
+  Test case 1/1
+    [step 1/3] Sampling group of 4 (1212 chars, ~303 tokens)
+    [step 1/3] best reward=-1.200, train fail -> retry
+    [step 2/3] Sampling group of 4 (1343 chars, ~335 tokens)
+    [step 2/3] best reward=-1.200, train fail -> retry
+    [step 3/3] Sampling group of 4 (1343 chars, ~335 tokens)
+    [step 3/3] best reward=-1.200, train fail -> retry
+  FAILED (0/1 test cases, 0.0s) | Running: 0/40 solved (0%)
+
+[41/101] Task: 5a5a2103 (2 train, 1 test)
+  Test case 1/1
+    [step 1/3] Sampling group of 4 (5724 chars, ~1431 tokens)
+    [step 1/3] best reward=-1.200, train fail -> retry
+    [step 2/3] Sampling group of 4 (5855 chars, ~1463 tokens)
+    [step 2/3] best reward=-1.200, train fail -> retry
+    [step 3/3] Sampling group of 4 (5855 chars, ~1463 tokens)
+    [step 3/3] best reward=-1.200, train fail -> retry
+  FAILED (0/1 test cases, 0.0s) | Running: 0/41 solved (0%)
+
+[42/101] Task: 5af49b42 (3 train, 1 test)
+  Test case 1/1
+    [step 1/3] Sampling group of 4 (4794 chars, ~1198 tokens)
+    [step 1/3] best reward=-1.200, train fail -> retry
+    [step 2/3] Sampling group of 4 (4925 chars, ~1231 tokens)
+    [step 2/3] best reward=-1.200, train fail -> retry
+    [step 3/3] Sampling group of 4 (4925 chars, ~1231 tokens)
+    [step 3/3] best reward=-1.200, train fail -> retry
+  FAILED (0/1 test cases, 0.0s) | Running: 0/42 solved (0%)
+
+[43/101] Task: 5b526a93 (2 train, 1 test)
+  Test case 1/1
+    [step 1/3] Sampling group of 4 (6607 chars, ~1651 tokens)
+    [step 1/3] best reward=-1.200, train fail -> retry
+    [step 2/3] Sampling group of 4 (6738 chars, ~1684 tokens)
+    [step 2/3] best reward=-1.200, train fail -> retry
+    [step 3/3] Sampling group of 4 (6738 chars, ~1684 tokens)
+    [step 3/3] best reward=-1.200, train fail -> retry
+  FAILED (0/1 test cases, 0.0s) | Running: 0/43 solved (0%)
+
+[44/101] Task: 5b692c0f (2 train, 1 test)
+  Test case 1/1
+    [step 1/3] Sampling group of 4 (5780 chars, ~1445 tokens)
+    [step 1/3] best reward=-1.200, train fail -> retry
+    [step 2/3] Sampling group of 4 (5911 chars, ~1477 tokens)
+    [step 2/3] best reward=-1.200, train fail -> retry
+    [step 3/3] Sampling group of 4 (5911 chars, ~1477 tokens)
+    [step 3/3] best reward=-1.200, train fail -> retry
+  FAILED (0/1 test cases, 0.0s) | Running: 0/44 solved (0%)
+
+[45/101] Task: 5b6cbef5 (5 train, 1 test)
+  Test case 1/1
+    [step 1/3] Sampling group of 4 (4877 chars, ~1219 tokens)
+    [step 1/3] best reward=-1.200, train fail -> retry
+    [step 2/3] Sampling group of 4 (5008 chars, ~1252 tokens)
+    [step 2/3] best reward=-1.200, train fail -> retry
+    [step 3/3] Sampling group of 4 (5008 chars, ~1252 tokens)
+    [step 3/3] best reward=-1.200, train fail -> retry
+  FAILED (0/1 test cases, 0.0s) | Running: 0/45 solved (0%)
+
+[46/101] Task: 5d2a5c43 (5 train, 2 test)
+  Test case 1/2
+    [step 1/3] Sampling group of 4 (2043 chars, ~510 tokens)
+    [step 1/3] best reward=-1.200, train fail -> retry
+    [step 2/3] Sampling group of 4 (2174 chars, ~543 tokens)
+    [step 2/3] best reward=-1.200, train fail -> retry
+    [step 3/3] Sampling group of 4 (2174 chars, ~543 tokens)
+    [step 3/3] best reward=-1.200, train fail -> retry
+  Test case 2/2
+    [step 1/3] Sampling group of 4 (2043 chars, ~510 tokens)
+    [step 1/3] best reward=-1.200, train fail -> retry
+    [step 2/3] Sampling group of 4 (2174 chars, ~543 tokens)
+    [step 2/3] best reward=-1.200, train fail -> retry
+    [step 3/3] Sampling group of 4 (2174 chars, ~543 tokens)
+    [step 3/3] best reward=-1.200, train fail -> retry
+  FAILED (0/2 test cases, 0.1s) | Running: 0/46 solved (0%)
+
+[47/101] Task: 5ffb2104 (3 train, 1 test)
+  Test case 1/1
+    [step 1/3] Sampling group of 4 (2157 chars, ~539 tokens)
+    [step 1/3] best reward=-1.200, train fail -> retry
+    [step 2/3] Sampling group of 4 (2288 chars, ~572 tokens)
+    [step 2/3] best reward=-1.200, train fail -> retry
+    [step 3/3] Sampling group of 4 (2288 chars, ~572 tokens)
+    [step 3/3] best reward=-1.200, train fail -> retry
+  FAILED (0/1 test cases, 0.0s) | Running: 0/47 solved (0%)
+
+[48/101] Task: 604001fa (4 train, 1 test)
+  Test case 1/1
+    [step 1/3] Sampling group of 4 (4641 chars, ~1160 tokens)
+    [step 1/3] best reward=-1.200, train fail -> retry
+    [step 2/3] Sampling group of 4 (4772 chars, ~1193 tokens)
+    [step 2/3] best reward=-1.200, train fail -> retry
+    [step 3/3] Sampling group of 4 (4772 chars, ~1193 tokens)
+    [step 3/3] best reward=-1.200, train fail -> retry
+  FAILED (0/1 test cases, 0.0s) | Running: 0/48 solved (0%)
+
+[49/101] Task: 60a26a3e (3 train, 1 test)
+  Test case 1/1
+    [step 1/3] Sampling group of 4 (4401 chars, ~1100 tokens)
+    [step 1/3] best reward=-1.200, train fail -> retry
+    [step 2/3] Sampling group of 4 (4532 chars, ~1133 tokens)
+    [step 2/3] best reward=-1.200, train fail -> retry
+    [step 3/3] Sampling group of 4 (4532 chars, ~1133 tokens)
+    [step 3/3] best reward=-1.200, train fail -> retry
+  FAILED (0/1 test cases, 0.0s) | Running: 0/49 solved (0%)
+
+[50/101] Task: 60c09cac (2 train, 1 test)
+  Test case 1/1
+    [step 1/3] Sampling group of 4 (1040 chars, ~260 tokens)
+    [step 1/3] best reward=-1.200, train fail -> retry
+    [step 2/3] Sampling group of 4 (1171 chars, ~292 tokens)
+    [step 2/3] best reward=-1.200, train fail -> retry
+    [step 3/3] Sampling group of 4 (1171 chars, ~292 tokens)
+    [step 3/3] best reward=-1.200, train fail -> retry
+  FAILED (0/1 test cases, 0.0s) | Running: 0/50 solved (0%)
+
+[51/101] Task: 626c0bcc (3 train, 1 test)
+  Test case 1/1
+    [step 1/3] Sampling group of 4 (1669 chars, ~417 tokens)
+    [step 1/3] best reward=-1.200, train fail -> retry
+    [step 2/3] Sampling group of 4 (1800 chars, ~450 tokens)
+    [step 2/3] best reward=-1.200, train fail -> retry
+    [step 3/3] Sampling group of 4 (1800 chars, ~450 tokens)
+    [step 3/3] best reward=-1.200, train fail -> retry
+  FAILED (0/1 test cases, 0.0s) | Running: 0/51 solved (0%)
+
+[52/101] Task: 62ab2642 (3 train, 1 test)
+  Test case 1/1
+    [step 1/3] Sampling group of 4 (2556 chars, ~639 tokens)
+    [step 1/3] best reward=-1.200, train fail -> retry
+    [step 2/3] Sampling group of 4 (2687 chars, ~671 tokens)
+    [step 2/3] best reward=-1.200, train fail -> retry
+    [step 3/3] Sampling group of 4 (2687 chars, ~671 tokens)
+    [step 3/3] best reward=-1.200, train fail -> retry
+  FAILED (0/1 test cases, 0.0s) | Running: 0/52 solved (0%)
+
+[53/101] Task: 62b74c02 (3 train, 1 test)
+  Test case 1/1
+    [step 1/3] Sampling group of 4 (1503 chars, ~375 tokens)
+    [step 1/3] best reward=-1.200, train fail -> retry
+    [step 2/3] Sampling group of 4 (1634 chars, ~408 tokens)
+    [step 2/3] best reward=-1.200, train fail -> retry
+    [step 3/3] Sampling group of 4 (1634 chars, ~408 tokens)
+    [step 3/3] best reward=-1.200, train fail -> retry
+  FAILED (0/1 test cases, 0.0s) | Running: 0/53 solved (0%)
+
+[54/101] Task: 639f5a19 (2 train, 1 test)
+  Test case 1/1
+    [step 1/3] Sampling group of 4 (8614 chars, ~2153 tokens)
+    [step 1/3] best reward=-1.200, train fail -> retry
+    [step 2/3] Sampling group of 4 (8745 chars, ~2186 tokens)
+    [step 2/3] best reward=-1.200, train fail -> retry
+    [step 3/3] Sampling group of 4 (8745 chars, ~2186 tokens)
+    [step 3/3] best reward=-1.200, train fail -> retry
+  FAILED (0/1 test cases, 0.0s) | Running: 0/54 solved (0%)
+
+[55/101] Task: 642248e4 (3 train, 1 test)
+  Test case 1/1
+    [step 1/3] Sampling group of 4 (4043 chars, ~1010 tokens)
+    [step 1/3] best reward=-1.200, train fail -> retry
+    [step 2/3] Sampling group of 4 (4174 chars, ~1043 tokens)
+    [step 2/3] best reward=-1.200, train fail -> retry
+    [step 3/3] Sampling group of 4 (4174 chars, ~1043 tokens)
+    [step 3/3] best reward=-1.200, train fail -> retry
+  FAILED (0/1 test cases, 0.0s) | Running: 0/55 solved (0%)
+
+[56/101] Task: 642d658d (3 train, 1 test)
+  Test case 1/1
+    [step 1/3] Sampling group of 4 (7124 chars, ~1781 tokens)
+    [step 1/3] best reward=-1.200, train fail -> retry
+    [step 2/3] Sampling group of 4 (7255 chars, ~1813 tokens)
+    [step 2/3] best reward=-1.200, train fail -> retry
+    [step 3/3] Sampling group of 4 (7255 chars, ~1813 tokens)
+    [step 3/3] best reward=-1.200, train fail -> retry
+  FAILED (0/1 test cases, 0.0s) | Running: 0/56 solved (0%)
+
+[57/101] Task: 64a7c07e (3 train, 1 test)
+  Test case 1/1
+    [step 1/3] Sampling group of 4 (2703 chars, ~675 tokens)
+    [step 1/3] best reward=-1.200, train fail -> retry
+    [step 2/3] Sampling group of 4 (2834 chars, ~708 tokens)
+    [step 2/3] best reward=-1.200, train fail -> retry
+    [step 3/3] Sampling group of 4 (2834 chars, ~708 tokens)
+    [step 3/3] best reward=-1.200, train fail -> retry
+  FAILED (0/1 test cases, 0.0s) | Running: 0/57 solved (0%)
+
+[58/101] Task: 66e6c45b (2 train, 1 test)
+  Test case 1/1
+    [step 1/3] Sampling group of 4 (824 chars, ~206 tokens)
+    [step 1/3] best reward=-1.200, train fail -> retry
+    [step 2/3] Sampling group of 4 (955 chars, ~238 tokens)
+    [step 2/3] best reward=-1.200, train fail -> retry
+    [step 3/3] Sampling group of 4 (955 chars, ~238 tokens)
+    [step 3/3] best reward=-1.200, train fail -> retry
+  FAILED (0/1 test cases, 0.0s) | Running: 0/58 solved (0%)
+
+[59/101] Task: 66f2d22f (4 train, 1 test)
+  Test case 1/1
+    [step 1/3] Sampling group of 4 (1830 chars, ~457 tokens)
+    [step 1/3] best reward=-1.200, train fail -> retry
+    [step 2/3] Sampling group of 4 (1961 chars, ~490 tokens)
+    [step 2/3] best reward=-1.200, train fail -> retry
+    [step 3/3] Sampling group of 4 (1961 chars, ~490 tokens)
+    [step 3/3] best reward=-1.200, train fail -> retry
+  FAILED (0/1 test cases, 0.0s) | Running: 0/59 solved (0%)
+
+[60/101] Task: 67636eac (3 train, 1 test)
+  Test case 1/1
+    [step 1/3] Sampling group of 4 (3139 chars, ~784 tokens)
+    [step 1/3] best reward=-1.200, train fail -> retry
+    [step 2/3] Sampling group of 4 (3270 chars, ~817 tokens)
+    [step 2/3] best reward=-1.200, train fail -> retry
+    [step 3/3] Sampling group of 4 (3270 chars, ~817 tokens)
+    [step 3/3] best reward=-1.200, train fail -> retry
+  FAILED (0/1 test cases, 0.0s) | Running: 0/60 solved (0%)
+
+[61/101] Task: 67b4a34d (3 train, 1 test)
+  Test case 1/1
+    [step 1/3] Sampling group of 4 (3883 chars, ~970 tokens)
+    [step 1/3] best reward=-1.200, train fail -> retry
+    [step 2/3] Sampling group of 4 (4014 chars, ~1003 tokens)
+    [step 2/3] best reward=-1.200, train fail -> retry
+    [step 3/3] Sampling group of 4 (4014 chars, ~1003 tokens)
+    [step 3/3] best reward=-1.200, train fail -> retry
+  FAILED (0/1 test cases, 0.0s) | Running: 0/61 solved (0%)
+
+[62/101] Task: 67c52801 (4 train, 1 test)
+  Test case 1/1
+    [step 1/3] Sampling group of 4 (2316 chars, ~579 tokens)
+    [step 1/3] best reward=-1.200, train fail -> retry
+    [step 2/3] Sampling group of 4 (2447 chars, ~611 tokens)
+    [step 2/3] best reward=-1.200, train fail -> retry
+    [step 3/3] Sampling group of 4 (2447 chars, ~611 tokens)
+    [step 3/3] best reward=-1.200, train fail -> retry
+  FAILED (0/1 test cases, 0.0s) | Running: 0/62 solved (0%)
+
+[63/101] Task: 68b67ca3 (3 train, 1 test)
+  Test case 1/1
+    [step 1/3] Sampling group of 4 (1137 chars, ~284 tokens)
+    [step 1/3] best reward=-1.200, train fail -> retry
+    [step 2/3] Sampling group of 4 (1268 chars, ~317 tokens)
+    [step 2/3] best reward=-1.200, train fail -> retry
+    [step 3/3] Sampling group of 4 (1268 chars, ~317 tokens)
+    [step 3/3] best reward=-1.200, train fail -> retry
+  FAILED (0/1 test cases, 0.0s) | Running: 0/63 solved (0%)
+
+[64/101] Task: 692cd3b6 (3 train, 1 test)
+  Test case 1/1
+    [step 1/3] Sampling group of 4 (5421 chars, ~1355 tokens)
+    [step 1/3] best reward=-1.200, train fail -> retry
+    [step 2/3] Sampling group of 4 (5552 chars, ~1388 tokens)
+    [step 2/3] best reward=-1.200, train fail -> retry
+    [step 3/3] Sampling group of 4 (5552 chars, ~1388 tokens)
+    [step 3/3] best reward=-1.200, train fail -> retry
+  FAILED (0/1 test cases, 0.0s) | Running: 0/64 solved (0%)
+
+[65/101] Task: 695367ec (3 train, 1 test)
+  Test case 1/1
+    [step 1/3] Sampling group of 4 (2837 chars, ~709 tokens)
+    [step 1/3] best reward=-1.200, train fail -> retry
+    [step 2/3] Sampling group of 4 (2968 chars, ~742 tokens)
+    [step 2/3] best reward=-1.200, train fail -> retry
+    [step 3/3] Sampling group of 4 (2968 chars, ~742 tokens)
+    [step 3/3] best reward=-1.200, train fail -> retry
+  FAILED (0/1 test cases, 0.0s) | Running: 0/65 solved (0%)
+
+[66/101] Task: 696d4842 (3 train, 1 test)
+  Test case 1/1
+    [step 1/3] Sampling group of 4 (12151 chars, ~3037 tokens)
+    [step 1/3] best reward=-1.200, train fail -> retry
+    [step 2/3] Sampling group of 4 (12282 chars, ~3070 tokens)
+    [step 2/3] best reward=-1.200, train fail -> retry
+    [step 3/3] Sampling group of 4 (12282 chars, ~3070 tokens)
+    [step 3/3] best reward=-1.200, train fail -> retry
+  FAILED (0/1 test cases, 0.0s) | Running: 0/66 solved (0%)
+
+[67/101] Task: 69889d6e (4 train, 1 test)
+  Test case 1/1
+    [step 1/3] Sampling group of 4 (3408 chars, ~852 tokens)
+    [step 1/3] best reward=-1.200, train fail -> retry
+    [step 2/3] Sampling group of 4 (3539 chars, ~884 tokens)
+    [step 2/3] best reward=-1.200, train fail -> retry
+    [step 3/3] Sampling group of 4 (3539 chars, ~884 tokens)
+    [step 3/3] best reward=-1.200, train fail -> retry
+  FAILED (0/1 test cases, 0.0s) | Running: 0/67 solved (0%)
+
+[68/101] Task: 6a11f6da (5 train, 1 test)
+  Test case 1/1
+    [step 1/3] Sampling group of 4 (2485 chars, ~621 tokens)
+    [step 1/3] best reward=-1.200, train fail -> retry
+    [step 2/3] Sampling group of 4 (2616 chars, ~654 tokens)
+    [step 2/3] best reward=-1.200, train fail -> retry
+    [step 3/3] Sampling group of 4 (2616 chars, ~654 tokens)
+    [step 3/3] best reward=-1.200, train fail -> retry
+  FAILED (0/1 test cases, 0.0s) | Running: 0/68 solved (0%)
+
+[69/101] Task: 6ad5bdfd (3 train, 1 test)
+  Test case 1/1
+    [step 1/3] Sampling group of 4 (1931 chars, ~482 tokens)
+    [step 1/3] best reward=-1.200, train fail -> retry
+    [step 2/3] Sampling group of 4 (2062 chars, ~515 tokens)
+    [step 2/3] best reward=-1.200, train fail -> retry
+    [step 3/3] Sampling group of 4 (2062 chars, ~515 tokens)
+    [step 3/3] best reward=-1.200, train fail -> retry
+  FAILED (0/1 test cases, 0.0s) | Running: 0/69 solved (0%)
+
+[70/101] Task: 6df30ad6 (5 train, 1 test)
+  Test case 1/1
+    [step 1/3] Sampling group of 4 (4055 chars, ~1013 tokens)
+    [step 1/3] best reward=-1.200, train fail -> retry
+    [step 2/3] Sampling group of 4 (4186 chars, ~1046 tokens)
+    [step 2/3] best reward=-1.200, train fail -> retry
+    [step 3/3] Sampling group of 4 (4186 chars, ~1046 tokens)
+    [step 3/3] best reward=-1.200, train fail -> retry
+  FAILED (0/1 test cases, 0.0s) | Running: 0/70 solved (0%)
+
+[71/101] Task: 6ea4a07e (6 train, 2 test)
+  Test case 1/2
+    [step 1/3] Sampling group of 4 (1062 chars, ~265 tokens)
+    [step 1/3] best reward=-1.200, train fail -> retry
+    [step 2/3] Sampling group of 4 (1193 chars, ~298 tokens)
+    [step 2/3] best reward=-1.200, train fail -> retry
+    [step 3/3] Sampling group of 4 (1193 chars, ~298 tokens)
+    [step 3/3] best reward=-1.200, train fail -> retry
+  Test case 2/2
+    [step 1/3] Sampling group of 4 (1062 chars, ~265 tokens)
+    [step 1/3] best reward=-1.200, train fail -> retry
+    [step 2/3] Sampling group of 4 (1193 chars, ~298 tokens)
+    [step 2/3] best reward=-1.200, train fail -> retry
+    [step 3/3] Sampling group of 4 (1193 chars, ~298 tokens)
+    [step 3/3] best reward=-1.200, train fail -> retry
+  FAILED (0/2 test cases, 0.1s) | Running: 0/71 solved (0%)
+
+[72/101] Task: 6f473927 (4 train, 1 test)
+  Test case 1/1
+    [step 1/3] Sampling group of 4 (1938 chars, ~484 tokens)
+    [step 1/3] best reward=-1.200, train fail -> retry
+    [step 2/3] Sampling group of 4 (2069 chars, ~517 tokens)
+    [step 2/3] best reward=-1.200, train fail -> retry
+    [step 3/3] Sampling group of 4 (2069 chars, ~517 tokens)
+    [step 3/3] best reward=-1.200, train fail -> retry
+  FAILED (0/1 test cases, 0.0s) | Running: 0/72 solved (0%)
+
+[73/101] Task: 7039b2d7 (3 train, 1 test)
+  Test case 1/1
+    [step 1/3] Sampling group of 4 (5382 chars, ~1345 tokens)
+    [step 1/3] best reward=-1.200, train fail -> retry
+    [step 2/3] Sampling group of 4 (5513 chars, ~1378 tokens)
+    [step 2/3] best reward=-1.200, train fail -> retry
+    [step 3/3] Sampling group of 4 (5513 chars, ~1378 tokens)
+    [step 3/3] best reward=-1.200, train fail -> retry
+  FAILED (0/1 test cases, 0.0s) | Running: 0/73 solved (0%)
+
+[74/101] Task: 705a3229 (4 train, 1 test)
+  Test case 1/1
+    [step 1/3] Sampling group of 4 (4627 chars, ~1156 tokens)
+    [step 1/3] best reward=-1.200, train fail -> retry
+    [step 2/3] Sampling group of 4 (4758 chars, ~1189 tokens)
+    [step 2/3] best reward=-1.200, train fail -> retry
+    [step 3/3] Sampling group of 4 (4758 chars, ~1189 tokens)
+    [step 3/3] best reward=-1.200, train fail -> retry
+  FAILED (0/1 test cases, 0.0s) | Running: 0/74 solved (0%)
+
+[75/101] Task: 712bf12e (3 train, 1 test)
+  Test case 1/1
+    [step 1/3] Sampling group of 4 (4385 chars, ~1096 tokens)
+    [step 1/3] best reward=-1.200, train fail -> retry
+    [step 2/3] Sampling group of 4 (4516 chars, ~1129 tokens)
+    [step 2/3] best reward=-1.200, train fail -> retry
+    [step 3/3] Sampling group of 4 (4516 chars, ~1129 tokens)
+    [step 3/3] best reward=-1.200, train fail -> retry
+  FAILED (0/1 test cases, 0.0s) | Running: 0/75 solved (0%)
+
+[76/101] Task: 72207abc (3 train, 1 test)
+  Test case 1/1
+    [step 1/3] Sampling group of 4 (2079 chars, ~519 tokens)
+    [step 1/3] best reward=-1.200, train fail -> retry
+    [step 2/3] Sampling group of 4 (2210 chars, ~552 tokens)
+    [step 2/3] best reward=-1.200, train fail -> retry
+    [step 3/3] Sampling group of 4 (2210 chars, ~552 tokens)
+    [step 3/3] best reward=-1.200, train fail -> retry
+  FAILED (0/1 test cases, 0.0s) | Running: 0/76 solved (0%)
+
+[77/101] Task: 72a961c9 (4 train, 1 test)
+  Test case 1/1
+    [step 1/3] Sampling group of 4 (3016 chars, ~754 tokens)
+    [step 1/3] best reward=-1.200, train fail -> retry
+    [step 2/3] Sampling group of 4 (3147 chars, ~786 tokens)
+    [step 2/3] best reward=-1.200, train fail -> retry
+    [step 3/3] Sampling group of 4 (3147 chars, ~786 tokens)
+    [step 3/3] best reward=-1.200, train fail -> retry
+  FAILED (0/1 test cases, 0.0s) | Running: 0/77 solved (0%)
+
+[78/101] Task: 73182012 (3 train, 1 test)
+  Test case 1/1
+    [step 1/3] Sampling group of 4 (2523 chars, ~630 tokens)
+    [step 1/3] best reward=-1.200, train fail -> retry
+    [step 2/3] Sampling group of 4 (2654 chars, ~663 tokens)
+    [step 2/3] best reward=-1.200, train fail -> retry
+    [step 3/3] Sampling group of 4 (2654 chars, ~663 tokens)
+    [step 3/3] best reward=-1.200, train fail -> retry
+  FAILED (0/1 test cases, 0.0s) | Running: 0/78 solved (0%)
+
+[79/101] Task: 73c3b0d8 (4 train, 1 test)
+  Test case 1/1
+    [step 1/3] Sampling group of 4 (2242 chars, ~560 tokens)
+    [step 1/3] best reward=-1.200, train fail -> retry
+    [step 2/3] Sampling group of 4 (2373 chars, ~593 tokens)
+    [step 2/3] best reward=-1.200, train fail -> retry
+    [step 3/3] Sampling group of 4 (2373 chars, ~593 tokens)
+    [step 3/3] best reward=-1.200, train fail -> retry
+  FAILED (0/1 test cases, 0.0s) | Running: 0/79 solved (0%)
+
+[80/101] Task: 73ccf9c2 (3 train, 1 test)
+  Test case 1/1
+    [step 1/3] Sampling group of 4 (6465 chars, ~1616 tokens)
+    [step 1/3] best reward=-1.200, train fail -> retry
+    [step 2/3] Sampling group of 4 (6596 chars, ~1649 tokens)
+    [step 2/3] best reward=-1.200, train fail -> retry
+    [step 3/3] Sampling group of 4 (6596 chars, ~1649 tokens)
+    [step 3/3] best reward=-1.200, train fail -> retry
+  FAILED (0/1 test cases, 0.0s) | Running: 0/80 solved (0%)
+
+[81/101] Task: 759f3fd3 (2 train, 1 test)
+  Test case 1/1
+    [step 1/3] Sampling group of 4 (4068 chars, ~1017 tokens)
+    [step 1/3] best reward=-1.200, train fail -> retry
+    [step 2/3] Sampling group of 4 (4199 chars, ~1049 tokens)
+    [step 2/3] best reward=-1.200, train fail -> retry
+    [step 3/3] Sampling group of 4 (4199 chars, ~1049 tokens)
+    [step 3/3] best reward=-1.200, train fail -> retry
+  FAILED (0/1 test cases, 0.0s) | Running: 0/81 solved (0%)
+
+[82/101] Task: 762cd429 (3 train, 1 test)
+  Test case 1/1
+    [step 1/3] Sampling group of 4 (6679 chars, ~1669 tokens)
+    [step 1/3] best reward=-1.200, train fail -> retry
+    [step 2/3] Sampling group of 4 (6810 chars, ~1702 tokens)
+    [step 2/3] best reward=-1.200, train fail -> retry
+    [step 3/3] Sampling group of 4 (6810 chars, ~1702 tokens)
+    [step 3/3] best reward=-1.200, train fail -> retry
+  FAILED (0/1 test cases, 0.0s) | Running: 0/82 solved (0%)
+
+[83/101] Task: 770cc55f (4 train, 1 test)
+  Test case 1/1
+    [step 1/3] Sampling group of 4 (2354 chars, ~588 tokens)
+    [step 1/3] best reward=-1.200, train fail -> retry
+    [step 2/3] Sampling group of 4 (2485 chars, ~621 tokens)
+    [step 2/3] best reward=-1.200, train fail -> retry
+    [step 3/3] Sampling group of 4 (2485 chars, ~621 tokens)
+    [step 3/3] best reward=-1.200, train fail -> retry
+  FAILED (0/1 test cases, 0.0s) | Running: 0/83 solved (0%)
+
+[84/101] Task: 782b5218 (3 train, 1 test)
+  Test case 1/1
+    [step 1/3] Sampling group of 4 (2761 chars, ~690 tokens)
+    [step 1/3] best reward=-1.200, train fail -> retry
+    [step 2/3] Sampling group of 4 (2892 chars, ~723 tokens)
+    [step 2/3] best reward=-1.200, train fail -> retry
+    [step 3/3] Sampling group of 4 (2892 chars, ~723 tokens)
+    [step 3/3] best reward=-1.200, train fail -> retry
+  FAILED (0/1 test cases, 0.0s) | Running: 0/84 solved (0%)
+
+[85/101] Task: 79369cc6 (3 train, 1 test)
+  Test case 1/1
+    [step 1/3] Sampling group of 4 (6265 chars, ~1566 tokens)
+    [step 1/3] best reward=-1.200, train fail -> retry
+    [step 2/3] Sampling group of 4 (6396 chars, ~1599 tokens)
+    [step 2/3] best reward=-1.200, train fail -> retry
+    [step 3/3] Sampling group of 4 (6396 chars, ~1599 tokens)
+    [step 3/3] best reward=-1.200, train fail -> retry
+  FAILED (0/1 test cases, 0.0s) | Running: 0/85 solved (0%)
+
+[86/101] Task: 7953d61e (5 train, 1 test)
+  Test case 1/1
+    [step 1/3] Sampling group of 4 (1957 chars, ~489 tokens)
+    [step 1/3] best reward=-1.200, train fail -> retry
+    [step 2/3] Sampling group of 4 (2088 chars, ~522 tokens)
+    [step 2/3] best reward=-1.200, train fail -> retry
+    [step 3/3] Sampling group of 4 (2088 chars, ~522 tokens)
+    [step 3/3] best reward=-1.200, train fail -> retry
+  FAILED (0/1 test cases, 0.0s) | Running: 0/86 solved (0%)
+
+[87/101] Task: 79fb03f4 (6 train, 1 test)
+  Test case 1/1
+    [step 1/3] Sampling group of 4 (7590 chars, ~1897 tokens)
+    [step 1/3] best reward=-1.200, train fail -> retry
+    [step 2/3] Sampling group of 4 (7721 chars, ~1930 tokens)
+    [step 2/3] best reward=-1.200, train fail -> retry
+    [step 3/3] Sampling group of 4 (7721 chars, ~1930 tokens)
+    [step 3/3] best reward=-1.200, train fail -> retry
+  FAILED (0/1 test cases, 0.0s) | Running: 0/87 solved (0%)
+
+[88/101] Task: 7bb29440 (5 train, 1 test)
+  Test case 1/1
+    [step 1/3] Sampling group of 4 (8022 chars, ~2005 tokens)
+    [step 1/3] best reward=-1.200, train fail -> retry
+    [step 2/3] Sampling group of 4 (8153 chars, ~2038 tokens)
+    [step 2/3] best reward=-1.200, train fail -> retry
+    [step 3/3] Sampling group of 4 (8153 chars, ~2038 tokens)
+    [step 3/3] best reward=-1.200, train fail -> retry
+  FAILED (0/1 test cases, 0.0s) | Running: 0/88 solved (0%)
+
+[89/101] Task: 7c8af763 (3 train, 1 test)
+  Test case 1/1
+    [step 1/3] Sampling group of 4 (2761 chars, ~690 tokens)
+    [step 1/3] best reward=-1.200, train fail -> retry
+    [step 2/3] Sampling group of 4 (2892 chars, ~723 tokens)
+    [step 2/3] best reward=-1.200, train fail -> retry
+    [step 3/3] Sampling group of 4 (2892 chars, ~723 tokens)
+    [step 3/3] best reward=-1.200, train fail -> retry
+  FAILED (0/1 test cases, 0.0s) | Running: 0/89 solved (0%)
+
+[90/101] Task: 7c9b52a0 (3 train, 1 test)
+  Test case 1/1
+    [step 1/3] Sampling group of 4 (3882 chars, ~970 tokens)
+    [step 1/3] best reward=-1.200, train fail -> retry
+    [step 2/3] Sampling group of 4 (4013 chars, ~1003 tokens)
+    [step 2/3] best reward=-1.200, train fail -> retry
+    [step 3/3] Sampling group of 4 (4013 chars, ~1003 tokens)
+    [step 3/3] best reward=-1.200, train fail -> retry
+  FAILED (0/1 test cases, 0.0s) | Running: 0/90 solved (0%)
+
+[91/101] Task: 7d18a6fb (3 train, 1 test)
+  Test case 1/1
+    [step 1/3] Sampling group of 4 (4385 chars, ~1096 tokens)
+    [step 1/3] best reward=-1.200, train fail -> retry
+    [step 2/3] Sampling group of 4 (4516 chars, ~1129 tokens)
+    [step 2/3] best reward=-1.200, train fail -> retry
+    [step 3/3] Sampling group of 4 (4516 chars, ~1129 tokens)
+    [step 3/3] best reward=-1.200, train fail -> retry
+  FAILED (0/1 test cases, 0.0s) | Running: 0/91 solved (0%)
+
+[92/101] Task: 7d1f7ee8 (3 train, 1 test)
+  Test case 1/1
+    [step 1/3] Sampling group of 4 (11888 chars, ~2972 tokens)
+    [step 1/3] best reward=-1.200, train fail -> retry
+    [step 2/3] Sampling group of 4 (12019 chars, ~3004 tokens)
+    [step 2/3] best reward=-1.200, train fail -> retry
+    [step 3/3] Sampling group of 4 (12019 chars, ~3004 tokens)
+    [step 3/3] best reward=-1.200, train fail -> retry
+  FAILED (0/1 test cases, 0.0s) | Running: 0/92 solved (0%)
+
+[93/101] Task: 7d419a02 (3 train, 1 test)
+  Test case 1/1
+    [step 1/3] Sampling group of 4 (7028 chars, ~1757 tokens)
+    [step 1/3] best reward=-1.200, train fail -> retry
+    [step 2/3] Sampling group of 4 (7159 chars, ~1789 tokens)
+    [step 2/3] best reward=-1.200, train fail -> retry
+    [step 3/3] Sampling group of 4 (7159 chars, ~1789 tokens)
+    [step 3/3] best reward=-1.200, train fail -> retry
+  FAILED (0/1 test cases, 0.0s) | Running: 0/93 solved (0%)
+
+[94/101] Task: 7e02026e (3 train, 1 test)
+  Test case 1/1
+    [step 1/3] Sampling group of 4 (3699 chars, ~924 tokens)
+    [step 1/3] best reward=-1.200, train fail -> retry
+    [step 2/3] Sampling group of 4 (3830 chars, ~957 tokens)
+    [step 2/3] best reward=-1.200, train fail -> retry
+    [step 3/3] Sampling group of 4 (3830 chars, ~957 tokens)
+    [step 3/3] best reward=-1.200, train fail -> retry
+  FAILED (0/1 test cases, 0.0s) | Running: 0/94 solved (0%)
+
+[95/101] Task: 7ee1c6ea (3 train, 1 test)
+  Test case 1/1
+    [step 1/3] Sampling group of 4 (2761 chars, ~690 tokens)
+    [step 1/3] best reward=-1.200, train fail -> retry
+    [step 2/3] Sampling group of 4 (2892 chars, ~723 tokens)
+    [step 2/3] best reward=-1.200, train fail -> retry
+    [step 3/3] Sampling group of 4 (2892 chars, ~723 tokens)
+    [step 3/3] best reward=-1.200, train fail -> retry
+  FAILED (0/1 test cases, 0.0s) | Running: 0/95 solved (0%)
+
+[96/101] Task: 817e6c09 (5 train, 1 test)
+  Test case 1/1
+    [step 1/3] Sampling group of 4 (3473 chars, ~868 tokens)
+    [step 1/3] best reward=-1.200, train fail -> retry
+    [step 2/3] Sampling group of 4 (3604 chars, ~901 tokens)
+    [step 2/3] best reward=-1.200, train fail -> retry
+    [step 3/3] Sampling group of 4 (3604 chars, ~901 tokens)
+    [step 3/3] best reward=-1.200, train fail -> retry
+  FAILED (0/1 test cases, 0.0s) | Running: 0/96 solved (0%)
+
+[97/101] Task: 81c0276b (3 train, 1 test)
+  Test case 1/1
+    [step 1/3] Sampling group of 4 (4320 chars, ~1080 tokens)
+    [step 1/3] best reward=-1.200, train fail -> retry
+    [step 2/3] Sampling group of 4 (4451 chars, ~1112 tokens)
+    [step 2/3] best reward=-1.200, train fail -> retry
+    [step 3/3] Sampling group of 4 (4451 chars, ~1112 tokens)
+    [step 3/3] best reward=-1.200, train fail -> retry
+  FAILED (0/1 test cases, 0.0s) | Running: 0/97 solved (0%)
+
+[98/101] Task: 833dafe3 (2 train, 1 test)
+  Test case 1/1
+    [step 1/3] Sampling group of 4 (1160 chars, ~290 tokens)
+    [step 1/3] best reward=-1.200, train fail -> retry
+    [step 2/3] Sampling group of 4 (1291 chars, ~322 tokens)
+    [step 2/3] best reward=-1.200, train fail -> retry
+    [step 3/3] Sampling group of 4 (1291 chars, ~322 tokens)
+    [step 3/3] best reward=-1.200, train fail -> retry
+  FAILED (0/1 test cases, 0.0s) | Running: 0/98 solved (0%)
+
+[99/101] Task: 845d6e51 (3 train, 1 test)
+  Test case 1/1
+    [step 1/3] Sampling group of 4 (5283 chars, ~1320 tokens)
+    [step 1/3] best reward=-1.200, train fail -> retry
+    [step 2/3] Sampling group of 4 (5414 chars, ~1353 tokens)
+    [step 2/3] best reward=-1.200, train fail -> retry
+    [step 3/3] Sampling group of 4 (5414 chars, ~1353 tokens)
+    [step 3/3] best reward=-1.200, train fail -> retry
+  FAILED (0/1 test cases, 0.0s) | Running: 0/99 solved (0%)
+
+[100/101] Task: 84db8fc4 (4 train, 1 test)
+  Test case 1/1
+    [step 1/3] Sampling group of 4 (3408 chars, ~852 tokens)
+    [step 1/3] best reward=-1.200, train fail -> retry
+    [step 2/3] Sampling group of 4 (3539 chars, ~884 tokens)
+    [step 2/3] best reward=-1.200, train fail -> retry
+    [step 3/3] Sampling group of 4 (3539 chars, ~884 tokens)
+    [step 3/3] best reward=-1.200, train fail -> retry
+  FAILED (0/1 test cases, 0.0s) | Running: 0/100 solved (0%)
+
+[101/101] Task: 84f2aca1 (4 train, 1 test)
+  Test case 1/1
+    [step 1/3] Sampling group of 4 (3779 chars, ~944 tokens)
+    [step 1/3] best reward=-1.200, train fail -> retry
+    [step 2/3] Sampling group of 4 (3910 chars, ~977 tokens)
+    [step 2/3] best reward=-1.200, train fail -> retry
+    [step 3/3] Sampling group of 4 (3910 chars, ~977 tokens)
+    [step 3/3] best reward=-1.200, train fail -> retry
+  FAILED (0/1 test cases, 0.0s) | Running: 0/101 solved (0%)
+
+=== Summary ===
+Tasks evaluated: 101
+Tasks solved:    0 (0.0%)
+Test cases:      0/105
+Results DB:      /home/danqihu/danqihu/ARC-RL/results/arc_cases_100_200_20260429_105151/results.db
+Summary JSON:    /home/danqihu/danqihu/ARC-RL/results/arc_cases_100_200_20260429_105151/summary.json
+
+=== Building poster analysis files ===
+Poster report: results/arc_cases_100_200_20260429_105151/poster/poster_report.md
+Metrics CSV:   results/arc_cases_100_200_20260429_105151/poster/poster_metrics.csv
+Outcomes CSV:  results/arc_cases_100_200_20260429_105151/poster/poster_outcomes.csv
+Step CSV:      results/arc_cases_100_200_20260429_105151/poster/poster_step_rewards.csv
+
+Done. See results/arc_cases_100_200_20260429_105151/poster
+Finished:     Wed Apr 29 10:51:57 EDT 2026

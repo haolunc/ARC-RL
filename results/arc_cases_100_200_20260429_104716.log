@@ -1,0 +1,527 @@
+=== ARC GPRO Evaluation ===
+Dataset:      arc1 / evaluation
+Model:        qwen3.6-35b-a3b
+Total tasks:  101
+Group size:   4
+GPRO steps:   3
+Temperature:  0.7
+Log text:     False
+Timeout:      120s
+Results DB:   /home/danqihu/danqihu/ARC-RL/results/arc_cases_100_200_20260429_104716/results.db
+Samples JSONL:/home/danqihu/danqihu/ARC-RL/results/arc_cases_100_200_20260429_104716/gpro_samples.jsonl
+
+[1/101] Task: 423a55dc (5 train, 1 test)
+  Test case 1/1
+    [step 1/3] Sampling group of 4 (4433 chars, ~1108 tokens)
+  ERROR on task 423a55dc: 'ascii' codec can't encode characters in position 7-9: ordinal not in range(128)
+
+[2/101] Task: 42918530 (4 train, 1 test)
+  Test case 1/1
+    [step 1/3] Sampling group of 4 (11334 chars, ~2833 tokens)
+  ERROR on task 42918530: 'ascii' codec can't encode characters in position 7-9: ordinal not in range(128)
+
+[3/101] Task: 42a15761 (3 train, 1 test)
+  Test case 1/1
+    [step 1/3] Sampling group of 4 (3361 chars, ~840 tokens)
+  ERROR on task 42a15761: 'ascii' codec can't encode characters in position 7-9: ordinal not in range(128)
+
+[4/101] Task: 4364c1c4 (3 train, 1 test)
+  Test case 1/1
+    [step 1/3] Sampling group of 4 (4183 chars, ~1045 tokens)
+  ERROR on task 4364c1c4: 'ascii' codec can't encode characters in position 7-9: ordinal not in range(128)
+
+[5/101] Task: 456873bc (3 train, 1 test)
+  Test case 1/1
+    [step 1/3] Sampling group of 4 (5393 chars, ~1348 tokens)
+  ERROR on task 456873bc: 'ascii' codec can't encode characters in position 7-9: ordinal not in range(128)
+
+[6/101] Task: 45737921 (3 train, 1 test)
+  Test case 1/1
+    [step 1/3] Sampling group of 4 (2817 chars, ~704 tokens)
+  ERROR on task 45737921: 'ascii' codec can't encode characters in position 7-9: ordinal not in range(128)
+
+[7/101] Task: 45bbe264 (3 train, 1 test)
+  Test case 1/1
+    [step 1/3] Sampling group of 4 (5093 chars, ~1273 tokens)
+  ERROR on task 45bbe264: 'ascii' codec can't encode characters in position 7-9: ordinal not in range(128)
+
+[8/101] Task: 477d2879 (3 train, 1 test)
+  Test case 1/1
+    [step 1/3] Sampling group of 4 (4231 chars, ~1057 tokens)
+  ERROR on task 477d2879: 'ascii' codec can't encode characters in position 7-9: ordinal not in range(128)
+
+[9/101] Task: 47996f11 (4 train, 1 test)
+  Test case 1/1
+    [step 1/3] Sampling group of 4 (25188 chars, ~6297 tokens)
+  ERROR on task 47996f11: 'ascii' codec can't encode characters in position 7-9: ordinal not in range(128)
+
+[10/101] Task: 48131b3c (3 train, 1 test)
+  Test case 1/1
+    [step 1/3] Sampling group of 4 (1105 chars, ~276 tokens)
+  ERROR on task 48131b3c: 'ascii' codec can't encode characters in position 7-9: ordinal not in range(128)
+
+[11/101] Task: 4852f2fa (5 train, 2 test)
+  Test case 1/2
+    [step 1/3] Sampling group of 4 (2523 chars, ~630 tokens)
+  ERROR on task 4852f2fa: 'ascii' codec can't encode characters in position 7-9: ordinal not in range(128)
+
+[12/101] Task: 48f8583b (6 train, 1 test)
+  Test case 1/1
+    [step 1/3] Sampling group of 4 (2394 chars, ~598 tokens)
+  ERROR on task 48f8583b: 'ascii' codec can't encode characters in position 7-9: ordinal not in range(128)
+
+[13/101] Task: 4aab4007 (3 train, 1 test)
+  Test case 1/1
+    [step 1/3] Sampling group of 4 (17251 chars, ~4312 tokens)
+  ERROR on task 4aab4007: 'ascii' codec can't encode characters in position 7-9: ordinal not in range(128)
+
+[14/101] Task: 4acc7107 (4 train, 1 test)
+  Test case 1/1
+    [step 1/3] Sampling group of 4 (3408 chars, ~852 tokens)
+  ERROR on task 4acc7107: 'ascii' codec can't encode characters in position 7-9: ordinal not in range(128)
+
+[15/101] Task: 4b6b68e5 (3 train, 1 test)
+  Test case 1/1
+    [step 1/3] Sampling group of 4 (8643 chars, ~2160 tokens)
+  ERROR on task 4b6b68e5: 'ascii' codec can't encode characters in position 7-9: ordinal not in range(128)
+
+[16/101] Task: 4c177718 (4 train, 2 test)
+  Test case 1/2
+    [step 1/3] Sampling group of 4 (5724 chars, ~1431 tokens)
+  ERROR on task 4c177718: 'ascii' codec can't encode characters in position 7-9: ordinal not in range(128)
+
+[17/101] Task: 4cd1b7b2 (3 train, 1 test)
+  Test case 1/1
+    [step 1/3] Sampling group of 4 (955 chars, ~238 tokens)
+  ERROR on task 4cd1b7b2: 'ascii' codec can't encode characters in position 7-9: ordinal not in range(128)
+
+[18/101] Task: 4e45f183 (3 train, 1 test)
+  Test case 1/1
+    [step 1/3] Sampling group of 4 (8305 chars, ~2076 tokens)
+  ERROR on task 4e45f183: 'ascii' codec can't encode characters in position 7-9: ordinal not in range(128)
+
+[19/101] Task: 4e469f39 (3 train, 1 test)
+  Test case 1/1
+    [step 1/3] Sampling group of 4 (2761 chars, ~690 tokens)
+  ERROR on task 4e469f39: 'ascii' codec can't encode characters in position 7-9: ordinal not in range(128)
+
+[20/101] Task: 4f537728 (2 train, 1 test)
+  Test case 1/1
+    [step 1/3] Sampling group of 4 (6664 chars, ~1666 tokens)
+  ERROR on task 4f537728: 'ascii' codec can't encode characters in position 7-9: ordinal not in range(128)
+
+[21/101] Task: 4ff4c9da (3 train, 1 test)
+  Test case 1/1
+    [step 1/3] Sampling group of 4 (10481 chars, ~2620 tokens)
+  ERROR on task 4ff4c9da: 'ascii' codec can't encode characters in position 7-9: ordinal not in range(128)
+
+[22/101] Task: 505fff84 (5 train, 1 test)
+  Test case 1/1
+    [step 1/3] Sampling group of 4 (2535 chars, ~633 tokens)
+  ERROR on task 505fff84: 'ascii' codec can't encode characters in position 7-9: ordinal not in range(128)
+
+[23/101] Task: 506d28a5 (4 train, 1 test)
+  Test case 1/1
+    [step 1/3] Sampling group of 4 (1594 chars, ~398 tokens)
+  ERROR on task 506d28a5: 'ascii' codec can't encode characters in position 7-9: ordinal not in range(128)
+
+[24/101] Task: 50a16a69 (3 train, 1 test)
+  Test case 1/1
+    [step 1/3] Sampling group of 4 (4049 chars, ~1012 tokens)
+  ERROR on task 50a16a69: 'ascii' codec can't encode characters in position 7-9: ordinal not in range(128)
+
+[25/101] Task: 50aad11f (3 train, 1 test)
+  Test case 1/1
+    [step 1/3] Sampling group of 4 (3175 chars, ~793 tokens)
+  ERROR on task 50aad11f: 'ascii' codec can't encode characters in position 7-9: ordinal not in range(128)
+
+[26/101] Task: 50f325b5 (4 train, 1 test)
+  Test case 1/1
+    [step 1/3] Sampling group of 4 (7638 chars, ~1909 tokens)
+  ERROR on task 50f325b5: 'ascii' codec can't encode characters in position 7-9: ordinal not in range(128)
+
+[27/101] Task: 516b51b7 (3 train, 1 test)
+  Test case 1/1
+    [step 1/3] Sampling group of 4 (4437 chars, ~1109 tokens)
+  ERROR on task 516b51b7: 'ascii' codec can't encode characters in position 7-9: ordinal not in range(128)
+
+[28/101] Task: 5207a7b5 (3 train, 1 test)
+  Test case 1/1
+    [step 1/3] Sampling group of 4 (2877 chars, ~719 tokens)
+  ERROR on task 5207a7b5: 'ascii' codec can't encode characters in position 7-9: ordinal not in range(128)
+
+[29/101] Task: 5289ad53 (4 train, 1 test)
+  Test case 1/1
+    [step 1/3] Sampling group of 4 (3081 chars, ~770 tokens)
+  ERROR on task 5289ad53: 'ascii' codec can't encode characters in position 7-9: ordinal not in range(128)
+
+[30/101] Task: 52fd389e (3 train, 1 test)
+  Test case 1/1
+    [step 1/3] Sampling group of 4 (14543 chars, ~3635 tokens)
+  ERROR on task 52fd389e: 'ascii' codec can't encode characters in position 7-9: ordinal not in range(128)
+
+[31/101] Task: 54db823b (4 train, 1 test)
+  Test case 1/1
+    [step 1/3] Sampling group of 4 (6828 chars, ~1707 tokens)
+  ERROR on task 54db823b: 'ascii' codec can't encode characters in position 7-9: ordinal not in range(128)
+
+[32/101] Task: 55059096 (3 train, 1 test)
+  Test case 1/1
+    [step 1/3] Sampling group of 4 (4471 chars, ~1117 tokens)
+  ERROR on task 55059096: 'ascii' codec can't encode characters in position 7-9: ordinal not in range(128)
+
+[33/101] Task: 551d5bf1 (2 train, 1 test)
+  Test case 1/1
+    [step 1/3] Sampling group of 4 (10346 chars, ~2586 tokens)
+  ERROR on task 551d5bf1: 'ascii' codec can't encode characters in position 7-9: ordinal not in range(128)
+
+[34/101] Task: 55783887 (5 train, 1 test)
+  Test case 1/1
+    [step 1/3] Sampling group of 4 (5870 chars, ~1467 tokens)
+  ERROR on task 55783887: 'ascii' codec can't encode characters in position 7-9: ordinal not in range(128)
+
+[35/101] Task: 575b1a71 (3 train, 1 test)
+  Test case 1/1
+    [step 1/3] Sampling group of 4 (2761 chars, ~690 tokens)
+  ERROR on task 575b1a71: 'ascii' codec can't encode characters in position 7-9: ordinal not in range(128)
+
+[36/101] Task: 5783df64 (3 train, 1 test)
+  Test case 1/1
+    [step 1/3] Sampling group of 4 (1413 chars, ~353 tokens)
+  ERROR on task 5783df64: 'ascii' codec can't encode characters in position 7-9: ordinal not in range(128)
+
+[37/101] Task: 5833af48 (3 train, 1 test)
+  Test case 1/1
+    [step 1/3] Sampling group of 4 (5628 chars, ~1407 tokens)
+  ERROR on task 5833af48: 'ascii' codec can't encode characters in position 7-9: ordinal not in range(128)
+
+[38/101] Task: 58743b76 (2 train, 1 test)
+  Test case 1/1
+    [step 1/3] Sampling group of 4 (2674 chars, ~668 tokens)
+  ERROR on task 58743b76: 'ascii' codec can't encode characters in position 7-9: ordinal not in range(128)
+
+[39/101] Task: 58e15b12 (3 train, 1 test)
+  Test case 1/1
+    [step 1/3] Sampling group of 4 (9651 chars, ~2412 tokens)
+  ERROR on task 58e15b12: 'ascii' codec can't encode characters in position 7-9: ordinal not in range(128)
+
+[40/101] Task: 59341089 (4 train, 1 test)
+  Test case 1/1
+    [step 1/3] Sampling group of 4 (1212 chars, ~303 tokens)
+  ERROR on task 59341089: 'ascii' codec can't encode characters in position 7-9: ordinal not in range(128)
+
+[41/101] Task: 5a5a2103 (2 train, 1 test)
+  Test case 1/1
+    [step 1/3] Sampling group of 4 (5724 chars, ~1431 tokens)
+  ERROR on task 5a5a2103: 'ascii' codec can't encode characters in position 7-9: ordinal not in range(128)
+
+[42/101] Task: 5af49b42 (3 train, 1 test)
+  Test case 1/1
+    [step 1/3] Sampling group of 4 (4794 chars, ~1198 tokens)
+  ERROR on task 5af49b42: 'ascii' codec can't encode characters in position 7-9: ordinal not in range(128)
+
+[43/101] Task: 5b526a93 (2 train, 1 test)
+  Test case 1/1
+    [step 1/3] Sampling group of 4 (6607 chars, ~1651 tokens)
+  ERROR on task 5b526a93: 'ascii' codec can't encode characters in position 7-9: ordinal not in range(128)
+
+[44/101] Task: 5b692c0f (2 train, 1 test)
+  Test case 1/1
+    [step 1/3] Sampling group of 4 (5780 chars, ~1445 tokens)
+  ERROR on task 5b692c0f: 'ascii' codec can't encode characters in position 7-9: ordinal not in range(128)
+
+[45/101] Task: 5b6cbef5 (5 train, 1 test)
+  Test case 1/1
+    [step 1/3] Sampling group of 4 (4877 chars, ~1219 tokens)
+  ERROR on task 5b6cbef5: 'ascii' codec can't encode characters in position 7-9: ordinal not in range(128)
+
+[46/101] Task: 5d2a5c43 (5 train, 2 test)
+  Test case 1/2
+    [step 1/3] Sampling group of 4 (2043 chars, ~510 tokens)
+  ERROR on task 5d2a5c43: 'ascii' codec can't encode characters in position 7-9: ordinal not in range(128)
+
+[47/101] Task: 5ffb2104 (3 train, 1 test)
+  Test case 1/1
+    [step 1/3] Sampling group of 4 (2157 chars, ~539 tokens)
+  ERROR on task 5ffb2104: 'ascii' codec can't encode characters in position 7-9: ordinal not in range(128)
+
+[48/101] Task: 604001fa (4 train, 1 test)
+  Test case 1/1
+    [step 1/3] Sampling group of 4 (4641 chars, ~1160 tokens)
+  ERROR on task 604001fa: 'ascii' codec can't encode characters in position 7-9: ordinal not in range(128)
+
+[49/101] Task: 60a26a3e (3 train, 1 test)
+  Test case 1/1
+    [step 1/3] Sampling group of 4 (4401 chars, ~1100 tokens)
+  ERROR on task 60a26a3e: 'ascii' codec can't encode characters in position 7-9: ordinal not in range(128)
+
+[50/101] Task: 60c09cac (2 train, 1 test)
+  Test case 1/1
+    [step 1/3] Sampling group of 4 (1040 chars, ~260 tokens)
+  ERROR on task 60c09cac: 'ascii' codec can't encode characters in position 7-9: ordinal not in range(128)
+
+[51/101] Task: 626c0bcc (3 train, 1 test)
+  Test case 1/1
+    [step 1/3] Sampling group of 4 (1669 chars, ~417 tokens)
+  ERROR on task 626c0bcc: 'ascii' codec can't encode characters in position 7-9: ordinal not in range(128)
+
+[52/101] Task: 62ab2642 (3 train, 1 test)
+  Test case 1/1
+    [step 1/3] Sampling group of 4 (2556 chars, ~639 tokens)
+  ERROR on task 62ab2642: 'ascii' codec can't encode characters in position 7-9: ordinal not in range(128)
+
+[53/101] Task: 62b74c02 (3 train, 1 test)
+  Test case 1/1
+    [step 1/3] Sampling group of 4 (1503 chars, ~375 tokens)
+  ERROR on task 62b74c02: 'ascii' codec can't encode characters in position 7-9: ordinal not in range(128)
+
+[54/101] Task: 639f5a19 (2 train, 1 test)
+  Test case 1/1
+    [step 1/3] Sampling group of 4 (8614 chars, ~2153 tokens)
+  ERROR on task 639f5a19: 'ascii' codec can't encode characters in position 7-9: ordinal not in range(128)
+
+[55/101] Task: 642248e4 (3 train, 1 test)
+  Test case 1/1
+    [step 1/3] Sampling group of 4 (4043 chars, ~1010 tokens)
+  ERROR on task 642248e4: 'ascii' codec can't encode characters in position 7-9: ordinal not in range(128)
+
+[56/101] Task: 642d658d (3 train, 1 test)
+  Test case 1/1
+    [step 1/3] Sampling group of 4 (7124 chars, ~1781 tokens)
+  ERROR on task 642d658d: 'ascii' codec can't encode characters in position 7-9: ordinal not in range(128)
+
+[57/101] Task: 64a7c07e (3 train, 1 test)
+  Test case 1/1
+    [step 1/3] Sampling group of 4 (2703 chars, ~675 tokens)
+  ERROR on task 64a7c07e: 'ascii' codec can't encode characters in position 7-9: ordinal not in range(128)
+
+[58/101] Task: 66e6c45b (2 train, 1 test)
+  Test case 1/1
+    [step 1/3] Sampling group of 4 (824 chars, ~206 tokens)
+  ERROR on task 66e6c45b: 'ascii' codec can't encode characters in position 7-9: ordinal not in range(128)
+
+[59/101] Task: 66f2d22f (4 train, 1 test)
+  Test case 1/1
+    [step 1/3] Sampling group of 4 (1830 chars, ~457 tokens)
+  ERROR on task 66f2d22f: 'ascii' codec can't encode characters in position 7-9: ordinal not in range(128)
+
+[60/101] Task: 67636eac (3 train, 1 test)
+  Test case 1/1
+    [step 1/3] Sampling group of 4 (3139 chars, ~784 tokens)
+  ERROR on task 67636eac: 'ascii' codec can't encode characters in position 7-9: ordinal not in range(128)
+
+[61/101] Task: 67b4a34d (3 train, 1 test)
+  Test case 1/1
+    [step 1/3] Sampling group of 4 (3883 chars, ~970 tokens)
+  ERROR on task 67b4a34d: 'ascii' codec can't encode characters in position 7-9: ordinal not in range(128)
+
+[62/101] Task: 67c52801 (4 train, 1 test)
+  Test case 1/1
+    [step 1/3] Sampling group of 4 (2316 chars, ~579 tokens)
+  ERROR on task 67c52801: 'ascii' codec can't encode characters in position 7-9: ordinal not in range(128)
+
+[63/101] Task: 68b67ca3 (3 train, 1 test)
+  Test case 1/1
+    [step 1/3] Sampling group of 4 (1137 chars, ~284 tokens)
+  ERROR on task 68b67ca3: 'ascii' codec can't encode characters in position 7-9: ordinal not in range(128)
+
+[64/101] Task: 692cd3b6 (3 train, 1 test)
+  Test case 1/1
+    [step 1/3] Sampling group of 4 (5421 chars, ~1355 tokens)
+  ERROR on task 692cd3b6: 'ascii' codec can't encode characters in position 7-9: ordinal not in range(128)
+
+[65/101] Task: 695367ec (3 train, 1 test)
+  Test case 1/1
+    [step 1/3] Sampling group of 4 (2837 chars, ~709 tokens)
+  ERROR on task 695367ec: 'ascii' codec can't encode characters in position 7-9: ordinal not in range(128)
+
+[66/101] Task: 696d4842 (3 train, 1 test)
+  Test case 1/1
+    [step 1/3] Sampling group of 4 (12151 chars, ~3037 tokens)
+  ERROR on task 696d4842: 'ascii' codec can't encode characters in position 7-9: ordinal not in range(128)
+
+[67/101] Task: 69889d6e (4 train, 1 test)
+  Test case 1/1
+    [step 1/3] Sampling group of 4 (3408 chars, ~852 tokens)
+  ERROR on task 69889d6e: 'ascii' codec can't encode characters in position 7-9: ordinal not in range(128)
+
+[68/101] Task: 6a11f6da (5 train, 1 test)
+  Test case 1/1
+    [step 1/3] Sampling group of 4 (2485 chars, ~621 tokens)
+  ERROR on task 6a11f6da: 'ascii' codec can't encode characters in position 7-9: ordinal not in range(128)
+
+[69/101] Task: 6ad5bdfd (3 train, 1 test)
+  Test case 1/1
+    [step 1/3] Sampling group of 4 (1931 chars, ~482 tokens)
+  ERROR on task 6ad5bdfd: 'ascii' codec can't encode characters in position 7-9: ordinal not in range(128)
+
+[70/101] Task: 6df30ad6 (5 train, 1 test)
+  Test case 1/1
+    [step 1/3] Sampling group of 4 (4055 chars, ~1013 tokens)
+  ERROR on task 6df30ad6: 'ascii' codec can't encode characters in position 7-9: ordinal not in range(128)
+
+[71/101] Task: 6ea4a07e (6 train, 2 test)
+  Test case 1/2
+    [step 1/3] Sampling group of 4 (1062 chars, ~265 tokens)
+  ERROR on task 6ea4a07e: 'ascii' codec can't encode characters in position 7-9: ordinal not in range(128)
+
+[72/101] Task: 6f473927 (4 train, 1 test)
+  Test case 1/1
+    [step 1/3] Sampling group of 4 (1938 chars, ~484 tokens)
+  ERROR on task 6f473927: 'ascii' codec can't encode characters in position 7-9: ordinal not in range(128)
+
+[73/101] Task: 7039b2d7 (3 train, 1 test)
+  Test case 1/1
+    [step 1/3] Sampling group of 4 (5382 chars, ~1345 tokens)
+  ERROR on task 7039b2d7: 'ascii' codec can't encode characters in position 7-9: ordinal not in range(128)
+
+[74/101] Task: 705a3229 (4 train, 1 test)
+  Test case 1/1
+    [step 1/3] Sampling group of 4 (4627 chars, ~1156 tokens)
+  ERROR on task 705a3229: 'ascii' codec can't encode characters in position 7-9: ordinal not in range(128)
+
+[75/101] Task: 712bf12e (3 train, 1 test)
+  Test case 1/1
+    [step 1/3] Sampling group of 4 (4385 chars, ~1096 tokens)
+  ERROR on task 712bf12e: 'ascii' codec can't encode characters in position 7-9: ordinal not in range(128)
+
+[76/101] Task: 72207abc (3 train, 1 test)
+  Test case 1/1
+    [step 1/3] Sampling group of 4 (2079 chars, ~519 tokens)
+  ERROR on task 72207abc: 'ascii' codec can't encode characters in position 7-9: ordinal not in range(128)
+
+[77/101] Task: 72a961c9 (4 train, 1 test)
+  Test case 1/1
+    [step 1/3] Sampling group of 4 (3016 chars, ~754 tokens)
+  ERROR on task 72a961c9: 'ascii' codec can't encode characters in position 7-9: ordinal not in range(128)
+
+[78/101] Task: 73182012 (3 train, 1 test)
+  Test case 1/1
+    [step 1/3] Sampling group of 4 (2523 chars, ~630 tokens)
+  ERROR on task 73182012: 'ascii' codec can't encode characters in position 7-9: ordinal not in range(128)
+
+[79/101] Task: 73c3b0d8 (4 train, 1 test)
+  Test case 1/1
+    [step 1/3] Sampling group of 4 (2242 chars, ~560 tokens)
+  ERROR on task 73c3b0d8: 'ascii' codec can't encode characters in position 7-9: ordinal not in range(128)
+
+[80/101] Task: 73ccf9c2 (3 train, 1 test)
+  Test case 1/1
+    [step 1/3] Sampling group of 4 (6465 chars, ~1616 tokens)
+  ERROR on task 73ccf9c2: 'ascii' codec can't encode characters in position 7-9: ordinal not in range(128)
+
+[81/101] Task: 759f3fd3 (2 train, 1 test)
+  Test case 1/1
+    [step 1/3] Sampling group of 4 (4068 chars, ~1017 tokens)
+  ERROR on task 759f3fd3: 'ascii' codec can't encode characters in position 7-9: ordinal not in range(128)
+
+[82/101] Task: 762cd429 (3 train, 1 test)
+  Test case 1/1
+    [step 1/3] Sampling group of 4 (6679 chars, ~1669 tokens)
+  ERROR on task 762cd429: 'ascii' codec can't encode characters in position 7-9: ordinal not in range(128)
+
+[83/101] Task: 770cc55f (4 train, 1 test)
+  Test case 1/1
+    [step 1/3] Sampling group of 4 (2354 chars, ~588 tokens)
+  ERROR on task 770cc55f: 'ascii' codec can't encode characters in position 7-9: ordinal not in range(128)
+
+[84/101] Task: 782b5218 (3 train, 1 test)
+  Test case 1/1
+    [step 1/3] Sampling group of 4 (2761 chars, ~690 tokens)
+  ERROR on task 782b5218: 'ascii' codec can't encode characters in position 7-9: ordinal not in range(128)
+
+[85/101] Task: 79369cc6 (3 train, 1 test)
+  Test case 1/1
+    [step 1/3] Sampling group of 4 (6265 chars, ~1566 tokens)
+  ERROR on task 79369cc6: 'ascii' codec can't encode characters in position 7-9: ordinal not in range(128)
+
+[86/101] Task: 7953d61e (5 train, 1 test)
+  Test case 1/1
+    [step 1/3] Sampling group of 4 (1957 chars, ~489 tokens)
+  ERROR on task 7953d61e: 'ascii' codec can't encode characters in position 7-9: ordinal not in range(128)
+
+[87/101] Task: 79fb03f4 (6 train, 1 test)
+  Test case 1/1
+    [step 1/3] Sampling group of 4 (7590 chars, ~1897 tokens)
+  ERROR on task 79fb03f4: 'ascii' codec can't encode characters in position 7-9: ordinal not in range(128)
+
+[88/101] Task: 7bb29440 (5 train, 1 test)
+  Test case 1/1
+    [step 1/3] Sampling group of 4 (8022 chars, ~2005 tokens)
+  ERROR on task 7bb29440: 'ascii' codec can't encode characters in position 7-9: ordinal not in range(128)
+
+[89/101] Task: 7c8af763 (3 train, 1 test)
+  Test case 1/1
+    [step 1/3] Sampling group of 4 (2761 chars, ~690 tokens)
+  ERROR on task 7c8af763: 'ascii' codec can't encode characters in position 7-9: ordinal not in range(128)
+
+[90/101] Task: 7c9b52a0 (3 train, 1 test)
+  Test case 1/1
+    [step 1/3] Sampling group of 4 (3882 chars, ~970 tokens)
+  ERROR on task 7c9b52a0: 'ascii' codec can't encode characters in position 7-9: ordinal not in range(128)
+
+[91/101] Task: 7d18a6fb (3 train, 1 test)
+  Test case 1/1
+    [step 1/3] Sampling group of 4 (4385 chars, ~1096 tokens)
+  ERROR on task 7d18a6fb: 'ascii' codec can't encode characters in position 7-9: ordinal not in range(128)
+
+[92/101] Task: 7d1f7ee8 (3 train, 1 test)
+  Test case 1/1
+    [step 1/3] Sampling group of 4 (11888 chars, ~2972 tokens)
+  ERROR on task 7d1f7ee8: 'ascii' codec can't encode characters in position 7-9: ordinal not in range(128)
+
+[93/101] Task: 7d419a02 (3 train, 1 test)
+  Test case 1/1
+    [step 1/3] Sampling group of 4 (7028 chars, ~1757 tokens)
+  ERROR on task 7d419a02: 'ascii' codec can't encode characters in position 7-9: ordinal not in range(128)
+
+[94/101] Task: 7e02026e (3 train, 1 test)
+  Test case 1/1
+    [step 1/3] Sampling group of 4 (3699 chars, ~924 tokens)
+  ERROR on task 7e02026e: 'ascii' codec can't encode characters in position 7-9: ordinal not in range(128)
+
+[95/101] Task: 7ee1c6ea (3 train, 1 test)
+  Test case 1/1
+    [step 1/3] Sampling group of 4 (2761 chars, ~690 tokens)
+  ERROR on task 7ee1c6ea: 'ascii' codec can't encode characters in position 7-9: ordinal not in range(128)
+
+[96/101] Task: 817e6c09 (5 train, 1 test)
+  Test case 1/1
+    [step 1/3] Sampling group of 4 (3473 chars, ~868 tokens)
+  ERROR on task 817e6c09: 'ascii' codec can't encode characters in position 7-9: ordinal not in range(128)
+
+[97/101] Task: 81c0276b (3 train, 1 test)
+  Test case 1/1
+    [step 1/3] Sampling group of 4 (4320 chars, ~1080 tokens)
+  ERROR on task 81c0276b: 'ascii' codec can't encode characters in position 7-9: ordinal not in range(128)
+
+[98/101] Task: 833dafe3 (2 train, 1 test)
+  Test case 1/1
+    [step 1/3] Sampling group of 4 (1160 chars, ~290 tokens)
+  ERROR on task 833dafe3: 'ascii' codec can't encode characters in position 7-9: ordinal not in range(128)
+
+[99/101] Task: 845d6e51 (3 train, 1 test)
+  Test case 1/1
+    [step 1/3] Sampling group of 4 (5283 chars, ~1320 tokens)
+  ERROR on task 845d6e51: 'ascii' codec can't encode characters in position 7-9: ordinal not in range(128)
+
+[100/101] Task: 84db8fc4 (4 train, 1 test)
+  Test case 1/1
+    [step 1/3] Sampling group of 4 (3408 chars, ~852 tokens)
+  ERROR on task 84db8fc4: 'ascii' codec can't encode characters in position 7-9: ordinal not in range(128)
+
+[101/101] Task: 84f2aca1 (4 train, 1 test)
+  Test case 1/1
+    [step 1/3] Sampling group of 4 (3779 chars, ~944 tokens)
+  ERROR on task 84f2aca1: 'ascii' codec can't encode characters in position 7-9: ordinal not in range(128)
+
+=== Summary ===
+Tasks evaluated: 0
+Tasks solved:    0 (0.0%)
+Test cases:      0/0
+Results DB:      /home/danqihu/danqihu/ARC-RL/results/arc_cases_100_200_20260429_104716/results.db
+Summary JSON:    /home/danqihu/danqihu/ARC-RL/results/arc_cases_100_200_20260429_104716/summary.json
+Poster report: results/arc_cases_100_200_20260429_104716/poster/poster_report.md
+Metrics CSV:   results/arc_cases_100_200_20260429_104716/poster/poster_metrics.csv
+Outcomes CSV:  results/arc_cases_100_200_20260429_104716/poster/poster_outcomes.csv
+Step CSV:      results/arc_cases_100_200_20260429_104716/poster/poster_step_rewards.csv

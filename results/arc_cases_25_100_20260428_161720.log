@@ -1,0 +1,383 @@
+=== ARC GPRO Evaluation ===
+Dataset:      arc1 / evaluation
+Model:        qwen3.6-35b-a3b
+Total tasks:  76
+Group size:   4
+GPRO steps:   3
+Temperature:  0.7
+Log text:     False
+Timeout:      120s
+Results DB:   /home/danqihu/danqihu/ARC-RL/results/arc_cases_25_100_20260428_161720/results.db
+Samples JSONL:/home/danqihu/danqihu/ARC-RL/results/arc_cases_25_100_20260428_161720/gpro_samples.jsonl
+
+[1/76] Task: 12997ef3 (4 train, 2 test)
+  Test case 1/2
+    [step 1/3] Sampling group of 4 (2779 chars, ~694 tokens)
+  API call finished in 85.52s
+  API call finished in 43.60s
+  API call finished in 13.70s
+  API call finished in 138.11s
+    [step 1/3] best reward=-0.500, train fail -> retry
+    [step 2/3] Sampling group of 4 (4456 chars, ~1114 tokens)
+  API call finished in 81.61s
+  API call finished in 31.43s
+  API call finished in 67.85s
+  API call finished in 126.11s
+    [step 2/3] best reward=-0.500, train fail -> retry
+    [step 3/3] Sampling group of 4 (4800 chars, ~1200 tokens)
+  API call finished in 33.38s
+  API call finished in 27.82s
+  API call finished in 34.45s
+  API call finished in 67.07s
+    [step 3/3] best reward=0.300, train fail -> retry
+  Test case 2/2
+    [step 1/3] Sampling group of 4 (2711 chars, ~677 tokens)
+  API call finished in 43.44s
+  API call finished in 23.26s
+  API call finished in 41.82s
+  API call finished in 33.49s
+    [step 1/3] best reward=-0.500, train fail -> retry
+    [step 2/3] Sampling group of 4 (4290 chars, ~1072 tokens)
+  API call finished in 30.58s
+  API call finished in 22.30s
+  API call finished in 24.78s
+  API call finished in 21.61s
+    [step 2/3] SOLVED (best reward=1.000)
+  FAILED (1/2 test cases, 995.8s) | Running: 0/1 solved (0%)
+
+[2/76] Task: 12eac192 (4 train, 1 test)
+  Test case 1/1
+    [step 1/3] Sampling group of 4 (1928 chars, ~482 tokens)
+  API call finished in 33.40s
+  API call finished in 59.73s
+  API call finished in 55.89s
+  API call finished in 54.07s
+    [step 1/3] SOLVED (best reward=1.000)
+  SOLVED (1/1 test cases, 205.2s) | Running: 1/2 solved (50%)
+
+[3/76] Task: 136b0064 (3 train, 1 test)
+  Test case 1/1
+    [step 1/3] Sampling group of 4 (3709 chars, ~927 tokens)
+  API call finished in 86.18s
+  API call finished in 82.07s
+  API call finished in 83.79s
+  API call finished in 264.21s
+    [step 1/3] best reward=-0.500, train fail -> retry
+    [step 2/3] Sampling group of 4 (5462 chars, ~1365 tokens)
+  API call finished in 72.66s
+  API call finished in 156.85s
+  API connection error: Connection error., retrying in 2s...
+  API call finished in 59.66s
+  API call finished in 86.32s
+    [step 2/3] best reward=-0.500, train fail -> retry
+    [step 3/3] Sampling group of 4 (5378 chars, ~1344 tokens)
+  API call finished in 163.67s
+  API call finished in 74.32s
+  API call finished in 82.07s
+  API call finished in 80.93s
+    [step 3/3] best reward=-0.500, train fail -> retry
+  FAILED (0/1 test cases, 1569.2s) | Running: 1/3 solved (33%)
+
+[4/76] Task: 13713586 (3 train, 1 test)
+  Test case 1/1
+    [step 1/3] Sampling group of 4 (6540 chars, ~1635 tokens)
+  API call finished in 58.11s
+  API connection error: Connection error., retrying in 2s...
+  API call finished in 90.53s
+  API call finished in 88.07s
+  API call finished in 169.15s
+    [step 1/3] best reward=-0.500, train fail -> retry
+    [step 2/3] Sampling group of 4 (7856 chars, ~1964 tokens)
+  API call finished in 167.65s
+  API call finished in 73.88s
+  API call finished in 87.23s
+  API call finished in 81.89s
+    [step 2/3] best reward=-0.500, train fail -> retry
+    [step 3/3] Sampling group of 4 (8053 chars, ~2013 tokens)
+  API call finished in 59.13s
+  API call finished in 81.61s
+  API call finished in 80.60s
+  API call finished in 49.62s
+    [step 3/3] best reward=-0.500, train fail -> retry
+  FAILED (0/1 test cases, 1364.5s) | Running: 1/4 solved (25%)
+
+[5/76] Task: 137f0df0 (3 train, 1 test)
+  Test case 1/1
+    [step 1/3] Sampling group of 4 (2761 chars, ~690 tokens)
+  API connection error: Connection error., retrying in 2s...
+  API call finished in 71.75s
+  API call finished in 59.95s
+  API call finished in 161.60s
+  API call finished in 81.27s
+    [step 1/3] SOLVED (best reward=1.000)
+  SOLVED (1/1 test cases, 651.5s) | Running: 2/5 solved (40%)
+
+[6/76] Task: 140c817e (3 train, 1 test)
+  Test case 1/1
+    [step 1/3] Sampling group of 4 (3485 chars, ~871 tokens)
+  API call finished in 58.59s
+  API call finished in 137.92s
+  API call finished in 54.97s
+  API call finished in 59.32s
+    [step 1/3] SOLVED (best reward=1.000)
+  SOLVED (1/1 test cases, 312.8s) | Running: 3/6 solved (50%)
+
+[7/76] Task: 14754a24 (4 train, 1 test)
+  Test case 1/1
+    [step 1/3] Sampling group of 4 (8148 chars, ~2037 tokens)
+  API call finished in 265.45s
+  API call finished in 271.40s
+  API call finished in 36.67s
+  API call finished in 177.46s
+    [step 1/3] best reward=0.736, train fail -> retry
+    [step 2/3] Sampling group of 4 (11046 chars, ~2761 tokens)
+  API call finished in 265.12s
+  API call finished in 86.09s
+  API call finished in 67.62s
+  API call finished in 86.88s
+    [step 2/3] best reward=0.736, train fail -> retry
+    [step 3/3] Sampling group of 4 (10969 chars, ~2742 tokens)
+  API call finished in 82.82s
+  API call finished in 89.26s
+  API call finished in 159.70s
+  API call finished in 65.07s
+    [step 3/3] best reward=0.750, train fail -> retry
+  FAILED (0/1 test cases, 1655.8s) | Running: 3/7 solved (43%)
+
+[8/76] Task: 15113be4 (3 train, 1 test)
+  Test case 1/1
+    [step 1/3] Sampling group of 4 (11861 chars, ~2965 tokens)
+  API connection error: Connection error., retrying in 2s...
+  API call finished in 177.71s
+  API call finished in 175.42s
+  API connection error: Connection error., retrying in 2s...
+    [step 1/3] best reward=0.762, train fail -> retry
+    [step 2/3] Sampling group of 4 (15265 chars, ~3816 tokens)
+  API connection error: Connection error., retrying in 2s...
+  API call finished in 180.90s
+  API call finished in 80.12s
+  API connection error: Connection error., retrying in 2s...
+  API call finished in 87.41s
+  API call finished in 85.49s
+    [step 2/3] best reward=0.762, train fail -> retry
+    [step 3/3] Sampling group of 4 (14729 chars, ~3682 tokens)
+  API call finished in 168.75s
+  API call finished in 79.40s
+  API call finished in 81.28s
+  API call finished in 88.43s
+    [step 3/3] best reward=0.789, train fail -> retry
+  FAILED (0/1 test cases, 2857.2s) | Running: 3/8 solved (38%)
+
+[9/76] Task: 15663ba9 (3 train, 1 test)
+  Test case 1/1
+    [step 1/3] Sampling group of 4 (4842 chars, ~1210 tokens)
+  API call finished in 180.39s
+  API connection error: Connection error., retrying in 2s...
+  API call finished in 256.20s
+  API call finished in 71.65s
+  API connection error: Connection error., retrying in 2s...
+  API call finished in 254.55s
+    [step 1/3] best reward=-0.500, train fail -> retry
+    [step 2/3] Sampling group of 4 (6590 chars, ~1647 tokens)
+  API call finished in 89.50s
+  API call finished in 61.03s
+  API call finished in 87.49s
+  API connection error: Connection error., retrying in 2s...
+  API call finished in 168.60s
+    [step 2/3] best reward=0.770, train fail -> retry
+    [step 3/3] Sampling group of 4 (7471 chars, ~1867 tokens)
+  API connection error: Connection error., retrying in 2s...
+  API call finished in 87.20s
+  API call finished in 176.20s
+  API call finished in 259.60s
+  API call finished in 73.75s
+    [step 3/3] best reward=0.770, train fail -> retry
+  FAILED (0/1 test cases, 2870.2s) | Running: 3/9 solved (33%)
+
+[10/76] Task: 15696249 (4 train, 1 test)
+  Test case 1/1
+    [step 1/3] Sampling group of 4 (1776 chars, ~444 tokens)
+  API call finished in 29.95s
+  API call finished in 135.42s
+  API call finished in 141.19s
+  API call finished in 48.28s
+    [step 1/3] SOLVED (best reward=1.000)
+  SOLVED (1/1 test cases, 357.0s) | Running: 4/10 solved (40%)
+
+[11/76] Task: 16b78196 (2 train, 1 test)
+  Test case 1/1
+    [step 1/3] Sampling group of 4 (14214 chars, ~3553 tokens)
+  API connection error: Connection error., retrying in 2s...
+  API connection error: Connection error., retrying in 2s...
+  API connection error: Connection error., retrying in 2s...
+  API call finished in 80.23s
+    [step 1/3] best reward=-0.500, train fail -> retry
+    [step 2/3] Sampling group of 4 (15893 chars, ~3973 tokens)
+  API connection error: Connection error., retrying in 2s...
+  API call finished in 161.81s
+  API call finished in 270.31s
+  API call finished in 81.44s
+    [step 2/3] best reward=-0.500, train fail -> retry
+    [step 3/3] Sampling group of 4 (16234 chars, ~4058 tokens)
+  API call finished in 78.12s
+  API call finished in 80.25s
+  API connection error: Connection error., retrying in 2s...
+  API call finished in 255.87s
+  API call finished in 173.59s
+    [step 3/3] best reward=-0.500, train fail -> retry
+  FAILED (0/1 test cases, 3656.2s) | Running: 4/11 solved (36%)
+
+[12/76] Task: 17b80ad2 (4 train, 1 test)
+  Test case 1/1
+    [step 1/3] Sampling group of 4 (5506 chars, ~1376 tokens)
+  API call finished in 166.89s
+  API connection error: Connection error., retrying in 2s...
+  API call finished in 47.43s
+  API call finished in 62.80s
+  API call finished in 69.46s
+    [step 1/3] SOLVED (best reward=1.000)
+  SOLVED (1/1 test cases, 623.9s) | Running: 5/12 solved (42%)
+
+[13/76] Task: 17cae0c1 (4 train, 1 test)
+  Test case 1/1
+    [step 1/3] Sampling group of 4 (1374 chars, ~343 tokens)
+  API call finished in 49.27s
+  API call finished in 37.04s
+  API call finished in 59.97s
+  API call finished in 49.17s
+    [step 1/3] SOLVED (best reward=1.000)
+  SOLVED (1/1 test cases, 197.6s) | Running: 6/13 solved (46%)
+
+[14/76] Task: 18419cfa (3 train, 1 test)
+  Test case 1/1
+    [step 1/3] Sampling group of 4 (9171 chars, ~2292 tokens)
+  API call finished in 178.16s
+  API call finished in 83.80s
+  API connection error: Connection error., retrying in 2s...
+  API call finished in 257.10s
+    [step 1/3] FAIL: wrong output (cell acc: 97.0%)
+  FAILED (0/1 test cases, 1068.5s) | Running: 6/14 solved (43%)
+
+[15/76] Task: 184a9768 (3 train, 1 test)
+  Test case 1/1
+    [step 1/3] Sampling group of 4 (10626 chars, ~2656 tokens)
+  API call finished in 81.96s
+  API connection error: Connection error., retrying in 2s...
+  API call finished in 267.56s
+  API call finished in 86.82s
+  API connection error: Connection error., retrying in 2s...
+    [step 1/3] best reward=-0.500, train fail -> retry
+    [step 2/3] Sampling group of 4 (12131 chars, ~3032 tokens)
+  API call finished in 247.86s
+  API call finished in 87.14s
+  API call finished in 53.81s
+  API call finished in 81.82s
+    [step 2/3] best reward=-0.500, train fail -> retry
+    [step 3/3] Sampling group of 4 (12170 chars, ~3042 tokens)
+  API call finished in 180.14s
+  API call finished in 263.20s
+  API call finished in 79.40s
+  API call finished in 77.03s
+    [step 3/3] best reward=-0.500, train fail -> retry
+  FAILED (0/1 test cases, 2332.2s) | Running: 6/15 solved (40%)
+
+[16/76] Task: 195ba7dc (4 train, 1 test)
+  Test case 1/1
+    [step 1/3] Sampling group of 4 (1998 chars, ~499 tokens)
+  API call finished in 132.96s
+  API call finished in 39.92s
+  API call finished in 57.70s
+  API call finished in 31.49s
+    [step 1/3] SOLVED (best reward=1.000)
+  SOLVED (1/1 test cases, 264.8s) | Running: 7/16 solved (44%)
+
+[17/76] Task: 1990f7a8 (3 train, 1 test)
+  Test case 1/1
+    [step 1/3] Sampling group of 4 (5366 chars, ~1341 tokens)
+  API call finished in 169.63s
+  API call finished in 68.25s
+  API call finished in 269.15s
+  API call finished in 147.39s
+    [step 1/3] best reward=-0.500, train fail -> retry
+    [step 2/3] Sampling group of 4 (6957 chars, ~1739 tokens)
+  API call finished in 66.08s
+  API call finished in 82.84s
+  API call finished in 62.18s
+  API call finished in 62.01s
+    [step 2/3] best reward=-0.500, train fail -> retry
+    [step 3/3] Sampling group of 4 (7010 chars, ~1752 tokens)
+  API call finished in 72.38s
+  API call finished in 259.28s
+  API call finished in 74.41s
+  API call finished in 61.38s
+    [step 3/3] best reward=-0.500, train fail -> retry
+  FAILED (0/1 test cases, 1396.0s) | Running: 7/17 solved (41%)
+
+[18/76] Task: 19bb5feb (3 train, 1 test)
+  Test case 1/1
+    [step 1/3] Sampling group of 4 (3297 chars, ~824 tokens)
+  API call finished in 153.80s
+  API call finished in 59.18s
+  API call finished in 142.63s
+  API call finished in 49.49s
+    [step 1/3] SOLVED (best reward=1.000)
+  SOLVED (1/1 test cases, 406.9s) | Running: 8/18 solved (44%)
+
+[19/76] Task: 1a2e2828 (5 train, 1 test)
+  Test case 1/1
+    [step 1/3] Sampling group of 4 (2518 chars, ~629 tokens)
+  API call finished in 34.79s
+  API call finished in 52.41s
+  API call finished in 53.88s
+  API call finished in 39.14s
+    [step 1/3] SOLVED (best reward=1.000)
+  SOLVED (1/1 test cases, 182.8s) | Running: 9/19 solved (47%)
+
+[20/76] Task: 1a6449f1 (3 train, 1 test)
+  Test case 1/1
+    [step 1/3] Sampling group of 4 (6725 chars, ~1681 tokens)
+  API call finished in 67.49s
+  API call finished in 60.10s
+  API call finished in 67.45s
+  API call finished in 65.96s
+    [step 1/3] SOLVED (best reward=1.000)
+  SOLVED (1/1 test cases, 263.2s) | Running: 10/20 solved (50%)
+
+[21/76] Task: 1acc24af (4 train, 1 test)
+  Test case 1/1
+    [step 1/3] Sampling group of 4 (4614 chars, ~1153 tokens)
+  API connection error: Connection error., retrying in 2s...
+  API connection error: Connection error., retrying in 2s...
+  API connection error: Connection error., retrying in 2s...
+  API connection error: Connection error., retrying in 2s...
+    [step 1/3] best reward=-1.200, train fail -> retry
+    [step 2/3] Sampling group of 4 (4773 chars, ~1193 tokens)
+  API call finished in 179.31s
+  API connection error: Connection error., retrying in 2s...
+  API call finished in 170.87s
+  API connection error: Connection error., retrying in 2s...
+    [step 2/3] best reward=0.793, train fail -> retry
+    [step 3/3] Sampling group of 4 (7024 chars, ~1756 tokens)
+  API call finished in 55.69s
+  API call finished in 179.53s
+  API call finished in 153.08s
+  API connection error: Connection error., retrying in 2s...
+  API call finished in 161.30s
+    [step 3/3] best reward=0.793, train fail -> retry
+  FAILED (0/1 test cases, 4467.8s) | Running: 10/21 solved (48%)
+
+[22/76] Task: 1c02dbbe (3 train, 1 test)
+  Test case 1/1
+    [step 1/3] Sampling group of 4 (5421 chars, ~1355 tokens)
+  API connection error: Connection error., retrying in 2s...
+  API call finished in 80.92s
+  API call finished in 171.22s
+  API call finished in 81.99s
+  API call finished in 84.16s
+    [step 1/3] SOLVED (best reward=1.000)
+  SOLVED (1/1 test cases, 693.8s) | Running: 11/22 solved (50%)
+
+[23/76] Task: 1c0d0a4b (3 train, 1 test)
+  Test case 1/1
+    [step 1/3] Sampling group of 4 (2735 chars, ~683 tokens)
+  API connection error: Connection error., retrying in 2s...
